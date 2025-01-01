@@ -29,7 +29,7 @@ export const Header = component$(() => {
 
         {/* <!-- Mobile Menu Toggle --> */}
         <div class="dropdown dropdown-end md:hidden">
-          <label tabindex="0" class="btn btn-ghost">
+          <label class="btn btn-ghost">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-5 w-5"
@@ -45,10 +45,7 @@ export const Header = component$(() => {
               />
             </svg>
           </label>
-          <ul
-            tabindex="0"
-            class="menu menu-compact dropdown-content bg-primary rounded-box mt-3 w-52 p-2 text-white shadow"
-          >
+          <ul class="menu menu-compact dropdown-content bg-primary rounded-box mt-3 w-52 p-2 text-white shadow">
             <li>
               <a href="#home">Home</a>
             </li>

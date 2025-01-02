@@ -1,8 +1,5 @@
-import type { QRL } from "@builder.io/qwik";
-import { component$, $, useTask$ } from "@builder.io/qwik";
-import type { RequestEvent, RequestEventLoader } from "@builder.io/qwik-city";
+import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
-import type { SubmitHandler } from "@modular-forms/qwik";
 import {
   formAction$,
   FormError,
@@ -10,43 +7,18 @@ import {
   valiForm$,
   type InitialValues,
 } from "@modular-forms/qwik";
-import * as v from "valibot";
 import { supabaseClient } from "~/lib/supabase";
+import type { TAuthForm } from "~/schemas/auth";
+import { AuthSchema } from "~/schemas/auth";
 
-const LoginSchema = v.object({
-  email: v.pipe(
-    v.string(),
-    v.nonEmpty("Please enter your email."),
-    v.email("The email address is badly formatted."),
-  ),
-  password: v.pipe(
-    v.string(),
-    v.nonEmpty("Please enter your password."),
-    v.minLength(8, "Your password must have 8 characters or more."),
-  ),
-});
+export { useRedirectIfLoggedIn } from "~/loaders/auth";
 
-type LoginForm = v.InferInput<typeof LoginSchema>;
-
-export const useFormLoader = routeLoader$<InitialValues<LoginForm>>(() => ({
+export const useFormLoader = routeLoader$<InitialValues<TAuthForm>>(() => ({
   email: "",
   password: "",
 }));
 
-export const useRedirectIfLoggedIn = routeLoader$(
-  async (requestEvent: RequestEventLoader) => {
-    console.log("cookies from login page", requestEvent.cookie.getAll());
-    const supabase = supabaseClient(requestEvent);
-    const { data } = await supabase.auth.getUser();
-    console.log(data);
-    console.log("cookies from login page", requestEvent.cookie.getAll());
-    if (data.user) {
-      throw requestEvent.redirect(302, "/");
-    }
-  },
-);
-
-export const useFormAction = formAction$<LoginForm>(
+export const useFormAction = formAction$<TAuthForm>(
   async (values, requestEvent) => {
     const supabase = supabaseClient(requestEvent);
     console.log(values);
@@ -54,33 +26,19 @@ export const useFormAction = formAction$<LoginForm>(
     const { error } = await supabase.auth.signInWithPassword(values);
 
     if (error) {
-      throw new FormError<LoginForm>(error.message, { email: error.message });
+      throw new FormError<TAuthForm>(error.message, { email: error.message });
     }
 
     throw requestEvent.redirect(302, "/");
-    // Runs on server
   },
-  valiForm$(LoginSchema),
+  valiForm$(AuthSchema),
 );
 
 export default component$(() => {
-  const [loginForm, { Form, Field }] = useForm<LoginForm>({
+  const [loginForm, { Form, Field }] = useForm<TAuthForm>({
     loader: useFormLoader(),
     action: useFormAction(),
-    validate: valiForm$(LoginSchema),
-  });
-
-  // useTask$(({ track }) => {
-  //   if (loginForm.response.status === "success") {
-  //     // Runs on
-  //     console.log("Form submitted successfully!");
-  //   }
-  //   track(() => loginForm.response);
-  // });
-
-  const handleSubmit: QRL<SubmitHandler<LoginForm>> = $((values, event) => {
-    // Runs on client
-    console.log(values);
+    validate: valiForm$(AuthSchema),
   });
 
   return (
@@ -95,7 +53,7 @@ export default component$(() => {
           </p>
         </div>
         <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-          <Form onSubmit$={handleSubmit} class="card-body">
+          <Form class="card-body">
             <div class="form-control">
               <Field name="email">
                 {(field, props) => (

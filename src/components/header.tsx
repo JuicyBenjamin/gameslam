@@ -1,6 +1,9 @@
 import { component$ } from "@builder.io/qwik";
+import { Link } from "@builder.io/qwik-city";
+import { useIsUserLoggedIn } from "~/loaders/auth";
 
 export const Header = component$(() => {
+  const isUserLoggedIn = useIsUserLoggedIn();
   return (
     <header class="navbar bg-primary sticky top-0 z-50 text-white shadow-md">
       <div class="container mx-auto">
@@ -22,9 +25,20 @@ export const Header = component$(() => {
           <a class="btn btn-ghost" href="#services">
             Services
           </a>
-          <a class="btn btn-ghost" href="#contact">
-            Contact
-          </a>
+          {isUserLoggedIn.value ? (
+            <Link class="btn btn-neutral" href="/logout">
+              Logout
+            </Link>
+          ) : (
+            <>
+              <Link class="btn btn-neutral" href="/login">
+                Login
+              </Link>
+              <Link class="btn btn-neutral" href="/sign-up">
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* <!-- Mobile Menu Toggle --> */}

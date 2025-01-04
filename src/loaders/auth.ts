@@ -18,9 +18,7 @@ export const useIsUserLoggedIn = routeLoader$(
   async (requestEvent: RequestEventLoader) => {
     const supabase = supabaseClient(requestEvent);
     const { data } = await supabase.auth.getUser();
-    if (data.user) {
-      return true;
-    }
-    return false;
+    requestEvent.cacheControl({ noCache: true });
+    return data.user != null;
   },
 );

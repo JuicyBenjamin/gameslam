@@ -1,7 +1,7 @@
-import { pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable, varchar, uuid } from "drizzle-orm/pg-core";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  fullName: text("full_name"),
-  phone: varchar("phone", { length: 256 }),
+export const artists = pgTable("artists", {
+  id: uuid().defaultRandom().primaryKey(),
+  name: varchar({ length: 255 }).notNull(),
+  link: varchar({ length: 255 }).notNull(),
 });

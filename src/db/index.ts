@@ -1,6 +1,8 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { users } from "./schema";
+import { artists } from "./schema";
+
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -8,6 +10,6 @@ const connectionString = process.env.DATABASE_URL;
 const client = postgres(String(connectionString), { prepare: false });
 const db = drizzle(client);
 
-const allUsers = await db.select().from(users);
+const allArtists = await db.select().from(artists);
 
-console.log(allUsers);
+console.log(allArtists);

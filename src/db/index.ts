@@ -8,7 +8,7 @@ const connectionString = process.env.DATABASE_URL;
 
 // Disable prefetch as it is not supported for "Transaction" pool mode
 const client = postgres(String(connectionString), { prepare: false });
-const db = drizzle(client);
+const db = drizzle(client, { casing: "snake_case" });
 
 const allArtists = await db.select().from(artists);
 

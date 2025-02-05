@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { artists } from "./schema";
+import { artists } from "./schema/artists";
 
 console.log("DATABASE_URL:", process.env.DATABASE_URL);
 

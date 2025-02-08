@@ -28,3 +28,5 @@ export const slams = pgTable("slams", {
     .references(() => authUsers.id),
   isDeleted: boolean("is_deleted").default(false).notNull(),
 });
+
+export type SelectSlam = typeof slams.$inferSelect;

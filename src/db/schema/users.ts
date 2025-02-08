@@ -11,3 +11,5 @@ export const users = pgTable("users", {
   isVerified: boolean("is_verified").default(false).notNull(),
   avatarLink: varchar("avatar_link", { length: 255 }).notNull(),
 });
+
+export type SelectUser = typeof authUsers.$inferSelect;

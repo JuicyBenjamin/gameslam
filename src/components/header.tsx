@@ -20,9 +20,9 @@ export const Header = component$(() => {
           <a class="btn btn-ghost" href="#home">
             Home
           </a>
-          <a class="btn btn-ghost" href="#about">
-            About
-          </a>
+          <Link class="btn btn-ghost" href="/slams">
+            Slams
+          </Link>
           <a class="btn btn-ghost" href="#services">
             Services
           </a>

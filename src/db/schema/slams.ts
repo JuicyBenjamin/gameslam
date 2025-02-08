@@ -13,8 +13,12 @@ import { authUsers } from "drizzle-orm/supabase";
 export const slams = pgTable("slams", {
   id: uuid().defaultRandom().primaryKey().notNull(),
   name: varchar({ length: 255 }).notNull(),
-  artistId: uuid("artist_id").references(() => artists.id),
-  assetId: uuid("asset_id").references(() => assets.id),
+  artistId: uuid("artist_id")
+    .notNull()
+    .references(() => artists.id),
+  assetId: uuid("asset_id")
+    .notNull()
+    .references(() => assets.id),
   description: text().notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()

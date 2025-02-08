@@ -1,6 +1,6 @@
 import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { authUsers } from "drizzle-orm/supabase";
 import { slams } from "./slams";
+import { users } from "./users";
 
 export const slamEntries = pgTable("slam_entries", {
   id: uuid().defaultRandom().primaryKey().notNull(),
@@ -9,7 +9,7 @@ export const slamEntries = pgTable("slam_entries", {
     .references(() => slams.id),
   userId: uuid("user_id")
     .notNull()
-    .references(() => authUsers.id),
+    .references(() => users.id),
   linkToEntry: varchar("link_to_entry", { length: 255 }).notNull(),
   name: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }).notNull(),

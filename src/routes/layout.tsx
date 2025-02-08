@@ -20,7 +20,7 @@ export default component$(() => {
   return (
     <>
       <Header />
-      <main class="contaier flex flex-col justify-center gap-4 p-8">
+      <main class="contaier flex min-h-[80vh] flex-col justify-start gap-4 p-8">
         <Slot />
       </main>
       <Footer />

@@ -8,7 +8,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { assets } from "./assets";
 import { artists } from "./artists";
-import { authUsers } from "drizzle-orm/supabase";
+import { users } from "./users";
 
 export const slams = pgTable("slams", {
   id: uuid().defaultRandom().primaryKey().notNull(),
@@ -25,7 +25,7 @@ export const slams = pgTable("slams", {
     .notNull(),
   createdBy: uuid("created_by")
     .notNull()
-    .references(() => authUsers.id),
+    .references(() => users.id),
   isDeleted: boolean("is_deleted").default(false).notNull(),
 });
 

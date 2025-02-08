@@ -1,12 +1,11 @@
 import { pgTable, uuid, text, timestamp, boolean } from "drizzle-orm/pg-core";
-
-import { authUsers } from "drizzle-orm/supabase";
 import { slamEntries } from "./slamEntries";
+import { users } from "./users";
 
 export const slamRatings = pgTable("slam_ratings", {
   id: uuid().defaultRandom().primaryKey().notNull(),
   authorId: uuid("author_id")
-    .references(() => authUsers.id)
+    .references(() => users.id)
     .notNull(),
   slameEntryId: uuid("slam_entry_id")
     .notNull()

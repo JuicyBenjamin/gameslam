@@ -1,8 +1,7 @@
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
 import { pgTable, uuid, text, timestamp, boolean } from "drizzle-orm/pg-core";
-
-import { authUsers } from "drizzle-orm/supabase";
 import { slamEntries } from "./slamEntries";
+import { users } from "./users";
 
 export const slamComments = pgTable("slam_comments", {
   id: uuid().defaultRandom().primaryKey().notNull(),
@@ -10,7 +9,7 @@ export const slamComments = pgTable("slam_comments", {
     (): AnyPgColumn => slamComments.id,
   ),
   authorId: uuid("author_id")
-    .references(() => authUsers.id)
+    .references(() => users.id)
     .notNull(),
   slameEntryId: uuid("slam_entry_id")
     .notNull()

@@ -43,6 +43,13 @@
       "when": 1738788143136,
       "tag": "0005_far_jack_power",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1739047877499,
+      "tag": "0006_tough_karen_page",
+      "breakpoints": true
     }
   ]
 }

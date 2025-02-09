@@ -9,7 +9,7 @@ export const useSlams = routeLoader$(() => {
 export default component$(() => {
   const slams = useSlams();
   return (
-    <>
+    <div class="flex flex-col gap-8 p-8">
       <div class="flex items-end justify-between">
         <div class="prose-xl prose">
           <h1>Slams</h1>
@@ -30,6 +30,6 @@ export default component$(() => {
           </Link>
         ))}
       </div>
-    </>
+    </div>
   );
 });

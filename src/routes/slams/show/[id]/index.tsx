@@ -1,34 +1,34 @@
 import { component$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { getSlamById } from "~/db/queries/slams";
 
-export const useGetSlam = routeLoader$(({ params }) => {
-  return getSlamById(params.id);
+export const useGetSlam = routeLoader$(async ({ params }) => {
+  return await getSlamById(params.id);
 });
 
 export default component$(() => {
   const slam = useGetSlam();
   return (
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-base-200">
       <div class="relative h-64 bg-gray-900">
-        <img
+        {/* <img
           // src={slam.value.coverImage || "/placeholder.svg"}
           // alt={slam.value.name}
           // layout="fill"
           // objectFit="cover"
           class="h-full w-full object-cover opacity-50"
-        />
+        /> */}
         <div class="absolute inset-0 flex items-center justify-center">
           <h1 class="px-4 text-center text-4xl font-bold text-white">
-            {slam.value.slams.name}
+            {slam.value.slam.name}
           </h1>
         </div>
       </div>
 
       <div class="mx-auto max-w-4xl px-4 py-8">
-        <div class="overflow-hidden rounded-lg bg-white shadow-lg">
+        <div class="bg-base overflow-hidden rounded-lg shadow-lg">
           <div class="p-6">
-            <p class="mb-6 text-gray-600">{slam.value.slams.description}</p>
+            <p class="mb-6 text-gray-600">{slam.value.slam.description}</p>
             <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
               {/* <div class="flex items-center">
                  <Clock class="text-blue-500 mr-2" />
@@ -47,15 +47,20 @@ export default component$(() => {
               <div class="flex items-center">
                 {/* <Users class="text-green-500 mr-2" /> */}
                 <div>
-                  <p class="text-sm text-gray-600">Participants</p>
-                  <p class="font-semibold">Maybe participants</p>
+                  <p class="text-sm text-gray-600">Entries</p>
+                  <p class="font-semibold">
+                    {
+                      slam.value.entries.filter((entry) => Boolean(entry))
+                        .length
+                    }
+                  </p>
                 </div>
               </div>
               <div class="flex items-center">
                 {/* <Award class="text-purple-500 mr-2" /> */}
                 <div>
                   <p class="text-sm text-gray-600">Organizer</p>
-                  <p class="font-semibold">{slam.value.users?.name}</p>
+                  <p class="font-semibold">{slam.value.createdBy?.name}</p>
                 </div>
               </div>
             </div>
@@ -63,10 +68,13 @@ export default component$(() => {
               <button class="w-full rounded-full bg-blue-500 px-6 py-2 text-white transition duration-300 hover:bg-blue-600 sm:w-auto">
                 Join Slam
               </button>
-              <button class="flex w-full items-center justify-center text-blue-500 transition duration-300 hover:text-blue-600 sm:w-auto">
+              <Link
+                href={slam.value.asset?.link}
+                class="flex w-full items-center justify-center text-blue-500 transition duration-300 hover:text-blue-600 sm:w-auto"
+              >
                 {/* <Download class="mr-2" /> */}
-                Download Assets
-              </button>
+                Go to asset
+              </Link>
             </div>
           </div>
         </div>

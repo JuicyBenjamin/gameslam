@@ -31,8 +31,8 @@ export default component$(() => {
             <p class="mb-6 text-gray-600">{slam.value.slam.description}</p>
             <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
               {/* <div class="flex items-center">
-                 <Clock class="text-blue-500 mr-2" />
-                 <div>
+                <Clock class="text-blue-500 mr-2" />
+                <div>
                   <p class="text-sm text-gray-600">Starts</p>
                   <p class="font-semibold">{formatDate(slam.value.startDate)}</p>
                 </div>
@@ -59,7 +59,7 @@ export default component$(() => {
               <div class="flex items-center">
                 {/* <Award class="text-purple-500 mr-2" /> */}
                 <div>
-                  <p class="text-sm text-gray-600">Organizer</p>
+                  <p class="text-sm text-gray-600">Created by</p>
                   <p class="font-semibold">{slam.value.createdBy?.name}</p>
                 </div>
               </div>

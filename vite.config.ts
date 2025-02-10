@@ -30,13 +30,13 @@ export default defineConfig(({ command, mode }): UserConfig => {
       exclude: [],
     },
     ssr: {
-      noExternal: ['postgres'],  // Ensure `postgres` is NOT bundled
+      noExternal: ['postgres','supabase-js'],  // Ensure `postgres` is NOT bundled
       external: [...builtinModules], // Auto-exclude ALL Node.js built-ins
     },
 
     build: {
       rollupOptions: {
-        external: [...builtinModules, 'postgres'], // Mark everything as external
+        external: [...builtinModules, 'postgres', 'supabase-js'], // Mark everything as external
       },
     },
 

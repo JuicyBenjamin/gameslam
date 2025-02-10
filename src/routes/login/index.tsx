@@ -42,7 +42,7 @@ export default component$(() => {
   });
 
   return (
-    <div class="hero bg-base-200 min-h-screen">
+    <div class="hero min-h-screen bg-base-200">
       <div class="hero-content flex-col lg:flex-row-reverse">
         <div class="text-center lg:text-left">
           <h1 class="text-5xl font-bold">Login now!</h1>
@@ -52,7 +52,7 @@ export default component$(() => {
             a id nisi.
           </p>
         </div>
-        <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <div class="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl">
           <Form class="card-body">
             <div class="form-control">
               <Field name="email">
@@ -67,7 +67,6 @@ export default component$(() => {
                       class="input input-bordered"
                       required
                       type="email"
-                      value={field.value}
                     />
                     {field.error && <div>{field.error}</div>}
                   </>
@@ -84,7 +83,6 @@ export default component$(() => {
                     <input
                       {...props}
                       type="password"
-                      value={field.value}
                       placeholder="password"
                       class="input input-bordered"
                       required
@@ -94,7 +92,7 @@ export default component$(() => {
                 )}
               </Field>
               <label class="label">
-                <a href="#" class="label-text-alt link link-hover">
+                <a href="#" class="link-hover link label-text-alt">
                   Forgot password?
                 </a>
               </label>

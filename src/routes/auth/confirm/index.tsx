@@ -4,7 +4,7 @@ import { supabaseClient } from "~/lib/supabase";
 
 export const onGet: RequestHandler = async (requestEvent) => {
   const token_hash = requestEvent.query.get("token_hash");
-  const type = requestEvent.query.get("type") as EmailOtpType;
+  const type = requestEvent.query.get("type") as EmailOtpType | null;
   const next = requestEvent.query.get("next") ?? "/";
 
   const supabase = supabaseClient(requestEvent);

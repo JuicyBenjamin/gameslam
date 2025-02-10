@@ -53,13 +53,13 @@
     "tsx": "^4.19.2",
     "typescript": "5.4.5",
     "undici": "*",
-    "vercel": "^29.1.1",
-    "vite": "5.3.5",
-    "vite-tsconfig-paths": "^4.2.1"
+    "vercel": "^41.0.3",
+    "vite": "6.1.0",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.47.10",
+    "@supabase/supabase-js": "^2.48.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
     "postgres": "^3.4.5",

@@ -4,8 +4,9 @@ import { useIsUserLoggedIn } from "~/loaders/auth";
 
 export const Header = component$(() => {
   const isUserLoggedIn = useIsUserLoggedIn();
+
   return (
-    <header class="navbar bg-primary sticky top-0 z-50 text-white shadow-md">
+    <header class="navbar sticky top-0 z-50 bg-primary text-white shadow-md">
       <div class="container mx-auto">
         {/* <!-- Left Side: Logo --> */}
         <div class="flex-1">
@@ -19,9 +20,9 @@ export const Header = component$(() => {
           <a class="btn btn-ghost" href="#home">
             Home
           </a>
-          <a class="btn btn-ghost" href="#about">
-            About
-          </a>
+          <Link class="btn btn-ghost" href="/slams">
+            Slams
+          </Link>
           <a class="btn btn-ghost" href="#services">
             Services
           </a>
@@ -59,7 +60,7 @@ export const Header = component$(() => {
               />
             </svg>
           </label>
-          <ul class="menu menu-compact dropdown-content bg-primary rounded-box mt-3 w-52 p-2 text-white shadow">
+          <ul class="menu-compact menu dropdown-content mt-3 w-52 rounded-box bg-primary p-2 text-white shadow">
             <li>
               <a href="#home">Home</a>
             </li>

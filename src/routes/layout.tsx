@@ -1,7 +1,6 @@
 import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
-import { Footer } from "~/components/footer";
-import { Header } from "~/components/header";
+import RootLayout from "~/components/layouts/root-layout";
 
 export { useIsUserLoggedIn } from "~/loaders/auth";
 
@@ -18,10 +17,8 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 
 export default component$(() => {
   return (
-    <>
-      <Header />
+    <RootLayout>
       <Slot />
-      <Footer />
-    </>
+    </RootLayout>
   );
 });

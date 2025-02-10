@@ -20,6 +20,9 @@
     "deploy": "vercel deploy",
     "dev": "vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "drizzle:generate": "drizzle-kit generate",
+    "drizzle:migrate": "drizzle-kit migrate",
+    "drizzle:studio": "drizzle-kit studio --host 127.0.0.1",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\"",
@@ -57,7 +60,7 @@
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.47.10",
     "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.38.3",
+    "drizzle-orm": "^0.39.3",
     "postgres": "^3.4.5",
     "valibot": "1.0.0-beta.9"
   }

@@ -7,6 +7,7 @@ import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
+import { builtinModules } from 'module';
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -27,6 +28,16 @@ export default defineConfig(({ command, mode }): UserConfig => {
       // Put problematic deps that break bundling here, mostly those with binaries.
       // For example ['better-sqlite3'] if you use that in server functions.
       exclude: [],
+    },
+    ssr: {
+      noExternal: ['postgres'],  // Ensure `postgres` is NOT bundled
+      external: [...builtinModules], // Auto-exclude ALL Node.js built-ins
+    },
+
+    build: {
+      rollupOptions: {
+        external: [...builtinModules, 'postgres'], // Mark everything as external
+      },
     },
 
     /**

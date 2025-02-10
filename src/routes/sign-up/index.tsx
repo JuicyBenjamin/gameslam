@@ -23,7 +23,10 @@ export const useFormAction = formAction$<TAuthForm>(
     const supabase = supabaseClient(requestEvent);
     console.log(values);
 
-    const { error } = await supabase.auth.signUp(values);
+    const { error } = await supabase.auth.signUp({
+      email: values.email,
+      password: values.password,
+    });
 
     if (error) {
       throw new FormError<TAuthForm>(error.message, { email: error.message });

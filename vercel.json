@@ -18,5 +18,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "_qwik-city.func": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

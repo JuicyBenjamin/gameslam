@@ -19,8 +19,9 @@
       ]
     }
   ],
+  "version": 2,
   "functions": {
-    "_qwik-city.func": {
+    "**/_qwik-city.func/**": {
       "runtime": "nodejs18.x"
     }
   }

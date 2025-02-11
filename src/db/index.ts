@@ -1,8 +1,7 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { drizzle } from "drizzle-orm/vercel-postgres";
+import { createClient } from "@vercel/postgres";
 
-const connectionString = process.env.DATABASE_URL ?? "";
+// Manually provide Supabase connection string
+const client = createClient({ connectionString: process.env.DATABASE_URL });
 
-// Disable prefetch as it is not supported for "Transaction" pool mode
-const client = postgres(String(connectionString), { prepare: false });
 export const db = drizzle(client, { casing: "snake_case" });

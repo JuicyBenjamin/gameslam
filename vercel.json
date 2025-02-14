@@ -18,10 +18,5 @@
         }
       ]
     }
-  ],
-  "functions": {
-    ".vercel/output/functions/_qwik-city.func": {
-      "runtime": "nodejs18.x@18.17.0"
-    }
-  }
+  ]
 }

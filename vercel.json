@@ -21,7 +21,7 @@
   ],
   "functions": {
     "_qwik-city.func": {
-      "runtime": "nodejs18.x"
+      "runtime": "nodejs18.x@18.17.0"
     }
   }
 }

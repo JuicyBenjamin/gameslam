@@ -13,10 +13,10 @@ export default extendConfig(baseConfig, () => {
     },
     plugins: [
       denoServerAdapter({
-        ssg: {
-          include: ["/*"],
-          origin: "https://yoursite.dev",
-        },
+        // ssg: {
+        //   include: ["/*"],
+        //   origin: "https://yoursite.dev",
+        // },
       }),
     ],
   };

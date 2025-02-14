@@ -5,12 +5,12 @@ export type MobileOtpType = 'sms' | 'phone_change'
 export type EmailOtpType = 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' | 'email'
 
 export const supabaseClient = (requestEv: RequestEvent | RequestEventAction) => {
-  const supabaseUrl = requestEv.env.get("SUPABASE_URL");
-  const supabaseAnonKey = requestEv.env.get("SUPABASE_ANON_KEY");
+  const supabaseUrl = requestEv.env.get("SUPABASE_URL") ?? "";
+  const supabaseAnonKey = requestEv.env.get("SUPABASE_ANON_KEY") ?? "";
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error("Supabase environment variables are missing.");
-  }
+  // if (!supabaseUrl || !supabaseAnonKey) {
+  //   throw new Error("Supabase environment variables are missing.");
+  // }
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

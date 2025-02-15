@@ -11,7 +11,7 @@
 import { createQwikCity } from "@builder.io/qwik-city/middleware/deno";
 import qwikCityPlan from "@qwik-city-plan";
 import { manifest } from "@qwik-client-manifest";
-import render from "./entry.ssr";
+import render from "./entry.ssr.tsx";
 
 // Create the Qwik City Deno middleware
 const { router, notFound, staticFile } = createQwikCity({

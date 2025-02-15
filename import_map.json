@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "@qwik-client-manifest": "./node_modules/@qwik-client-manifest/dist/client/qwik-client-manifest.js"
+  }
+}

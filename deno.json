@@ -1,0 +1,7 @@
+{
+  "importMap": "./import_map.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "https://cdn.esm.sh/@builder.io/qwik"
+  }
+}

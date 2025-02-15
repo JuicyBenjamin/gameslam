@@ -1,0 +1,11 @@
+{
+  "version": "4",
+  "redirects": {
+    "https://cdn.esm.sh/@builder.io/qwik/jsx-runtime": "https://cdn.esm.sh/@builder.io/qwik@1.12.0/jsx-runtime"
+  },
+  "remote": {
+    "https://cdn.esm.sh/@builder.io/qwik@1.12.0/denonext/build.mjs": "b3484a27143e06543232077942ea26d10ae924d5715c685a948b2333db73c68d",
+    "https://cdn.esm.sh/@builder.io/qwik@1.12.0/denonext/jsx-runtime.mjs": "75aa6a0b55c0fad6f1d6dddb5114722310332110dfab9dff502e908c54aceadb",
+    "https://cdn.esm.sh/@builder.io/qwik@1.12.0/jsx-runtime": "7e673cfc01e973f068700a6761217aaf3a298934c8d2d8d8867e2573461c78be"
+  }
+}

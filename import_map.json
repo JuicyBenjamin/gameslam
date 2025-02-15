@@ -1,6 +1,7 @@
 {
   "imports": {
     "@qwik-city-plan": "./server/@qwik-city-plan.js ",
-    "@qwik-client-manifest": "./server/@qwik-client-manifest.js"
+    "@qwik-client-manifest": "./server/@qwik-client-manifest.js",
+    "@qwik-city-not-found-paths": "./server/@qwik-city-not-found-paths"
   }
 }

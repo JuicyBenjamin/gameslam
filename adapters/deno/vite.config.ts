@@ -16,8 +16,7 @@ export default extendConfig(baseConfig, () => {
       },
       noExternal: [
         "@qwik-city-plan",
-        "@qwik-client-manifest",
-        "@qwik-city-not-found-paths"
+        "@qwik-client-manifest"
       ],
       minify: false,
     },

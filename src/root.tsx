@@ -7,8 +7,6 @@ import {
 import { RouterHead } from "./components/router-head/router-head.tsx";
 import { isDev } from "@builder.io/qwik";
 
-import "./global.css";
-
 export default component$(() => {
   /**
    * The root of a QwikCity site always start with the <QwikCityProvider> component,
@@ -28,6 +26,7 @@ export default component$(() => {
           />
         )}
         <RouterHead />
+        <link rel="stylesheet" href="/assets/global.css" />
       </head>
       <body lang="en">
         <RouterOutlet />

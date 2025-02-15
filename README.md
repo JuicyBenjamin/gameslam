@@ -108,10 +108,6 @@ The project is ready to be deployed to Vercel. However, you will need to create 
 
 You can [deploy your site to Vercel](https://vercel.com/docs/concepts/deployments/overview) either via a Git provider integration or through the Vercel CLI.
 
-## Deno Server
-
-This app has a minimal [Deno server](https://docs.deno.com/runtime/tutorials/http_server) implementation. After running a full build, you can preview the build using the command:
-
 ```
 pnpm serve
 ```

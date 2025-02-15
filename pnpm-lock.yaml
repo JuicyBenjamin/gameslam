@@ -7,13 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@supabase/supabase-js':
-        specifier: ^2.47.10
-        version: 2.48.1(bufferutil@4.0.9)
-      valibot:
-        specifier: 1.0.0-beta.9
-        version: 1.0.0-beta.9(typescript@5.4.5)
     devDependencies:
       '@builder.io/qwik':
         specifier: ^1.12.0
@@ -30,6 +23,9 @@ importers:
       '@supabase/ssr':
         specifier: ^0.5.2
         version: 0.5.2(@supabase/supabase-js@2.48.1(bufferutil@4.0.9))
+      '@supabase/supabase-js':
+        specifier: ^2.47.10
+        version: 2.48.1(bufferutil@4.0.9)
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@20.14.11)(typescript@5.4.5)))
@@ -87,6 +83,9 @@ importers:
       undici:
         specifier: '*'
         version: 7.2.0
+      valibot:
+        specifier: 1.0.0-beta.9
+        version: 1.0.0-beta.9(typescript@5.4.5)
       vercel:
         specifier: ^29.1.1
         version: 29.4.0(@types/node@20.14.11)(bufferutil@4.0.9)(ts-node@10.9.1(@types/node@20.14.11)(typescript@5.4.5))

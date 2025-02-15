@@ -1,6 +1,6 @@
 {
   "imports": {
-    "@qwik-client-manifest": "./node_modules/@qwik-client-manifest/dist/client/qwik-client-manifest.js",
-    "@qwik-city-plan": "./node_modules/@qwik-city-plan/dist/index.js"
+    "@qwik-client-manifest": "https://esm.sh/@qwik-client-manifest@1.12.0",
+    "@qwik-city-plan": "https://esm.sh/@qwik-city-plan@1.12.0"
   }
 }

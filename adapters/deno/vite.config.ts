@@ -11,21 +11,21 @@ export default extendConfig(baseConfig, () => {
           "src/entry.deno.ts",
           "@qwik-city-plan",
           "@qwik-client-manifest",
-          "@qwik-city-not-found-paths"
         ],
       },
       noExternal: [
         "@qwik-city-plan",
-        "@qwik-client-manifest"
+        "@qwik-client-manifest",
+        "@qwik-city-not-found-paths"
       ],
       minify: false,
     },
     plugins: [
       denoServerAdapter({
-        // ssg: {
-        //   include: ["/*"],
-        //   origin: "https://yoursite.dev",
-        // },
+        ssg: {
+          include: ["/*"],
+          origin: "https://yoursite.dev",
+        },
       }),
     ],
   };

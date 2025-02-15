@@ -8,24 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@supabase/ssr':
-        specifier: ^0.5.2
-        version: 0.5.2(@supabase/supabase-js@2.48.1(bufferutil@4.0.9))
       '@supabase/supabase-js':
         specifier: ^2.47.10
         version: 2.48.1(bufferutil@4.0.9)
-      '@vercel/postgres':
-        specifier: ^0.10.0
-        version: 0.10.0
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
-      drizzle-orm:
-        specifier: ^0.39.3
-        version: 0.39.3(@types/better-sqlite3@7.6.12)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(better-sqlite3@9.6.0)(postgres@3.4.5)
-      postgres:
-        specifier: ^3.4.5
-        version: 3.4.5
       valibot:
         specifier: 1.0.0-beta.9
         version: 1.0.0-beta.9(typescript@5.4.5)
@@ -42,6 +27,9 @@ importers:
       '@qwik-ui/headless':
         specifier: ^0.6.3
         version: 0.6.3(@builder.io/qwik@1.12.0(vite@5.3.5(@types/node@20.14.11)))
+      '@supabase/ssr':
+        specifier: ^0.5.2
+        version: 0.5.2(@supabase/supabase-js@2.48.1(bufferutil@4.0.9))
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@20.14.11)(typescript@5.4.5)))
@@ -66,6 +54,9 @@ importers:
       drizzle-kit:
         specifier: ^0.30.4
         version: 0.30.4
+      drizzle-orm:
+        specifier: ^0.39.3
+        version: 0.39.3(@types/better-sqlite3@7.6.12)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(better-sqlite3@9.6.0)(postgres@3.4.5)
       eslint:
         specifier: 8.57.0
         version: 8.57.0
@@ -75,6 +66,9 @@ importers:
       postcss:
         specifier: ^8.4.39
         version: 8.4.49
+      postgres:
+        specifier: ^3.4.5
+        version: 3.4.5
       prettier:
         specifier: 3.3.3
         version: 3.3.3
@@ -6901,6 +6895,7 @@ snapshots:
   '@neondatabase/serverless@0.9.5':
     dependencies:
       '@types/pg': 8.11.6
+    optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -7197,6 +7192,7 @@ snapshots:
       '@types/node': 20.14.11
       pg-protocol: 1.7.1
       pg-types: 4.0.2
+    optional: true
 
   '@types/phoenix@1.6.6': {}
 
@@ -7463,6 +7459,7 @@ snapshots:
       ws: 8.18.0(bufferutil@4.0.9)
     transitivePeerDependencies:
       - utf-8-validate
+    optional: true
 
   '@vercel/python@3.1.60': {}
 
@@ -7846,6 +7843,7 @@ snapshots:
   bufferutil@4.0.9:
     dependencies:
       node-gyp-build: 4.8.4
+    optional: true
 
   bytes@3.1.2: {}
 
@@ -10389,7 +10387,8 @@ snapshots:
       define-properties: 1.2.1
       es-object-atoms: 1.0.0
 
-  obuf@1.1.2: {}
+  obuf@1.1.2:
+    optional: true
 
   on-finished@2.4.1:
     dependencies:
@@ -10538,11 +10537,14 @@ snapshots:
       estree-walker: 3.0.3
       is-reference: 3.0.3
 
-  pg-int8@1.0.1: {}
+  pg-int8@1.0.1:
+    optional: true
 
-  pg-numeric@1.0.2: {}
+  pg-numeric@1.0.2:
+    optional: true
 
-  pg-protocol@1.7.1: {}
+  pg-protocol@1.7.1:
+    optional: true
 
   pg-types@4.0.2:
     dependencies:
@@ -10553,6 +10555,7 @@ snapshots:
       postgres-date: 2.1.0
       postgres-interval: 3.0.0
       postgres-range: 1.1.4
+    optional: true
 
   picocolors@1.0.0: {}
 
@@ -10673,17 +10676,22 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  postgres-array@3.0.2: {}
+  postgres-array@3.0.2:
+    optional: true
 
   postgres-bytea@3.0.0:
     dependencies:
       obuf: 1.1.2
+    optional: true
 
-  postgres-date@2.1.0: {}
+  postgres-date@2.1.0:
+    optional: true
 
-  postgres-interval@3.0.0: {}
+  postgres-interval@3.0.0:
+    optional: true
 
-  postgres-range@1.1.4: {}
+  postgres-range@1.1.4:
+    optional: true
 
   postgres@3.4.5: {}
 

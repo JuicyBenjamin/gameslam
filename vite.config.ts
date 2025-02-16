@@ -7,7 +7,6 @@ import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
-import { builtinModules } from 'module';
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -29,17 +28,6 @@ export default defineConfig(({ command, mode }): UserConfig => {
       // For example ['better-sqlite3'] if you use that in server functions.
       exclude: [],
     },
-    ssr: {
-      noExternal: ['postgres'],  // Ensure `postgres` is NOT bundled
-      external: [...builtinModules], // Auto-exclude ALL Node.js built-ins
-    },
-
-    build: {
-      rollupOptions: {
-        external: [...builtinModules, 'postgres'], // Mark everything as external
-      },
-    },
-
     /**
      * This is an advanced setting. It improves the bundling of your server code. To use it, make sure you understand when your consumed packages are dependencies or dev dependencies. (otherwise things will break in production)
      */
@@ -58,16 +46,19 @@ export default defineConfig(({ command, mode }): UserConfig => {
     //     : undefined,
 
     server: {
+      host: "0.0.0.0",
       headers: {
         // Don't cache the server response in dev mode
         "Cache-Control": "public, max-age=0",
       },
     },
     preview: {
+      host: "0.0.0.0",
       headers: {
         // Do cache the server response in preview (non-adapter production build)
         "Cache-Control": "public, max-age=600",
       },
+      port: 3000,
     },
   };
 });

@@ -11,6 +11,19 @@ export default component$(() => {
   return (
     <div class="min-h-screen bg-base-200">
       <div class="relative h-64 bg-gray-900">
+        <div class="grid h-full grid-cols-1 grid-rows-1 p-4 [grid-template-areas:'header']">
+          <div class="flex items-center justify-center [grid-area:header]">
+            <h1 class="px-4 text-center text-4xl font-bold text-white">
+              {slam.value.slam.name}
+            </h1>
+          </div>
+          <Link
+            href="/slams"
+            class="self-start justify-self-start rounded-full bg-white/10 px-4 py-2 text-white transition duration-300 [grid-area:header] hover:bg-white/20"
+          >
+            ← Back to Slams
+          </Link>
+        </div>
         {/* <img
           // src={slam.value.coverImage || "/placeholder.svg"}
           // alt={slam.value.name}
@@ -18,11 +31,6 @@ export default component$(() => {
           // objectFit="cover"
           class="h-full w-full object-cover opacity-50"
         /> */}
-        <div class="absolute inset-0 flex items-center justify-center">
-          <h1 class="px-4 text-center text-4xl font-bold text-white">
-            {slam.value.slam.name}
-          </h1>
-        </div>
       </div>
 
       <div class="mx-auto max-w-4xl px-4 py-8">

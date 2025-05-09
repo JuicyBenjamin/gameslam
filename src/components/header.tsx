@@ -10,9 +10,9 @@ export const Header = component$(() => {
       <div class="container mx-auto">
         {/* <!-- Left Side: Logo --> */}
         <div class="flex-1">
-          <a class="btn btn-ghost text-xl normal-case" href="/">
+          <Link class="btn btn-ghost text-xl normal-case" href="/">
             Logo
-          </a>
+          </Link>
         </div>
 
         {/* <!-- Right Side: Navigation Links --> */}

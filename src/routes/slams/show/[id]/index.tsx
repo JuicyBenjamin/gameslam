@@ -70,6 +70,8 @@ export default component$(() => {
               </button>
               <Link
                 href={slam.value.asset?.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 class="flex w-full items-center justify-center text-blue-500 transition duration-300 hover:text-blue-600 sm:w-auto"
               >
                 {/* <Download class="mr-2" /> */}

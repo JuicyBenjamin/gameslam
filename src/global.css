@@ -6,4 +6,32 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent layout shifts from scrollbar */
+html {
+  scrollbar-gutter: stable;
+}
 
+/* Adjust container to account for scrollbar gutter */
+.container {
+  width: calc(100% - 12px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Optional: Style the scrollbar for better visual integration */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--b2));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--b3));
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--b4));
+}

@@ -249,8 +249,19 @@ export default component$(() => {
         </div>
 
         <div class="form-control">
-          <button type="submit" class="btn btn-primary">
-            Create Slam
+          <button
+            type="submit"
+            class="btn btn-primary"
+            disabled={form.submitting}
+          >
+            {form.submitting ? (
+              <>
+                <span class="loading loading-spinner"></span>
+                Creating Slam...
+              </>
+            ) : (
+              "Create Slam"
+            )}
           </button>
         </div>
       </Form>

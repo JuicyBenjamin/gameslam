@@ -7,7 +7,7 @@ export const users = pgTable("users", {
     .notNull()
     .references(() => authUsers.id)
     .primaryKey(),
-  name: varchar({ length: 255 }).notNull(),
+  name: varchar({ length: 255 }).notNull().unique(),
   isVerified: boolean("is_verified").default(false).notNull(),
   avatarLink: varchar("avatar_link", { length: 255 }).notNull(),
 });

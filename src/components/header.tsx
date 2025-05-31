@@ -17,15 +17,9 @@ export const Header = component$(() => {
 
         {/* <!-- Right Side: Navigation Links --> */}
         <div class="hidden flex-none space-x-4 md:flex">
-          <a class="btn btn-ghost" href="#home">
-            Home
-          </a>
           <Link class="btn btn-ghost" href="/slams">
             Slams
           </Link>
-          <a class="btn btn-ghost" href="#services">
-            Services
-          </a>
           {isUserLoggedIn.value ? (
             <Link class="btn btn-neutral" href="/logout">
               Logout

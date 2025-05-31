@@ -190,7 +190,12 @@ export default component$(() => {
                 {/* <Award class="text-purple-500 mr-2" /> */}
                 <div>
                   <p class="text-sm text-gray-600">Created by</p>
-                  <p class="font-semibold">{slam.value.createdBy?.name}</p>
+                  <Link
+                    href={`/${slam.value.createdBy?.name}`}
+                    class="font-semibold transition duration-300 hover:opacity-80"
+                  >
+                    {slam.value.createdBy?.name}
+                  </Link>
                 </div>
               </div>
             </div>

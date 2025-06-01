@@ -16,16 +16,13 @@ export const supabaseClient = (requestEv: RequestEvent | RequestEventAction) => 
     cookies: {
       getAll() {
         const cookies = requestEv.cookie.getAll();
-        // Transform the cookies into the expected format
-        return Object.entries(cookies).map(([name, value]) => ({
-          name,
-          value: value.value, // Ensure the value is a string
-        }));
+        return Object.keys(cookies).map((name) => {
+          return { name, value: cookies[name].value };
+        });
       },
       setAll(cookiesToSet) {
-        console.log("Setting cookies:", cookiesToSet); // Log the cookies before setting them
-        cookiesToSet.forEach(({ name, value, options }) => {
-          requestEv.cookie.set(name, value, options);
+        cookiesToSet.map((cookie) => {
+          requestEv.cookie.set(cookie.name, cookie.value, cookie.options);
         });
       }
     },

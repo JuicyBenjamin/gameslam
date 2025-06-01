@@ -11,17 +11,17 @@ export default component$(() => {
   return (
     <div class="flex flex-col gap-8 p-8">
       <div class="flex items-end justify-between">
-        <div class="prose-xl prose">
+        <div class="prose prose-xl">
           <h1>Slams</h1>
         </div>
-        <a class="btn btn-primary" href="/slams/create">
+        <Link class="btn btn-primary" href="/slams/create">
           Create your own Slam
-        </a>
+        </Link>
       </div>
-      <div class="grid grid-cols-[repeat(auto-fit,_300px)]">
+      <div class="grid w-full gap-4 self-center md:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
         {slams.value.map((slam) => (
-          <Link key={slam.id} href={`/slams/show/${slam.id}`}>
-            <div class="card bg-base-300 shadow-xl">
+          <Link key={slam.id} href={`/slams/show/${slam.id}`} class="h-full">
+            <div class="card h-full bg-base-300 shadow-xl">
               <div class="card-body">
                 <div class="card-title">{slam.name}</div>
                 <p>{slam.description}</p>

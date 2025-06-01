@@ -1,6 +1,7 @@
 import type { RequestEventLoader } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { supabaseClient } from "~/lib/supabase";
+import { getUserById } from "~/db/queries/users";
 
 // eslint-disable-next-line qwik/loader-location
 export const useRedirectIfLoggedIn = routeLoader$(
@@ -14,11 +15,21 @@ export const useRedirectIfLoggedIn = routeLoader$(
 );
 
 // eslint-disable-next-line qwik/loader-location
-export const useIsUserLoggedIn = routeLoader$(
+export const useCurrentUser = routeLoader$(
   async (requestEvent: RequestEventLoader) => {
+    // Try to get user from sharedMap first
+    const user = requestEvent.sharedMap.get("user");
+    if (user) {
+      const userData = await getUserById(user.id);
+      return userData;
+    }
+
+    // Fallback to checking session if user not in sharedMap
     const supabase = supabaseClient(requestEvent);
     const { data } = await supabase.auth.getUser();
-    requestEvent.cacheControl({ noCache: true });
-    return data.user != null;
+    if (!data.user) return null;
+
+    const userData = await getUserById(data.user.id);
+    return userData;
   },
 );

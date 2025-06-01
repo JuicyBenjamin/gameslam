@@ -6,7 +6,7 @@ import type { User } from "@supabase/supabase-js";
 import { getUserById } from "~/db/queries/users";
 import CreateAccount from "~/components/features/create-account";
 
-export { useIsUserLoggedIn } from "~/loaders/auth";
+export { useCurrentUser } from "~/loaders/auth";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:

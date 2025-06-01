@@ -26,7 +26,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     optimizeDeps: {
       // Put problematic deps that break bundling here, mostly those with binaries.
       // For example ['better-sqlite3'] if you use that in server functions.
-      exclude: [],
+      exclude: ['postgres', 'drizzle-orm'],
     },
     /**
      * This is an advanced setting. It improves the bundling of your server code. To use it, make sure you understand when your consumed packages are dependencies or dev dependencies. (otherwise things will break in production)
@@ -44,7 +44,14 @@ export default defineConfig(({ command, mode }): UserConfig => {
     //         external: Object.keys(dependencies),
     //       }
     //     : undefined,
-
+    ssr: {
+      noExternal: ['postgres', 'drizzle-orm'],
+    },
+    build: {
+      rollupOptions: {
+        external: ['postgres', 'drizzle-orm'],
+      },
+    },
     server: {
       host: "0.0.0.0",
       headers: {

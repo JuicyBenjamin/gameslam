@@ -17,9 +17,6 @@ importers:
       drizzle-orm:
         specifier: ^0.39.3
         version: 0.39.3(@types/better-sqlite3@7.6.12)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(better-sqlite3@9.6.0)(postgres@3.4.5)
-      postgres:
-        specifier: ^3.4.5
-        version: 3.4.5
       valibot:
         specifier: 1.0.0-beta.9
         version: 1.0.0-beta.9(typescript@5.4.5)
@@ -69,6 +66,9 @@ importers:
       postcss:
         specifier: ^8.5.2
         version: 8.5.2
+      postgres:
+        specifier: ^3.4.5
+        version: 3.4.5
       prettier:
         specifier: 3.3.3
         version: 3.3.3

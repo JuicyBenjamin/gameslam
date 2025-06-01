@@ -1,9 +1,10 @@
 import { component$ } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
-import { useIsUserLoggedIn } from "~/loaders/auth";
+import { useCurrentUser } from "~/loaders/auth";
 
 export const Header = component$(() => {
-  const isUserLoggedIn = useIsUserLoggedIn();
+  const currentUser = useCurrentUser();
+  const isLoggedIn = currentUser.value !== null;
 
   return (
     <header class="navbar sticky top-0 z-50 bg-primary text-white shadow-md">
@@ -16,14 +17,26 @@ export const Header = component$(() => {
         </div>
 
         {/* <!-- Right Side: Navigation Links --> */}
-        <div class="hidden flex-none space-x-4 md:flex">
+        <div class="hidden flex-none items-center space-x-4 md:flex">
           <Link class="btn btn-ghost" href="/slams">
             Slams
           </Link>
-          {isUserLoggedIn.value ? (
-            <Link class="btn btn-neutral" href="/logout">
-              Logout
-            </Link>
+          {isLoggedIn ? (
+            <>
+              <Link class="btn btn-neutral" href="/logout">
+                Logout
+              </Link>
+              <Link href={`/${currentUser.value.name}`} class="avatar">
+                <div class="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+                  <img
+                    src={currentUser.value.avatarLink}
+                    alt={`${currentUser.value.name}'s avatar`}
+                    width="40"
+                    height="40"
+                  />
+                </div>
+              </Link>
+            </>
           ) : (
             <>
               <Link class="btn btn-neutral" href="/login">

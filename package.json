@@ -54,8 +54,8 @@
     "vite-tsconfig-paths": "^4.3.2"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.47.10",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.8",
     "drizzle-orm": "^0.39.3",
     "postgres": "^3.4.5",
     "valibot": "1.0.0-beta.9"

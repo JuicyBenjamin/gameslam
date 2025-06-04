@@ -1,9 +1,4 @@
-import {
-  component$,
-  useSignal,
-  useTask$,
-  useVisibleTask$,
-} from "@builder.io/qwik";
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import {
   formAction$,
@@ -121,7 +116,7 @@ export default component$(() => {
     }
   });
 
-  useVisibleTask$(({ track }) => {
+  useTask$(({ track }) => {
     track(() => isModalOpen.value);
     if (isModalOpen.value) {
       dialogRef.value?.showModal();

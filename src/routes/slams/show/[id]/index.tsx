@@ -1,9 +1,4 @@
-import {
-  component$,
-  useSignal,
-  useTask$,
-  useVisibleTask$,
-} from "@builder.io/qwik";
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import {
   formAction$,
@@ -121,7 +116,7 @@ export default component$(() => {
     }
   });
 
-  useVisibleTask$(({ track }) => {
+  useTask$(({ track }) => {
     track(() => isModalOpen.value);
     if (isModalOpen.value) {
       dialogRef.value?.showModal();
@@ -178,12 +173,15 @@ export default component$(() => {
                 {/* <Users class="text-green-500 mr-2" /> */}
                 <div>
                   <p class="text-sm text-gray-600">Entries</p>
-                  <p class="font-semibold">
+                  <Link
+                    href={`/slams/show/${slam.value.slam.id}/entries`}
+                    class="font-semibold transition duration-300 hover:opacity-80"
+                  >
                     {
                       slam.value.entries.filter((entry) => Boolean(entry))
                         .length
                     }
-                  </p>
+                  </Link>
                 </div>
               </div>
               <div class="flex items-center">

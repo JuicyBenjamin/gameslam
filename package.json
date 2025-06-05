@@ -33,7 +33,6 @@
     "@builder.io/qwik-city": "^1.14.1",
     "@modular-forms/qwik": "^0.29.0",
     "@qwik-ui/headless": "^0.6.5",
-    "supabase-auth-helpers-qwik": "^0.0.3",
     "@tailwindcss/typography": "^0.5.16",
     "@types/eslint": "8.56.10",
     "@types/node": "20.14.11",

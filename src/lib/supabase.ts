@@ -1,5 +1,4 @@
-// import { createServerClient } from '@supabase/ssr';
-import { createServerClient } from 'supabase-auth-helpers-qwik';
+import { createServerClient } from '@supabase/ssr';
 import type { RequestEvent, RequestEventAction } from '@builder.io/qwik-city';
 
 export type MobileOtpType = 'sms' | 'phone_change'
@@ -13,30 +12,29 @@ export const supabaseClient = (requestEv: RequestEvent | RequestEventAction) => 
     throw new Error("Supabase environment variables are missing.");
   }
 
-  return createServerClient(supabaseUrl, supabaseAnonKey, requestEv)
-  // return createServerClient(supabaseUrl, supabaseAnonKey, {
-  //   global: {
-  //     headers: {
-  //       'x-supabase-auth': 'true',
-  //     }
-  //   },
-  //   auth: {
-  //     storageKey: 'supabase-auth-token',
-  //     autoRefreshToken: false,
-  //     debug: true,
-  //   },
-  //   cookies: {
-  //     getAll() {
-  //       const cookies = requestEv.cookie.getAll();
-  //       return Object.keys(cookies).map((name) => {
-  //         return { name, value: cookies[name].value };
-  //       });
-  //     },
-  //     setAll(cookiesToSet) {
-  //       cookiesToSet.map((cookie) => {
-  //         requestEv.cookie.set(cookie.name, cookie.value, cookie.options);
-  //       });
-  //     }
-  //   },
-  // });
+  return createServerClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      storageKey: 'supabase-auth-token',
+    },
+    cookies: {
+      getAll() {
+        const cookies = requestEv.cookie.getAll();
+        return Object.keys(cookies).map((name) => {
+          return { name, value: cookies[name].value };
+        });
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.map((cookie) => {
+          const options = {
+            path: '/',
+            sameSite: 'lax' as const,
+            httpOnly: true,
+            secure: true,
+            maxAge: 34560000
+          };
+          requestEv.cookie.set(cookie.name, cookie.value, options);
+        });
+      }
+    },
+  });
 };

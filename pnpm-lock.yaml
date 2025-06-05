@@ -75,9 +75,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.5.14
         version: 0.5.14(prettier@3.3.3)
-      supabase-auth-helpers-qwik:
-        specifier: ^0.0.3
-        version: 0.0.3(@supabase/supabase-js@2.49.8(bufferutil@4.0.9))
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.17(ts-node@10.9.1(@types/node@20.14.11)(typescript@5.4.5))
@@ -1102,12 +1099,6 @@ packages:
     resolution: {integrity: sha512-Wq2zpapRYLfi4aKxf2Xff0tN+7slj2d4R87WEzqw7ZLsVvO5zwYCIuEGSZYiK41+GlwUo1HiR+GdkLEJnCKTCw==}
     cpu: [x64]
     os: [win32]
-
-  '@supabase/auth-helpers-shared@0.3.4':
-    resolution: {integrity: sha512-8I3D0SPHHexkFTSfPg0nZgJSVazWoB3tZDpT6IjRv6w89vDMUzO99Lit4H9anVLF4teW8c/nJJxawDNbDlgbgg==}
-    deprecated: This package is now deprecated - please use the @supabase/ssr package instead.
-    peerDependencies:
-      '@supabase/supabase-js': ^2.0.4
 
   '@supabase/auth-js@2.69.1':
     resolution: {integrity: sha512-FILtt5WjCNzmReeRLq5wRs3iShwmnWgBvxHfqapC/VoljJl+W8hDAyFmf1NVw3zH+ZjZ05AKxiKxVeb0HNWRMQ==}
@@ -2268,9 +2259,6 @@ packages:
     resolution: {integrity: sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==}
     hasBin: true
 
-  jose@4.15.9:
-    resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
-
   js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
@@ -3006,11 +2994,6 @@ packages:
     resolution: {integrity: sha512-8EbVDiu9iN/nESwxeSxDKe0dunta1GOlHufmSSXxMD2z2/tMZpDMpvXQGsc+ajGo8y2uYUmixaSRUc/QPoQ0GA==}
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
-
-  supabase-auth-helpers-qwik@0.0.3:
-    resolution: {integrity: sha512-qZrg+yj0vq9Lhp3ygop6Ul7LUARBZKzsEuObMvBSWr91rEyxSpoJkH0SyyTX0ou7+Y8aJtt2Vr+ONd7ZeagUnA==}
-    peerDependencies:
-      '@supabase/supabase-js': ^2.0.4
 
   supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
@@ -4002,11 +3985,6 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.41.1':
     optional: true
-
-  '@supabase/auth-helpers-shared@0.3.4(@supabase/supabase-js@2.49.8(bufferutil@4.0.9))':
-    dependencies:
-      '@supabase/supabase-js': 2.49.8(bufferutil@4.0.9)
-      jose: 4.15.9
 
   '@supabase/auth-js@2.69.1':
     dependencies:
@@ -5429,8 +5407,6 @@ snapshots:
 
   jiti@1.21.7: {}
 
-  jose@4.15.9: {}
-
   js-yaml@4.1.0:
     dependencies:
       argparse: 2.0.1
@@ -6451,11 +6427,6 @@ snapshots:
       mz: 2.7.0
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
-
-  supabase-auth-helpers-qwik@0.0.3(@supabase/supabase-js@2.49.8(bufferutil@4.0.9)):
-    dependencies:
-      '@supabase/auth-helpers-shared': 0.3.4(@supabase/supabase-js@2.49.8(bufferutil@4.0.9))
-      '@supabase/supabase-js': 2.49.8(bufferutil@4.0.9)
 
   supports-color@7.2.0:
     dependencies:

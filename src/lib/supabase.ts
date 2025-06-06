@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, createBrowserClient } from '@supabase/ssr';
 import type { RequestEvent, RequestEventAction } from '@builder.io/qwik-city';
 
 export type MobileOtpType = 'sms' | 'phone_change'
@@ -13,9 +13,6 @@ export const supabaseClient = (requestEv: RequestEvent | RequestEventAction) => 
   }
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      storageKey: 'supabase-auth-token',
-    },
     cookies: {
       getAll() {
         const cookies = requestEv.cookie.getAll();
@@ -24,15 +21,8 @@ export const supabaseClient = (requestEv: RequestEvent | RequestEventAction) => 
         });
       },
       setAll(cookiesToSet) {
-        cookiesToSet.map((cookie) => {
-          const options = {
-            path: '/',
-            sameSite: 'lax' as const,
-            httpOnly: true,
-            secure: true,
-            maxAge: 34560000
-          };
-          requestEv.cookie.set(cookie.name, cookie.value, options);
+        cookiesToSet.forEach((cookie) => {
+          requestEv.cookie.set(cookie.name, cookie.value, cookie.options);
         });
       }
     },

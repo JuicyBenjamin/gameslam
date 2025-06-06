@@ -24,6 +24,7 @@ export const useUserProfile = routeLoader$(async (requestEvent) => {
   const participatingSlams = await db
     .select({
       slam: slams,
+      entryId: slamEntries.id,
     })
     .from(slamEntries)
     .innerJoin(slams, eq(slamEntries.slamId, slams.id))
@@ -32,7 +33,10 @@ export const useUserProfile = routeLoader$(async (requestEvent) => {
   return {
     user,
     createdSlams,
-    participatingSlams: participatingSlams.map((s) => s.slam),
+    participatingSlams: participatingSlams.map((s) => ({
+      ...s.slam,
+      entryId: s.entryId,
+    })),
   };
 });
 
@@ -68,7 +72,7 @@ export default component$(() => {
             <div class="space-y-4">
               {userProfile.value.createdSlams.map((slam) => (
                 <Link
-                  key={slam.id}
+                  key={`created-${slam.id}`}
                   href={`/slams/show/${slam.id}`}
                   class="block rounded-lg border p-4 transition-colors hover:border-blue-500"
                 >
@@ -88,7 +92,7 @@ export default component$(() => {
             <div class="space-y-4">
               {userProfile.value.participatingSlams.map((slam) => (
                 <Link
-                  key={slam.id}
+                  key={`participating-${slam.entryId}`}
                   href={`/slams/show/${slam.id}`}
                   class="block rounded-lg border p-4 transition-colors hover:border-blue-500"
                 >

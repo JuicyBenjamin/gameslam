@@ -21,6 +21,9 @@ export const Header = component$(() => {
           <Link class="btn btn-ghost" href="/slams">
             Slams
           </Link>
+          <Link class="btn btn-ghost" href="/artists">
+            Artists
+          </Link>
           {isLoggedIn ? (
             <>
               <Link class="btn btn-neutral" href="/logout">
@@ -69,17 +72,30 @@ export const Header = component$(() => {
           </label>
           <ul class="menu-compact menu dropdown-content mt-3 w-52 rounded-box bg-primary p-2 text-white shadow">
             <li>
-              <a href="#home">Home</a>
+              <Link href="/slams">Slams</Link>
             </li>
             <li>
-              <a href="#about">About</a>
+              <Link href="/artists">Artists</Link>
             </li>
-            <li>
-              <a href="#services">Services</a>
-            </li>
-            <li>
-              <a href="#contact">Contact</a>
-            </li>
+            {isLoggedIn ? (
+              <>
+                <li>
+                  <Link href="/logout">Logout</Link>
+                </li>
+                <li>
+                  <Link href={`/${currentUser.value.name}`}>Profile</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link href="/login">Login</Link>
+                </li>
+                <li>
+                  <Link href="/sign-up">Sign Up</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

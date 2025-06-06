@@ -21,7 +21,6 @@ export const useFormLoader = routeLoader$<InitialValues<TAuthForm>>(() => ({
 export const useFormAction = formAction$<TAuthForm>(
   async (values, requestEvent) => {
     const supabase = supabaseClient(requestEvent);
-    console.log(values);
 
     const { error } = await supabase.auth.signUp({
       email: values.email,

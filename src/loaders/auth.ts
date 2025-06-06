@@ -17,18 +17,9 @@ export const useRedirectIfLoggedIn = routeLoader$(
 // eslint-disable-next-line qwik/loader-location
 export const useCurrentUser = routeLoader$(
   async (requestEvent: RequestEventLoader) => {
-    // Try to get user from sharedMap first
-    const user = requestEvent.sharedMap.get("user");
-    if (user) {
-      const userData = await getUserById(user.id);
-      return userData;
-    }
-
-    // Fallback to checking session if user not in sharedMap
     const supabase = supabaseClient(requestEvent);
     const { data } = await supabase.auth.getUser();
     if (!data.user) return null;
-
     const userData = await getUserById(data.user.id);
     return userData;
   },

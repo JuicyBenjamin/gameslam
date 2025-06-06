@@ -11,6 +11,7 @@ import { db } from "~/db";
 import { artists } from "~/db/schema/artists";
 import { assets } from "~/db/schema/assets";
 import { slams } from "~/db/schema/slams";
+import { artistAssets } from "~/db/schema/artistAssets";
 import { supabaseClient } from "~/lib/supabase";
 import * as v from "valibot";
 import { eq, and } from "drizzle-orm";
@@ -134,6 +135,15 @@ export const useFormAction = formAction$<TCreateSlamForm>(
           .returning();
         assetId = newAsset.id;
       }
+
+      // Create or update artist-asset relationship
+      await db
+        .insert(artistAssets)
+        .values({
+          artistId,
+          assetId,
+        })
+        .onConflictDoNothing();
 
       // Create the slam
       await db.insert(slams).values({

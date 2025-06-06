@@ -15,6 +15,13 @@
       "when": 1748624384050,
       "tag": "0001_long_the_call",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749213735185,
+      "tag": "0002_overjoyed_sunset_bain",
+      "breakpoints": true
     }
   ]
 }

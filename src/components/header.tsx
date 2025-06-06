@@ -1,10 +1,10 @@
 import { component$ } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
-import { useCurrentUser } from "~/loaders/auth";
+import { useUser } from "~/contexts/user-context";
 
 export const Header = component$(() => {
-  const currentUser = useCurrentUser();
-  const isLoggedIn = currentUser.value !== null;
+  const user = useUser();
+  const isLoggedIn = user !== null;
 
   return (
     <header class="navbar sticky top-0 z-50 bg-primary text-white shadow-md">
@@ -29,11 +29,11 @@ export const Header = component$(() => {
               <Link class="btn btn-neutral" href="/logout">
                 Logout
               </Link>
-              <Link href={`/${currentUser.value.name}`} class="avatar">
+              <Link href={`/${user.name}`} class="avatar">
                 <div class="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
                   <img
-                    src={currentUser.value.avatarLink}
-                    alt={`${currentUser.value.name}'s avatar`}
+                    src={user.avatarLink}
+                    alt={`${user.name}'s avatar`}
                     width="40"
                     height="40"
                   />
@@ -83,7 +83,7 @@ export const Header = component$(() => {
                   <Link href="/logout">Logout</Link>
                 </li>
                 <li>
-                  <Link href={`/${currentUser.value.name}`}>Profile</Link>
+                  <Link href={`/${user.name}`}>Profile</Link>
                 </li>
               </>
             ) : (

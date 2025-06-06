@@ -1,10 +1,13 @@
-import { component$, Slot } from "@builder.io/qwik";
+import { component$, Slot, useTask$ } from "@builder.io/qwik";
 import { routeLoader$, type RequestHandler } from "@builder.io/qwik-city";
 import RootLayout from "~/components/layouts/root-layout";
 import { supabaseClient } from "~/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 import { getUserById } from "~/db/queries/users";
 import CreateAccount from "~/components/features/create-account";
+import { useCurrentUser } from "~/loaders/auth";
+import { useContext } from "@builder.io/qwik";
+import { UserContext } from "~/contexts/user-context";
 
 export { useCurrentUser } from "~/loaders/auth";
 
@@ -37,6 +40,14 @@ export const useIsUserCreated = routeLoader$(async (requestEvent) => {
 
 export default component$(() => {
   const isUserCreated = useIsUserCreated();
+  const currentUser = useCurrentUser();
+  const store = useContext(UserContext);
+
+  useTask$(({ track }) => {
+    track(() => currentUser.value);
+    store.user = currentUser.value;
+  });
+
   return (
     <RootLayout>
       {isUserCreated.value ? <Slot /> : <CreateAccount />}

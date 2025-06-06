@@ -17,8 +17,18 @@ export const useRedirectIfLoggedIn = routeLoader$(
 // eslint-disable-next-line qwik/loader-location
 export const useCurrentUser = routeLoader$(
   async (requestEvent: RequestEventLoader) => {
+    // Set cache control headers
+    requestEvent.cacheControl({
+      // Cache for 5 minutes
+      maxAge: 300,
+      // Allow stale responses for up to 1 hour
+      staleWhileRevalidate: 3600,
+      private: true,
+    });
+
     const supabase = supabaseClient(requestEvent);
     const { data } = await supabase.auth.getUser();
+
     if (!data.user) return null;
     const userData = await getUserById(data.user.id);
     return userData;

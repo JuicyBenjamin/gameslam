@@ -57,6 +57,12 @@ export default component$(() => {
 
   return (
     <div class="container mx-auto px-4 py-8">
+      <Link
+        href="/artists"
+        class="mb-4 inline-block rounded-full bg-white/10 px-4 py-2 text-white transition duration-300 hover:bg-white/20"
+      >
+        ← Back to Artists
+      </Link>
       <div class="mb-8">
         <div class="flex items-center gap-4">
           <div>

@@ -196,6 +196,17 @@ export default component$(() => {
                   </Link>
                 </div>
               </div>
+              <div class="flex items-center">
+                <div>
+                  <p class="text-sm text-gray-600">Asset by</p>
+                  <Link
+                    href={`/artists/${slam.value.artist?.name}`}
+                    class="font-semibold transition duration-300 hover:opacity-80"
+                  >
+                    {slam.value.artist?.name}
+                  </Link>
+                </div>
+              </div>
             </div>
             <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <button

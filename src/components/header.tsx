@@ -26,7 +26,7 @@ export const Header = component$(() => {
           </Link>
           {isLoggedIn ? (
             <>
-              <Link class="btn btn-neutral" href="/logout">
+              <Link class="btn btn-neutral" href="/logout" prefetch={false}>
                 Logout
               </Link>
               <Link href={`/${user.name}`} class="avatar">

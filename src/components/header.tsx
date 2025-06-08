@@ -1,12 +1,12 @@
 import { component$ } from "@builder.io/qwik";
 import { Form, Link } from "@builder.io/qwik-city";
-import { useUser } from "~/contexts/user-context";
 import { useLogout } from "./actions/logout";
+import { useCurrentUser } from "~/loaders/auth";
 
 export const Header = component$(() => {
   const logout = useLogout();
-  const user = useUser();
-  const isLoggedIn = user !== null;
+  const user = useCurrentUser();
+  const isLoggedIn = user.value != null;
 
   return (
     <header class="navbar sticky top-0 z-50 bg-primary text-white shadow-md">
@@ -33,11 +33,11 @@ export const Header = component$(() => {
                   Logout
                 </button>
               </Form>
-              <Link href={`/${user.name}`} class="avatar">
+              <Link href={`/${user.value.name}`} class="avatar">
                 <div class="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
                   <img
-                    src={user.avatarLink}
-                    alt={`${user.name}'s avatar`}
+                    src={user.value.avatarLink}
+                    alt={`${user.value.name}'s avatar`}
                     width="40"
                     height="40"
                   />
@@ -91,7 +91,7 @@ export const Header = component$(() => {
                   </Form>
                 </li>
                 <li>
-                  <Link href={`/${user.name}`}>Profile</Link>
+                  <Link href={`/${user.value.name}`}>Profile</Link>
                 </li>
               </>
             ) : (

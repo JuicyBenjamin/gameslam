@@ -13,3 +13,5 @@ export const users = pgTable("users", {
 });
 
 export type SelectUser = typeof authUsers.$inferSelect;
+
+export type TUser = typeof users.$inferSelect;

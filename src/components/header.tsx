@@ -1,8 +1,10 @@
 import { component$ } from "@builder.io/qwik";
-import { Link } from "@builder.io/qwik-city";
+import { Form, Link } from "@builder.io/qwik-city";
 import { useUser } from "~/contexts/user-context";
+import { useLogout } from "./actions/logout";
 
 export const Header = component$(() => {
+  const logout = useLogout();
   const user = useUser();
   const isLoggedIn = user !== null;
 
@@ -26,9 +28,11 @@ export const Header = component$(() => {
           </Link>
           {isLoggedIn ? (
             <>
-              <Link class="btn btn-neutral" href="/logout" prefetch={false}>
-                Logout
-              </Link>
+              <Form action={logout}>
+                <button class="btn btn-neutral" type="submit">
+                  Logout
+                </button>
+              </Form>
               <Link href={`/${user.name}`} class="avatar">
                 <div class="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
                   <img
@@ -80,7 +84,11 @@ export const Header = component$(() => {
             {isLoggedIn ? (
               <>
                 <li>
-                  <Link href="/logout">Logout</Link>
+                  <Form action={logout}>
+                    <button class="btn btn-neutral" type="submit">
+                      Logout
+                    </button>
+                  </Form>
                 </li>
                 <li>
                   <Link href={`/${user.name}`}>Profile</Link>

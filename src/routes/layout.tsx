@@ -6,6 +6,7 @@ import { useContext } from "@builder.io/qwik";
 import { UserContext } from "~/contexts/user-context";
 
 export { useCurrentUser } from "~/loaders/auth";
+export { useLogout } from "~/components/actions/logout";
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:

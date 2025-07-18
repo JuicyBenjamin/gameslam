@@ -10,7 +10,7 @@ export const Header = component$(() => {
 
   return (
     <header class="navbar sticky top-0 z-50 bg-primary text-white shadow-md">
-      <div class="container mx-auto">
+      <div class="container mx-auto flex">
         {/* <!-- Left Side: Logo --> */}
         <div class="flex-1">
           <Link class="btn btn-ghost text-xl normal-case" href="/">

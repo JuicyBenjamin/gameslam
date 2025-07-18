@@ -1,5 +1,5 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
-import { Link, routeLoader$ } from "@builder.io/qwik-city";
+import { component$, useSignal, useTask$ } from "@qwik.dev/core";
+import { Link, routeLoader$ } from "@qwik.dev/router";
 import {
   formAction$,
   FormError,
@@ -12,7 +12,7 @@ import { db } from "~/db";
 import { slamEntries } from "~/db/schema/slamEntries";
 import { supabaseClient } from "~/lib/supabase";
 import * as v from "valibot";
-import type { RequestEventAction } from "@builder.io/qwik-city";
+import type { RequestEventAction } from "@qwik.dev/router";
 import type { FieldElementProps } from "@modular-forms/qwik";
 import { useCurrentUser } from "~/loaders/auth";
 

@@ -1,8 +1,8 @@
 export const prerender = false;
 
-import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
-import { Link, routeLoader$ } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import type { DocumentHead } from "@qwik.dev/router";
+import { Link, routeLoader$ } from "@qwik.dev/router";
 import { useCurrentUser } from "~/loaders/auth";
 import { getAllSlams } from "~/db/queries/slams";
 import { db } from "~/db";

@@ -1,5 +1,5 @@
 import { createServerClient, createBrowserClient } from '@supabase/ssr';
-import type { RequestEvent, RequestEventAction } from '@builder.io/qwik-city';
+import type { RequestEvent, RequestEventAction } from '@qwik.dev/router';
 
 export type MobileOtpType = 'sms' | 'phone_change'
 export type EmailOtpType = 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' | 'email'

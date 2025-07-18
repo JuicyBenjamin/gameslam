@@ -1,5 +1,5 @@
-import { component$ } from "@builder.io/qwik";
-import { Form, Link } from "@builder.io/qwik-city";
+import { component$ } from "@qwik.dev/core";
+import { Form, Link } from "@qwik.dev/router";
 import { useLogout } from "./actions/logout";
 import { useCurrentUser } from "~/loaders/auth";
 

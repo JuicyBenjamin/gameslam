@@ -20,6 +20,9 @@ export const Header = component$(() => {
 
         {/* <!-- Right Side: Navigation Links --> */}
         <div class="hidden flex-none items-center space-x-4 md:flex">
+          <Link class="btn btn-ghost" href="/what-is-a-game-slam">
+            What is a Game Slam?
+          </Link>
           <Link class="btn btn-ghost" href="/slams">
             Slams
           </Link>
@@ -75,6 +78,9 @@ export const Header = component$(() => {
             </svg>
           </label>
           <ul class="menu-compact menu dropdown-content mt-3 w-52 rounded-box bg-primary p-2 text-white shadow">
+            <li>
+              <Link href="/what-is-a-game-slam">What is a Game Slam?</Link>
+            </li>
             <li>
               <Link href="/slams">Slams</Link>
             </li>

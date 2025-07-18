@@ -14,6 +14,7 @@ import { supabaseClient } from "~/lib/supabase";
 import * as v from "valibot";
 import type { RequestEventAction } from "@builder.io/qwik-city";
 import type { FieldElementProps } from "@modular-forms/qwik";
+import { useCurrentUser } from "~/loaders/auth";
 
 const JoinSlamSchema = v.object({
   itchIoLink: v.pipe(
@@ -101,6 +102,8 @@ export const useGetSlam = routeLoader$(async ({ params }) => {
 
 export default component$(() => {
   const slam = useGetSlam();
+  const user = useCurrentUser();
+  const isLoggedIn = user.value != null;
   const isModalOpen = useSignal(false);
   const dialogRef = useSignal<HTMLDialogElement>();
   const [form, { Form, Field }] = useForm<TJoinSlamForm>({
@@ -209,12 +212,21 @@ export default component$(() => {
               </div>
             </div>
             <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <button
-                onClick$={() => (isModalOpen.value = true)}
-                class="w-full rounded-full bg-blue-500 px-6 py-2 text-white transition duration-300 hover:bg-blue-600 sm:w-auto"
-              >
-                Join Slam
-              </button>
+              {isLoggedIn ? (
+                <button
+                  onClick$={() => (isModalOpen.value = true)}
+                  class="w-full rounded-full bg-blue-500 px-6 py-2 text-white transition duration-300 hover:bg-blue-600 sm:w-auto"
+                >
+                  Join Slam
+                </button>
+              ) : (
+                <Link
+                  href="/sign-up"
+                  class="w-full rounded-full bg-blue-500 px-6 py-2 text-white transition duration-300 hover:bg-blue-600 sm:w-auto"
+                >
+                  Sign Up to Join
+                </Link>
+              )}
               <Link
                 href={slam.value.asset?.link}
                 target="_blank"

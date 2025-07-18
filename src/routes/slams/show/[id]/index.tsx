@@ -12,7 +12,6 @@ import { db } from "~/db";
 import { slamEntries } from "~/db/schema/slamEntries";
 import { supabaseClient } from "~/lib/supabase";
 import * as v from "valibot";
-import type { RequestEventAction } from "@qwik.dev/router";
 import type { FieldElementProps } from "@modular-forms/qwik";
 import { useCurrentUser } from "~/loaders/auth";
 
@@ -47,7 +46,7 @@ export const useFormLoader = routeLoader$<InitialValues<TJoinSlamForm>>(() => ({
 }));
 
 export const useJoinSlamAction = formAction$<TJoinSlamForm>(
-  async (values: TJoinSlamForm, requestEvent: RequestEventAction) => {
+  async (values: TJoinSlamForm, requestEvent) => {
     const supabase = supabaseClient(requestEvent);
     const {
       data: { user },

@@ -1,16 +1,16 @@
-import { component$ } from "@builder.io/qwik";
-import { Form, Link } from "@builder.io/qwik-city";
-import { useUser } from "~/contexts/user-context";
+import { component$ } from "@qwik.dev/core";
+import { Form, Link } from "@qwik.dev/router";
 import { useLogout } from "./actions/logout";
+import { useCurrentUser } from "~/loaders/auth";
 
 export const Header = component$(() => {
   const logout = useLogout();
-  const user = useUser();
-  const isLoggedIn = user !== null;
+  const user = useCurrentUser();
+  const isLoggedIn = user.value != null;
 
   return (
     <header class="navbar sticky top-0 z-50 bg-primary text-white shadow-md">
-      <div class="container mx-auto">
+      <div class="container mx-auto flex">
         {/* <!-- Left Side: Logo --> */}
         <div class="flex-1">
           <Link class="btn btn-ghost text-xl normal-case" href="/">
@@ -20,6 +20,9 @@ export const Header = component$(() => {
 
         {/* <!-- Right Side: Navigation Links --> */}
         <div class="hidden flex-none items-center space-x-4 md:flex">
+          <Link class="btn btn-ghost" href="/what-is-a-game-slam">
+            What is a Game Slam?
+          </Link>
           <Link class="btn btn-ghost" href="/slams">
             Slams
           </Link>
@@ -33,11 +36,11 @@ export const Header = component$(() => {
                   Logout
                 </button>
               </Form>
-              <Link href={`/${user.name}`} class="avatar">
+              <Link href={`/${user.value.name}`} class="avatar">
                 <div class="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
                   <img
-                    src={user.avatarLink}
-                    alt={`${user.name}'s avatar`}
+                    src={user.value.avatarLink}
+                    alt={`${user.value.name}'s avatar`}
                     width="40"
                     height="40"
                   />
@@ -76,6 +79,9 @@ export const Header = component$(() => {
           </label>
           <ul class="menu-compact menu dropdown-content mt-3 w-52 rounded-box bg-primary p-2 text-white shadow">
             <li>
+              <Link href="/what-is-a-game-slam">What is a Game Slam?</Link>
+            </li>
+            <li>
               <Link href="/slams">Slams</Link>
             </li>
             <li>
@@ -91,7 +97,7 @@ export const Header = component$(() => {
                   </Form>
                 </li>
                 <li>
-                  <Link href={`/${user.name}`}>Profile</Link>
+                  <Link href={`/${user.value.name}`}>Profile</Link>
                 </li>
               </>
             ) : (

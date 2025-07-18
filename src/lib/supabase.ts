@@ -1,10 +1,17 @@
 import { createServerClient, createBrowserClient } from '@supabase/ssr';
-import type { RequestEvent, RequestEventAction } from '@builder.io/qwik-city';
 
 export type MobileOtpType = 'sms' | 'phone_change'
 export type EmailOtpType = 'signup' | 'invite' | 'magiclink' | 'recovery' | 'email_change' | 'email'
 
-export const supabaseClient = (requestEv: RequestEvent | RequestEventAction) => {
+interface RequestEventLike {
+  env: { get: (key: string) => string | undefined };
+  cookie: {
+    getAll: () => Record<string, { value: string }>;
+    set: (name: string, value: string, options?: any) => void;
+  };
+}
+
+export const supabaseClient = (requestEv: RequestEventLike) => {
   const supabaseUrl = requestEv.env.get("SUPABASE_URL");
   const supabaseAnonKey = requestEv.env.get("SUPABASE_ANON_KEY");
 

@@ -1,9 +1,6 @@
-import { component$, Slot, useTask$ } from "@builder.io/qwik";
-import type { RequestHandler } from "@builder.io/qwik-city";
+import { component$, Slot } from "@qwik.dev/core";
+import type { RequestHandler } from "@qwik.dev/router";
 import RootLayout from "~/components/layouts/root-layout";
-import { useCurrentUser } from "~/loaders/auth";
-import { useContext } from "@builder.io/qwik";
-import { UserContext } from "~/contexts/user-context";
 
 export { useCurrentUser } from "~/loaders/auth";
 export { useLogout } from "~/components/actions/logout";
@@ -20,14 +17,6 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 };
 
 export default component$(() => {
-  const currentUser = useCurrentUser();
-  const store = useContext(UserContext);
-
-  useTask$(({ track }) => {
-    track(() => currentUser.value);
-    store.user = currentUser.value;
-  });
-
   return (
     <RootLayout>
       <Slot />

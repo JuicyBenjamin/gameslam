@@ -1,5 +1,5 @@
-import { component$ } from "@qwik.dev/core";
-import { Link, routeLoader$ } from "@qwik.dev/router";
+import { component$ } from "@builder.io/qwik";
+import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { db } from "~/db";
 import { slamEntries } from "~/db/schema/slamEntries";
 import { users } from "~/db/schema/users";
@@ -24,7 +24,7 @@ export default component$(() => {
   const entries = useSlamEntries();
 
   return (
-    <div class="min-h-screen bg-base-200 p-8">
+    <div class="bg-base-200 min-h-screen p-8">
       <div class="mx-auto max-w-4xl">
         <Link
           href=".."
@@ -37,7 +37,7 @@ export default component$(() => {
         </div>
 
         {entries.value.length === 0 ? (
-          <div class="rounded-lg bg-base-100 p-8 text-center">
+          <div class="bg-base-100 rounded-lg p-8 text-center">
             <p class="text-lg text-gray-600">No entries yet</p>
           </div>
         ) : (

@@ -1,5 +1,5 @@
-import type { RequestEventLoader } from "@qwik.dev/router";
-import { routeLoader$ } from "@qwik.dev/router";
+import type { RequestEventLoader } from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
 import { supabaseClient } from "~/lib/supabase";
 import { getUserById } from "~/db/queries/users";
 

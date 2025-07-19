@@ -1,5 +1,5 @@
-import { component$ } from "@qwik.dev/core";
-import { routeLoader$ } from "@qwik.dev/router";
+import { component$ } from "@builder.io/qwik";
+import { routeLoader$ } from "@builder.io/qwik-city";
 import {
   formAction$,
   FormError,
@@ -44,7 +44,7 @@ export default component$(() => {
   });
 
   return (
-    <div class="hero min-h-screen bg-base-200">
+    <div class="hero bg-base-200 min-h-screen">
       <div class="hero-content flex-col lg:flex-row-reverse">
         <div class="text-center lg:text-left">
           <h1 class="text-5xl font-bold">Login now!</h1>
@@ -54,7 +54,7 @@ export default component$(() => {
             a id nisi.
           </p>
         </div>
-        <div class="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl">
+        <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
           <Form class="card-body">
             <div class="form-control">
               <Field name="email">

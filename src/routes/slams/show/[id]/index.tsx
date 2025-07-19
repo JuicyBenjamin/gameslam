@@ -3,8 +3,8 @@ import {
   useSignal,
   useTask$,
   useVisibleTask$,
-} from "@qwik.dev/core";
-import { Link, routeLoader$ } from "@qwik.dev/router";
+} from "@builder.io/qwik";
+import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import {
   formAction$,
   FormError,

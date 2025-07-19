@@ -2,9 +2,10 @@
   "name": "gameslam",
   "description": "Blank project with routing included",
   "engines": {
-    "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
   },
-  "engines-annotation": "Mostly required by sharp which needs a Node-API v9 compatible runtime",
+  "engines-annotation": "Required for Qwik v2 beta compatibility and optimal runtime performance",
   "private": true,
   "trustedDependencies": [
     "sharp"
@@ -31,6 +32,8 @@
   "devDependencies": {
     "@modular-forms/qwik": "^0.29.0",
     "@qwik-ui/headless": "^0.6.5",
+    "@builder.io/qwik": "https://pkg.pr.new/@builder.io/qwik@aa24d96",
+    "@builder.io/qwik-city": "https://pkg.pr.new/@builder.io/qwik-city@aa24d96",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.11",
     "@types/eslint": "8.56.10",
@@ -42,19 +45,17 @@
     "drizzle-kit": "^0.30.4",
     "esbuild": "^0.25.0",
     "eslint": "8.57.0",
-    "eslint-plugin-qwik": "2.0.0-beta.5",
+    "eslint-plugin-qwik": "https://pkg.pr.new/eslint-plugin-qwik@aa24d96",
     "postcss": "^8.5.2",
     "postgres": "^3.4.5",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "vite": "^6.0.7",
     "tailwindcss": "^4.1.11",
     "tsx": "^4.19.2",
     "typescript": "5.4.5",
     "undici": "^7.3.0",
-    "vite-tsconfig-paths": "^4.3.2",
-    "@qwik.dev/router": "2.0.0-beta.5",
-    "@qwik.dev/core": "2.0.0-beta.5"
+    "vite": "^7.0.5",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

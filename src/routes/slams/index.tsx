@@ -1,5 +1,5 @@
-import { component$ } from "@qwik.dev/core";
-import { Link, routeLoader$ } from "@qwik.dev/router";
+import { component$ } from "@builder.io/qwik";
+import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { getAllSlams } from "~/db/queries/slams";
 
 export const useSlams = routeLoader$(() => {
@@ -21,7 +21,7 @@ export default component$(() => {
       <div class="grid w-full gap-4 self-center md:grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
         {slams.value.map((slam) => (
           <Link key={slam.id} href={`/slams/show/${slam.id}`} class="h-full">
-            <div class="card h-full bg-base-300 shadow-xl">
+            <div class="card bg-base-300 h-full shadow-xl">
               <div class="card-body">
                 <div class="card-title">{slam.name}</div>
                 <p>{slam.description}</p>

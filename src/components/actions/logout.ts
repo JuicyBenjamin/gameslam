@@ -1,4 +1,4 @@
-import { routeAction$ } from "@qwik.dev/router";
+import { routeAction$ } from "@builder.io/qwik-city";
 import { supabaseClient } from "~/lib/supabase";
 
 // eslint-disable-next-line

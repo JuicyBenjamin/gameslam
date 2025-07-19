@@ -1,8 +1,8 @@
 export const prerender = false;
 
-import { component$ } from "@qwik.dev/core";
-import type { DocumentHead } from "@qwik.dev/router";
-import { Link, routeLoader$ } from "@qwik.dev/router";
+import { component$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { useCurrentUser } from "~/loaders/auth";
 import { getAllSlams } from "~/db/queries/slams";
 import { db } from "~/db";
@@ -64,7 +64,7 @@ export default component$(() => {
   return (
     <div class="flex flex-col gap-16">
       {/* Hero Section */}
-      <section class="hero min-h-[80vh] bg-base-200">
+      <section class="hero bg-base-200 min-h-[80vh]">
         <div class="hero-content text-center">
           <div class="max-w-3xl">
             <h1 class="text-5xl font-bold">Welcome to GameSlam</h1>
@@ -110,12 +110,12 @@ export default component$(() => {
           {/* Featured Slams Carousel */}
           <div>
             <h2 class="mb-6 text-2xl font-bold">Featured Slams</h2>
-            <div class="carousel carousel-center w-full space-x-4 rounded-box bg-base-200 p-4">
+            <div class="carousel carousel-center rounded-box bg-base-200 w-full space-x-4 p-4">
               {featuredContent.value.slams.map((slam) => (
                 <div key={slam.id} class="carousel-item">
                   <Link
                     href={`/slams/show/${slam.id}`}
-                    class="card w-80 bg-base-100 shadow-xl"
+                    class="card bg-base-100 w-80 shadow-xl"
                   >
                     <div class="card-body">
                       <h3 class="card-title">{slam.name}</h3>
@@ -130,12 +130,12 @@ export default component$(() => {
           {/* Featured Artists Carousel */}
           <div>
             <h2 class="mb-6 text-2xl font-bold">Top Artists</h2>
-            <div class="carousel carousel-center w-full space-x-4 rounded-box bg-base-200 p-4">
+            <div class="carousel carousel-center rounded-box bg-base-200 w-full space-x-4 p-4">
               {featuredContent.value.artists.map((artist) => (
                 <div key={artist.id} class="carousel-item">
                   <Link
                     href={`/artists/${artist.name}`}
-                    class="card w-80 bg-base-100 shadow-xl"
+                    class="card bg-base-100 w-80 shadow-xl"
                   >
                     <div class="card-body">
                       <h3 class="card-title">{artist.name}</h3>
@@ -150,14 +150,14 @@ export default component$(() => {
           {/* Featured Assets Carousel */}
           <div>
             <h2 class="mb-6 text-2xl font-bold">Featured Assets</h2>
-            <div class="carousel carousel-center w-full space-x-4 rounded-box bg-base-200 p-4">
+            <div class="carousel carousel-center rounded-box bg-base-200 w-full space-x-4 p-4">
               {featuredContent.value.assets.map((asset) => (
                 <div key={asset.id} class="carousel-item">
                   <a
                     href={asset.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="card w-80 bg-base-100 shadow-xl"
+                    class="card bg-base-100 w-80 shadow-xl"
                   >
                     <div class="card-body">
                       <h3 class="card-title">{asset.name}</h3>
@@ -172,14 +172,14 @@ export default component$(() => {
           {/* Featured Entries Carousel */}
           <div>
             <h2 class="mb-6 text-2xl font-bold">Latest Entries</h2>
-            <div class="carousel carousel-center w-full space-x-4 rounded-box bg-base-200 p-4">
+            <div class="carousel carousel-center rounded-box bg-base-200 w-full space-x-4 p-4">
               {featuredContent.value.entries.map((entry) => (
                 <div key={entry.id} class="carousel-item">
                   <a
                     href={entry.linkToEntry}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="card w-80 bg-base-100 shadow-xl"
+                    class="card bg-base-100 w-80 shadow-xl"
                   >
                     <div class="card-body">
                       <h3 class="card-title">{entry.name}</h3>

@@ -1,5 +1,5 @@
-import { component$ } from "@qwik.dev/core";
-import { Form, Link } from "@qwik.dev/router";
+import { component$ } from "@builder.io/qwik";
+import { Form, Link } from "@builder.io/qwik-city";
 import { useLogout } from "./actions/logout";
 import { useCurrentUser } from "~/loaders/auth";
 
@@ -9,7 +9,7 @@ export const Header = component$(() => {
   const isLoggedIn = user.value != null;
 
   return (
-    <header class="navbar sticky top-0 z-50 bg-primary text-white shadow-md">
+    <header class="navbar bg-primary sticky top-0 z-50 text-white shadow-md">
       <div class="container mx-auto flex">
         {/* <!-- Left Side: Logo --> */}
         <div class="flex-1">
@@ -37,7 +37,7 @@ export const Header = component$(() => {
                 </button>
               </Form>
               <Link href={`/${user.value.name}`} class="avatar">
-                <div class="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+                <div class="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2">
                   <img
                     src={user.value.avatarLink}
                     alt={`${user.value.name}'s avatar`}
@@ -77,7 +77,7 @@ export const Header = component$(() => {
               />
             </svg>
           </label>
-          <ul class="menu-compact menu dropdown-content mt-3 w-52 rounded-box bg-primary p-2 text-white shadow">
+          <ul class="menu-compact menu dropdown-content rounded-box bg-primary mt-3 w-52 p-2 text-white shadow">
             <li>
               <Link href="/what-is-a-game-slam">What is a Game Slam?</Link>
             </li>

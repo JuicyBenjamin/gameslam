@@ -1,5 +1,5 @@
-import { component$ } from "@qwik.dev/core";
-import { Link, routeLoader$ } from "@qwik.dev/router";
+import { component$ } from "@builder.io/qwik";
+import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { getUserByName } from "~/db/queries/users";
 import { db } from "~/db";
 import { slams } from "~/db/schema/slams";

@@ -1,5 +1,5 @@
-import { component$, Slot } from "@qwik.dev/core";
-import { routeLoader$, type RequestHandler } from "@qwik.dev/router";
+import { component$, Slot } from "@builder.io/qwik";
+import { routeLoader$, type RequestHandler } from "@builder.io/qwik-city";
 import RootLayout from "~/components/layouts/root-layout";
 import { supabaseClient } from "~/lib/supabase";
 import type { User } from "@supabase/supabase-js";

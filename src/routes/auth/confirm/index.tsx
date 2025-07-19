@@ -1,4 +1,4 @@
-import type { RequestHandler } from "@qwik.dev/router";
+import type { RequestHandler } from "@builder.io/qwik-city";
 import type { EmailOtpType } from "~/lib/supabase";
 import { supabaseClient } from "~/lib/supabase";
 

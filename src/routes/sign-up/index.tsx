@@ -44,71 +44,92 @@ export default component$(() => {
   });
 
   return (
-    <div class="hero bg-base-200 min-h-screen">
-      <div class="hero-content flex-col lg:flex-row-reverse">
-        <div class="text-center lg:text-left">
-          <h1 class="text-5xl font-bold">Sign up now!</h1>
-          <p class="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
-          </p>
-        </div>
-        <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-          <Form class="card-body">
-            <div class="form-control">
-              <Field name="email">
-                {(field, props) => (
-                  <>
-                    <label class="label">
-                      <span class="label-text">Email</span>
-                    </label>
-                    <input
-                      {...props}
-                      placeholder="email"
-                      class="input input-bordered"
-                      required
-                      type="email"
-                    />
-                    {field.error && <div>{field.error}</div>}
-                  </>
-                )}
-              </Field>
+    <div class="bg-base-200 flex min-h-screen items-center justify-center p-4">
+      <div class="w-full max-w-md">
+        {/* Main Sign Up Card */}
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            {/* Header */}
+            <div class="mb-6 text-center">
+              <h1 class="text-base-content mb-2 text-3xl font-bold">
+                Join the slam! 🚀
+              </h1>
+              <p class="text-base-content/70">
+                Start your game dev journey and become part of the most epic
+                community!
+              </p>
             </div>
-            <div class="form-control">
-              <Field name="password">
-                {(field, props) => (
-                  <>
-                    <label class="label">
-                      <span class="label-text">Password</span>
-                    </label>
-                    <input
-                      {...props}
-                      type="password"
-                      placeholder="password"
-                      class="input input-bordered"
-                      required
-                    />
-                    {field.error && <div>{field.error}</div>}
-                  </>
-                )}
-              </Field>
-              <label class="label">
-                <a href="#" class="link-hover link label-text-alt">
-                  Forgot password?
+
+            {/* Sign Up Form */}
+            <Form class="space-y-4">
+              {/* Email Field */}
+              <div class="form-control">
+                <Field name="email">
+                  {(field, props) => (
+                    <>
+                      <label class="label">
+                        <span class="label-text">Email</span>
+                      </label>
+                      <input
+                        {...props}
+                        type="email"
+                        placeholder="Enter your email"
+                        class="input input-bordered focus:input-primary w-full"
+                        required
+                      />
+                      {field.error && (
+                        <div class="text-error mt-1 text-sm">{field.error}</div>
+                      )}
+                    </>
+                  )}
+                </Field>
+              </div>
+
+              {/* Password Field */}
+              <div class="form-control">
+                <Field name="password">
+                  {(field, props) => (
+                    <>
+                      <label class="label">
+                        <span class="label-text">Password</span>
+                      </label>
+                      <input
+                        {...props}
+                        type="password"
+                        placeholder="Create a strong password"
+                        class="input input-bordered focus:input-primary w-full"
+                        required
+                      />
+                      {field.error && (
+                        <div class="text-error mt-1 text-sm">{field.error}</div>
+                      )}
+                    </>
+                  )}
+                </Field>
+              </div>
+
+              {/* Sign Up Button */}
+              <div class="form-control mt-6">
+                <button
+                  disabled={loginForm.submitting || loginForm.invalid}
+                  type="submit"
+                  class="btn btn-primary w-full"
+                >
+                  Join the Party!
+                </button>
+              </div>
+            </Form>
+
+            {/* Login Link */}
+            <div class="mt-6 text-center">
+              <p class="text-base-content/70">
+                Already part of the crew?{" "}
+                <a href="/login" class="link link-primary font-medium">
+                  Welcome back!
                 </a>
-              </label>
+              </p>
             </div>
-            <div class="form-control mt-6">
-              <button
-                disabled={loginForm.submitting || loginForm.invalid}
-                type="submit"
-                class="btn btn-primary"
-              >
-                Sign Up
-              </button>
-            </div>
-          </Form>
+          </div>
         </div>
       </div>
     </div>

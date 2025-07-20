@@ -30,10 +30,10 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@modular-forms/qwik": "^0.29.0",
-    "@qwik-ui/headless": "^0.6.5",
     "@builder.io/qwik": "https://pkg.pr.new/@builder.io/qwik@aa24d96",
     "@builder.io/qwik-city": "https://pkg.pr.new/@builder.io/qwik-city@aa24d96",
+    "@modular-forms/qwik": "^0.29.0",
+    "@qwik-ui/headless": "^0.6.5",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.11",
     "@types/eslint": "8.56.10",
@@ -61,6 +61,7 @@
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.8",
     "drizzle-orm": "^0.39.3",
+    "node-html-parser": "^7.0.1",
     "valibot": "1.0.0-beta.9"
   }
 }

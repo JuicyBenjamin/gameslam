@@ -7,6 +7,7 @@ export const useSlams = routeLoader$(() => {
   return getAllSlams();
 });
 
+// TODO: Move to utils and exchange for temporal solution
 function formatDate(date: Date) {
   return date.toLocaleDateString("en-US", {
     month: "short",

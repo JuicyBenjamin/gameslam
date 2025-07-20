@@ -1,72 +1,254 @@
 import { component$ } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
+import {
+  SolarClockCircleLinear,
+  SolarTargetLinear,
+  SolarCheckCircleLinear,
+  SolarPallete2Outline,
+  SolarUsersGroupTwoRoundedLinear,
+  SolarGamepadMinimalisticLinear,
+  SolarChatRoundLinear,
+} from "~/lib/icons";
 
 export default component$(() => {
   return (
-    <div class="container mx-auto px-4 py-8">
-      <h1 class="mb-8 text-4xl font-bold">What is a Game Slam?</h1>
-
-      <div class="prose prose-lg max-w-none">
-        <p class="mb-6">
-          A Game Slam is a fun way to practice game development, inspired by
-          game jams but with a more relaxed approach. Instead of rushing to
-          create a complete game, you'll focus on building specific game
-          mechanics and learning as you go.
-        </p>
-
-        <h2 class="mb-4 mt-8 text-2xl font-semibold">
-          What Makes Game Slams Different?
-        </h2>
-        <ul class="mb-6 list-disc pl-6">
-          <li class="mb-2">
-            <strong>Learn at Your Own Pace:</strong> Take time to understand and
-            implement game mechanics without the pressure of a strict deadline.
-          </li>
-          <li class="mb-2">
-            <strong>Focus on What Matters:</strong> Concentrate on making your
-            game mechanics feel good, rather than trying to build everything at
-            once.
-          </li>
-          <li class="mb-2">
-            <strong>Clear Goals:</strong> Each slam comes with a simple
-            checklist of what you need to do to complete it.
-          </li>
-        </ul>
-
-        <h2 class="mb-4 mt-8 text-2xl font-semibold">How It Works</h2>
-        <p class="mb-6">
-          When you join a Game Slam, you'll get a challenge and a set of game
-          assets to work with. Here's why this approach is helpful:
-        </p>
-        <ul class="mb-6 list-disc pl-6">
-          <li class="mb-2">
-            <strong>Skip the Art Part:</strong> We point you to the game assets,
-            so you can focus on making the game feel fun to play.
-          </li>
-          <li class="mb-2">
-            <strong>Discover New Assets:</strong> Each slam features work from
-            game artists, helping you find cool assets for your future projects.
-          </li>
-          <li class="mb-2">
-            <strong>Know When You're Done:</strong> Each challenge has a simple
-            list of requirements, so you know exactly what you need to build.
-          </li>
-        </ul>
-
-        <h2 class="mb-4 mt-8 text-2xl font-semibold">Join the Community</h2>
-        <p class="mb-6">Game Slam is a place where you can:</p>
-        <ul class="mb-6 list-disc pl-6">
-          <li class="mb-2">Try out new game development challenges</li>
-          <li class="mb-2">Meet other game developers</li>
-          <li class="mb-2">Find game assets for your projects</li>
-          <li class="mb-2">Share what you're working on</li>
-        </ul>
-
-        <div class="mt-8 text-center">
-          <Link href="/slams" class="btn btn-primary btn-lg">
-            Check Out Current Slams
-          </Link>
+    <div class="bg-base-200 min-h-screen">
+      {/* Hero Section */}
+      <div class="hero from-primary to-secondary min-h-[400px] bg-gradient-to-br">
+        <div class="hero-content text-center">
+          <div class="max-w-4xl">
+            <h1 class="text-primary-content mb-6 text-5xl font-bold">
+              What is a Game Slam?
+            </h1>
+            <p class="text-primary-content/90 max-w-3xl text-xl leading-relaxed">
+              A Game Slam is a fun way to practice game development, inspired by
+              game jams but with a more relaxed approach. Instead of rushing to
+              create a complete game, you'll focus on building specific game
+              mechanics and learning as you go.
+            </p>
+          </div>
         </div>
+      </div>
+
+      <div class="container mx-auto max-w-6xl px-4 py-12">
+        {/* What Makes Game Slams Different */}
+        <section class="mb-16">
+          <h2 class="text-base-content mb-12 text-center text-4xl font-bold">
+            What Makes Game Slams Different?
+          </h2>
+
+          <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div class="card bg-base-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
+              <div class="card-body text-center">
+                <div class="mb-4 flex justify-center">
+                  <div class="bg-primary text-primary-content flex h-16 w-16 items-center justify-center rounded-full">
+                    <SolarClockCircleLinear class="h-8 w-8" />
+                  </div>
+                </div>
+                <h3 class="card-title mb-4 justify-center text-xl">
+                  Learn at Your Own Pace
+                </h3>
+                <p class="text-base-content/80">
+                  Take time to understand and implement game mechanics without
+                  the pressure of a strict deadline.
+                </p>
+              </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
+              <div class="card-body text-center">
+                <div class="mb-4 flex justify-center">
+                  <div class="bg-secondary text-secondary-content flex h-16 w-16 items-center justify-center rounded-full">
+                    <SolarTargetLinear class="h-8 w-8" />
+                  </div>
+                </div>
+                <h3 class="card-title mb-4 justify-center text-xl">
+                  Focus on What Matters
+                </h3>
+                <p class="text-base-content/80">
+                  Concentrate on making your game mechanics feel good, rather
+                  than trying to build everything at once.
+                </p>
+              </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
+              <div class="card-body text-center">
+                <div class="mb-4 flex justify-center">
+                  <div class="bg-accent text-accent-content flex h-16 w-16 items-center justify-center rounded-full">
+                    <SolarCheckCircleLinear class="h-8 w-8" />
+                  </div>
+                </div>
+                <h3 class="card-title mb-4 justify-center text-xl">
+                  Clear Goals
+                </h3>
+                <p class="text-base-content/80">
+                  Each slam comes with a simple checklist of what you need to do
+                  to complete it.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section class="mb-16">
+          <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+              <h2 class="card-title text-base-content mb-8 justify-center text-4xl">
+                How It Works
+              </h2>
+
+              <p class="text-base-content/80 mb-8 text-center text-lg">
+                When you join a Game Slam, you'll get a challenge and a set of
+                game assets to work with. Here's why this approach is helpful:
+              </p>
+
+              <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <div class="bg-primary/10 flex flex-col items-center rounded-lg p-6 text-center">
+                  <div class="mb-4 flex justify-center">
+                    <div class="bg-primary/20 text-primary flex h-12 w-12 items-center justify-center rounded-full">
+                      <SolarPallete2Outline class="h-6 w-6" />
+                    </div>
+                  </div>
+                  <h3 class="text-primary mb-2 text-lg font-bold">
+                    Skip the Art Part
+                  </h3>
+                  <p class="text-base-content/70">
+                    We point you to the game assets, so you can focus on making
+                    the game feel fun to play.
+                  </p>
+                </div>
+
+                <div class="bg-secondary/10 flex flex-col items-center rounded-lg p-6 text-center">
+                  <div class="mb-4 flex justify-center">
+                    <div class="bg-secondary/20 text-secondary flex h-12 w-12 items-center justify-center rounded-full">
+                      <SolarUsersGroupTwoRoundedLinear class="h-6 w-6" />
+                    </div>
+                  </div>
+                  <h3 class="text-secondary mb-2 text-lg font-bold">
+                    Discover New Assets
+                  </h3>
+                  <p class="text-base-content/70">
+                    Each slam features work from game artists, helping you find
+                    cool assets for your future projects.
+                  </p>
+                </div>
+
+                <div class="bg-accent/10 flex flex-col items-center rounded-lg p-6 text-center">
+                  <div class="mb-4 flex justify-center">
+                    <div class="bg-accent/20 text-accent flex h-12 w-12 items-center justify-center rounded-full">
+                      <SolarCheckCircleLinear class="h-6 w-6" />
+                    </div>
+                  </div>
+                  <h3 class="text-accent mb-2 text-lg font-bold">
+                    Know When You're Done
+                  </h3>
+                  <p class="text-base-content/70">
+                    Each challenge has a simple list of requirements, so you
+                    know exactly what you need to build.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Join the Community */}
+        <section class="mb-16">
+          <div class="card from-primary/5 to-secondary/5 bg-gradient-to-br shadow-xl">
+            <div class="card-body">
+              <h2 class="card-title text-base-content mb-8 justify-center text-4xl">
+                Join the Community
+              </h2>
+
+              <p class="text-base-content/80 mb-8 text-center text-lg">
+                Game Slam is a place where you can:
+              </p>
+
+              <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div class="bg-base-100/50 flex items-start space-x-4 rounded-lg p-4">
+                  <div class="flex-shrink-0">
+                    <div class="bg-primary text-primary-content flex h-10 w-10 items-center justify-center rounded-full">
+                      <SolarGamepadMinimalisticLinear class="h-5 w-5" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 class="mb-1 text-lg font-semibold">
+                      Try New Challenges
+                    </h3>
+                    <p class="text-base-content/70">
+                      Try out new game development challenges
+                    </p>
+                  </div>
+                </div>
+
+                <div class="bg-base-100/50 flex items-start space-x-4 rounded-lg p-4">
+                  <div class="flex-shrink-0">
+                    <div class="bg-secondary text-secondary-content flex h-10 w-10 items-center justify-center rounded-full">
+                      <SolarUsersGroupTwoRoundedLinear class="h-5 w-5" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 class="mb-1 text-lg font-semibold">Meet Developers</h3>
+                    <p class="text-base-content/70">
+                      Meet other game developers
+                    </p>
+                  </div>
+                </div>
+
+                <div class="bg-base-100/50 flex items-start space-x-4 rounded-lg p-4">
+                  <div class="flex-shrink-0">
+                    <div class="bg-accent text-accent-content flex h-10 w-10 items-center justify-center rounded-full">
+                      <SolarPallete2Outline class="h-5 w-5" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 class="mb-1 text-lg font-semibold">Find Assets</h3>
+                    <p class="text-base-content/70">
+                      Find game assets for your projects
+                    </p>
+                  </div>
+                </div>
+
+                <div class="bg-base-100/50 flex items-start space-x-4 rounded-lg p-4">
+                  <div class="flex-shrink-0">
+                    <div class="bg-info text-info-content flex h-10 w-10 items-center justify-center rounded-full">
+                      <SolarChatRoundLinear class="h-5 w-5" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 class="mb-1 text-lg font-semibold">Share Progress</h3>
+                    <p class="text-base-content/70">
+                      Share what you're working on
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section class="text-center">
+          <div class="card from-primary to-secondary bg-gradient-to-r shadow-xl">
+            <div class="card-body items-center">
+              <h3 class="text-primary-content mb-4 text-2xl font-bold">
+                Ready to Start Your Game Development Journey?
+              </h3>
+              <p class="text-primary-content/90 mb-6 max-w-md">
+                Join our community and participate in your first Game Slam
+                today!
+              </p>
+              <Link
+                href="/slams"
+                class="btn btn-lg text-primary hover:bg-base-100 border-none bg-white shadow-lg"
+              >
+                Check Out Current Slams
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

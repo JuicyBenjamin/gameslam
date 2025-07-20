@@ -166,7 +166,7 @@ export default component$(() => {
 
         {/* Hero Section */}
         <div class="mb-12 text-center">
-          <h1 class="mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-5xl font-bold text-transparent text-white md:text-6xl">
+          <h1 class="mb-6 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-5xl font-bold text-white md:text-6xl">
             {slam.value.slam.name}
           </h1>
           <p class="mx-auto max-w-2xl text-xl leading-relaxed text-gray-300">

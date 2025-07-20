@@ -6,6 +6,11 @@ import { assets } from "~/db/schema/assets";
 import { artistAssets } from "~/db/schema/artistAssets";
 import { slams } from "~/db/schema/slams";
 import { eq } from "drizzle-orm";
+import {
+  SolarPallete2Outline,
+  SolarGamepadMinimalisticLinear,
+} from "~/lib/icons";
+import { parse } from "node-html-parser";
 
 export const useArtistProfile = routeLoader$(async (requestEvent) => {
   const artistName = requestEvent.params.artistName;
@@ -32,7 +37,7 @@ export const useArtistProfile = routeLoader$(async (requestEvent) => {
     .innerJoin(assets, eq(artistAssets.assetId, assets.id))
     .where(eq(artistAssets.artistId, artist.id));
 
-  // Get slams that use the artist's assets
+  // Get slams that use the artist's assets with counts
   const slamsData = await db
     .select({
       slam: slams,
@@ -42,6 +47,66 @@ export const useArtistProfile = routeLoader$(async (requestEvent) => {
     .innerJoin(assets, eq(slams.assetId, assets.id))
     .where(eq(slams.artistId, artist.id));
 
+  // Fetch itch.io profile data
+  const itchData = {
+    avatarUrl: null as string | null,
+    followerCount: null as string | null,
+  };
+
+  try {
+    const itchUrl = `https://itch.io/profile/${artistName.replace(/\s+/g, "").toLowerCase()}`;
+    const response = await fetch(itchUrl);
+
+    if (response.ok) {
+      const html = await response.text();
+      const root = parse(html);
+
+      // Find the stat_header_widget div
+      const statHeaderWidget = root.querySelector(".stat_header_widget");
+
+      if (statHeaderWidget) {
+        // Extract avatar URL from style attribute of .avatar element
+        const avatarElement = statHeaderWidget.querySelector(".avatar");
+
+        if (avatarElement) {
+          const style = avatarElement.getAttribute("style");
+
+          if (style) {
+            const urlMatch = style.match(/url\(['"]?(.*?)['"]?\)/);
+
+            if (urlMatch && urlMatch[1]) {
+              let avatarUrl = urlMatch[1];
+              // Handle relative URLs (default itch.io avatars)
+              if (!/^https?:\/\//.test(avatarUrl)) {
+                avatarUrl = `https://itch.io${avatarUrl}`;
+              }
+              itchData.avatarUrl = avatarUrl;
+            }
+          }
+        }
+
+        // Extract follower count from .stat_box divs
+        const statBoxes = statHeaderWidget.querySelectorAll(".stat_box");
+
+        if (statBoxes.length >= 3) {
+          const followersContainer = statBoxes[2]; // Third child (0-indexed)
+          const firstChild = followersContainer.querySelector("*");
+
+          if (firstChild) {
+            const followerText = firstChild.text.trim();
+            const followerMatch = followerText.match(/(\d+(?:\.\d+)?[kmb]?)/i);
+
+            if (followerMatch) {
+              itchData.followerCount = followerMatch[1];
+            }
+          }
+        }
+      }
+    }
+  } catch (error) {
+    // Continue without itch data if fetch fails
+  }
+
   return {
     artist,
     assets: artistAssetsData.map((a) => a.asset),
@@ -49,6 +114,7 @@ export const useArtistProfile = routeLoader$(async (requestEvent) => {
       ...s.slam,
       asset: s.asset,
     })),
+    itchData,
   };
 });
 
@@ -56,74 +122,253 @@ export default component$(() => {
   const artistProfile = useArtistProfile();
 
   return (
-    <div class="container mx-auto px-4 py-8">
-      <Link
-        href="/artists"
-        class="mb-4 inline-block rounded-full bg-white/10 px-4 py-2 text-white transition duration-300 hover:bg-white/20"
-      >
-        ← Back to Artists
-      </Link>
-      <div class="mb-8">
-        <div class="flex items-center gap-4">
-          <div>
-            <h1 class="text-3xl font-bold">
-              {artistProfile.value.artist.name}
-            </h1>
-            <a
-              href={artistProfile.value.artist.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-blue-500 hover:underline"
-            >
-              Visit itch.io page
-            </a>
+    <div class="bg-base-200 min-h-screen">
+      {/* Hero Section */}
+      <div class="from-primary to-secondary bg-gradient-to-br">
+        <div class="container mx-auto px-4 py-12">
+          <div class="flex flex-col items-center gap-8 md:flex-row">
+            <div class="avatar">
+              <div class="ring-base-100 ring-offset-base-100 h-32 w-32 rounded-full ring ring-offset-4">
+                {artistProfile.value.itchData.avatarUrl ? (
+                  <img
+                    src={artistProfile.value.itchData.avatarUrl}
+                    alt={`${artistProfile.value.artist.name}'s avatar`}
+                    width={128}
+                    height={128}
+                    class="rounded-full"
+                  />
+                ) : (
+                  <div class="bg-base-100/20 flex h-full w-full items-center justify-center rounded-full">
+                    <SolarPallete2Outline
+                      class="text-base-100 h-12 w-12"
+                      key="artist-avatar-icon"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div class="text-center md:text-left">
+              <h1 class="text-base-100 mb-4 text-4xl font-bold md:text-5xl">
+                {artistProfile.value.artist.name}
+              </h1>
+              <div class="stats stats-horizontal bg-base-100/10 backdrop-blur-sm">
+                <div class="stat text-center">
+                  <div class="stat-title text-base-100/80 mb-2">
+                    Listed Assets
+                  </div>
+                  <div class="flex items-center justify-center gap-3">
+                    <SolarPallete2Outline
+                      class="text-base-100 h-8 w-8"
+                      key="palette-stat-icon"
+                    />
+                    <div class="stat-value text-base-100">
+                      {artistProfile.value.assets.length}
+                    </div>
+                  </div>
+                </div>
+                <div class="stat text-center">
+                  <div class="stat-title text-base-100/80 mb-2">
+                    Featured In Slams
+                  </div>
+                  <div class="flex items-center justify-center gap-3">
+                    <SolarGamepadMinimalisticLinear
+                      class="text-base-100 h-8 w-8"
+                      key="gamepad-stat-icon"
+                    />
+                    <div class="stat-value text-base-100">
+                      {artistProfile.value.slams.length}
+                    </div>
+                  </div>
+                </div>
+                {artistProfile.value.itchData.followerCount !== null && (
+                  <div class="stat text-center">
+                    <div class="stat-title text-base-100/80 mb-2">
+                      Itch Followers
+                    </div>
+                    <div class="flex items-center justify-center gap-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="text-base-100 h-8 w-8"
+                        key="followers-stat-icon"
+                      >
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      </svg>
+                      <div class="stat-value text-base-100">
+                        {artistProfile.value.itchData.followerCount}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div class="mt-4">
+                <a
+                  href={artistProfile.value.artist.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-outline btn-primary"
+                >
+                  Visit itch.io page
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div>
-          <h2 class="mb-4 text-2xl font-bold">Assets</h2>
-          {artistProfile.value.assets.length === 0 ? (
-            <p class="text-gray-500">No assets found</p>
-          ) : (
-            <div class="space-y-4">
-              {artistProfile.value.assets.map((asset) => (
-                <a
-                  key={asset.id}
-                  href={asset.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="block rounded-lg border p-4 transition-colors hover:border-blue-500"
-                >
-                  <h3 class="text-xl font-semibold">{asset.name}</h3>
-                </a>
-              ))}
+      {/* Content Section */}
+      <div class="container mx-auto px-4 py-12">
+        <div class="grid gap-8 lg:grid-cols-2">
+          {/* Assets */}
+          <div class="space-y-6">
+            <div class="mb-6 flex items-center gap-3">
+              <SolarPallete2Outline
+                class="text-primary h-6 w-6"
+                key="palette-icon"
+              />
+              <h2 class="text-2xl font-bold">Assets</h2>
             </div>
-          )}
-        </div>
+            {artistProfile.value.assets.length === 0 ? (
+              <div class="card bg-base-100 shadow-lg">
+                <div class="card-body text-center">
+                  <p class="text-base-content/70">No assets found</p>
+                </div>
+              </div>
+            ) : (
+              <div class="space-y-4">
+                {artistProfile.value.assets.map((asset) => (
+                  <a
+                    key={asset.id}
+                    href={asset.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block"
+                  >
+                    <div class="card bg-base-100 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                      <div class="card-body">
+                        <h3 class="card-title text-lg">{asset.name}</h3>
+                        <div class="flex items-center justify-between">
+                          <div class="text-base-content/60 flex items-center gap-4 text-sm">
+                            <div class="flex items-center gap-1">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                              </svg>
+                              <span>View on itch.io</span>
+                            </div>
+                          </div>
+                          <div class="badge badge-primary badge-outline">
+                            Asset
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
 
-        <div>
-          <h2 class="mb-4 text-2xl font-bold">Slams Using Assets</h2>
-          {artistProfile.value.slams.length === 0 ? (
-            <p class="text-gray-500">No slams found using these assets</p>
-          ) : (
-            <div class="space-y-4">
-              {artistProfile.value.slams.map((slam) => (
-                <Link
-                  key={slam.id}
-                  href={`/slams/show/${slam.id}`}
-                  class="block rounded-lg border p-4 transition-colors hover:border-blue-500"
-                >
-                  <h3 class="text-xl font-semibold">{slam.name}</h3>
-                  <p class="mt-2 text-gray-600">{slam.description}</p>
-                  <p class="mt-2 text-sm text-gray-500">
-                    Using asset: {slam.asset.name}
-                  </p>
-                </Link>
-              ))}
+          {/* Slams Using Assets */}
+          <div class="space-y-6">
+            <div class="mb-6 flex items-center gap-3">
+              <SolarGamepadMinimalisticLinear
+                class="text-secondary h-6 w-6"
+                key="gamepad-header-icon"
+              />
+              <h2 class="text-2xl font-bold">Slams Featuring Assets</h2>
             </div>
-          )}
+            {artistProfile.value.slams.length === 0 ? (
+              <div class="card bg-base-100 shadow-lg">
+                <div class="card-body text-center">
+                  <p class="text-base-content/70">
+                    No slams found using these assets
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div class="space-y-4">
+                {artistProfile.value.slams.map((slam) => (
+                  <Link
+                    key={slam.id}
+                    href={`/slams/show/${slam.id}`}
+                    class="block"
+                  >
+                    <div class="card bg-base-100 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                      <div class="card-body">
+                        <h3 class="card-title text-lg">{slam.name}</h3>
+                        <p class="text-base-content/70 mb-4">
+                          {slam.description}
+                        </p>
+                        <div class="flex items-center justify-between">
+                          <div class="text-base-content/60 flex items-center gap-4 text-sm">
+                            <div class="flex items-center gap-1">
+                              <SolarPallete2Outline class="h-4 w-4" />
+                              <span>Using: {slam.asset.name}</span>
+                            </div>
+                            {slam.createdAt && (
+                              <div class="flex items-center gap-1">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path d="M8 2v4" />
+                                  <path d="M16 2v4" />
+                                  <rect
+                                    width="18"
+                                    height="18"
+                                    x="3"
+                                    y="4"
+                                    rx="2"
+                                  />
+                                  <path d="M3 10h18" />
+                                </svg>
+                                <span>
+                                  {new Date(
+                                    slam.createdAt,
+                                  ).toLocaleDateString()}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <div class="badge badge-secondary badge-outline">
+                            Featured
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

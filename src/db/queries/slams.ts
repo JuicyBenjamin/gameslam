@@ -4,12 +4,30 @@ import { assets } from "../schema/assets";
 import { slams } from "../schema/slams";
 // import type { SelectUser } from "../schema/users";
 import type { SelectSlam } from "../schema/slams";
-import { eq, getTableColumns } from "drizzle-orm";
+import { eq, getTableColumns, sql } from "drizzle-orm";
 import { users } from "../schema/users";
 import { slamEntries } from "../schema/slamEntries";
 
 export async function getAllSlams() {
-  return await db.select().from(slams);
+  return await db
+    .select({
+      slam: getTableColumns(slams),
+      artist: {
+        id: artists.id,
+        name: artists.name,
+      },
+      creator: {
+        id: users.id,
+        name: users.name,
+      },
+      entryCount: sql<number>`cast(count(${slamEntries.id}) as int)`,
+    })
+    .from(slams)
+    .leftJoin(artists, eq(slams.artistId, artists.id))
+    .leftJoin(users, eq(slams.createdBy, users.id))
+    .leftJoin(slamEntries, eq(slamEntries.slamId, slams.id))
+    .groupBy(slams.id, artists.id, users.id)
+    .orderBy(slams.createdAt);
 }
 
 export async function getSlamById(id: SelectSlam["id"]) {

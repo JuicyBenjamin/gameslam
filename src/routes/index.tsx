@@ -111,15 +111,15 @@ export default component$(() => {
           <div>
             <h2 class="mb-6 text-2xl font-bold">Featured Slams</h2>
             <div class="carousel carousel-center rounded-box bg-base-200 w-full space-x-4 p-4">
-              {featuredContent.value.slams.map((slam) => (
-                <div key={slam.id} class="carousel-item">
+              {featuredContent.value.slams.map((slamData) => (
+                <div key={slamData.slam.id} class="carousel-item">
                   <Link
-                    href={`/slams/show/${slam.id}`}
+                    href={`/slams/show/${slamData.slam.id}`}
                     class="card bg-base-100 w-80 shadow-xl"
                   >
                     <div class="card-body">
-                      <h3 class="card-title">{slam.name}</h3>
-                      <p class="line-clamp-2">{slam.description}</p>
+                      <h3 class="card-title">{slamData.slam.name}</h3>
+                      <p class="line-clamp-2">{slamData.slam.description}</p>
                     </div>
                   </Link>
                 </div>

@@ -49,3 +49,63 @@ export function SolarGameboyLinear(props: QwikIntrinsicElements['svg'], key: str
     </svg>
   )
 }
+
+export function SolarClockCircleLinear(props: QwikIntrinsicElements['svg'], key: string) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props} key={key}>
+      {/* WARNING: This icon might be hallucinated - please verify/replace with actual Solar icon */}
+      <g fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <path stroke-linecap="round" d="M12 7v5l3 3" />
+      </g>
+    </svg>
+  )
+}
+
+export function SolarTargetLinear(props: QwikIntrinsicElements['svg'], key: string) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props} key={key}>
+      {/* WARNING: This icon might be hallucinated - please verify/replace with actual Solar icon */}
+      <g fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <circle cx="12" cy="12" r="6" />
+        <circle cx="12" cy="12" r="2" />
+      </g>
+    </svg>
+  )
+}
+
+export function SolarCheckCircleLinear(props: QwikIntrinsicElements['svg'], key: string) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props} key={key}>
+      {/* WARNING: This icon might be hallucinated - please verify/replace with actual Solar icon */}
+      <g fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.5 12.5l2 2l5-5" />
+      </g>
+    </svg>
+  )
+}
+
+export function SolarUsersGroupTwoRoundedLinear(props: QwikIntrinsicElements['svg'], key: string) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props} key={key}>
+      {/* WARNING: This icon might be hallucinated - please verify/replace with actual Solar icon */}
+      <g fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="6" r="4" />
+        <path d="M18 9c1.657 0 3-1.12 3-2.5S19.657 4 18 4M6 9C4.343 9 3 7.88 3 6.5S4.343 4 6 4" stroke-linecap="round" />
+        <ellipse cx="12" cy="17" rx="6" ry="4" />
+        <path d="M20 19c1.754-.385 3-1.359 3-2.5s-1.246-2.115-3-2.5M4 19c-1.754-.385-3-1.359-3-2.5s1.246-2.115 3-2.5" stroke-linecap="round" />
+      </g>
+    </svg>
+  )
+}
+
+export function SolarChatRoundLinear(props: QwikIntrinsicElements['svg'], key: string) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" {...props} key={key}>
+      {/* WARNING: This icon might be hallucinated - please verify/replace with actual Solar icon */}
+      <path fill="none" stroke="currentColor" stroke-width="1.5" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2S2 6.477 2 12c0 1.6.376 3.112 1.043 4.453c.178.356.237.763.134 1.148l-.595 2.226a1.3 1.3 0 0 0 1.591 1.592l2.226-.596a1.634 1.634 0 0 1 1.149.133A9.958 9.958 0 0 0 12 22Z" />
+    </svg>
+  )
+}

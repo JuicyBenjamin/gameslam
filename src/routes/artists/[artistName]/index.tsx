@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
-import { db } from "~/db";
+import { db, logQuery } from "~/db/logger";
 import { artists } from "~/db/schema/artists";
 import { assets } from "~/db/schema/assets";
 import { artistAssets } from "~/db/schema/artistAssets";
@@ -16,11 +16,13 @@ export const useArtistProfile = routeLoader$(async (requestEvent) => {
   const artistName = requestEvent.params.artistName;
 
   // Get artist by name
-  const artistData = await db
-    .select()
-    .from(artists)
-    .where(eq(artists.name, artistName))
-    .limit(1);
+  const artistData = await logQuery("getArtistByName", async () => {
+    return await db
+      .select()
+      .from(artists)
+      .where(eq(artists.name, artistName))
+      .limit(1);
+  });
 
   if (artistData.length === 0) {
     throw requestEvent.error(404, "Artist not found");
@@ -29,23 +31,27 @@ export const useArtistProfile = routeLoader$(async (requestEvent) => {
   const artist = artistData[0];
 
   // Get assets created by the artist through the join table
-  const artistAssetsData = await db
-    .select({
-      asset: assets,
-    })
-    .from(artistAssets)
-    .innerJoin(assets, eq(artistAssets.assetId, assets.id))
-    .where(eq(artistAssets.artistId, artist.id));
+  const artistAssetsData = await logQuery("getArtistAssets", async () => {
+    return await db
+      .select({
+        asset: assets,
+      })
+      .from(artistAssets)
+      .innerJoin(assets, eq(artistAssets.assetId, assets.id))
+      .where(eq(artistAssets.artistId, artist.id));
+  });
 
   // Get slams that use the artist's assets with counts
-  const slamsData = await db
-    .select({
-      slam: slams,
-      asset: assets,
-    })
-    .from(slams)
-    .innerJoin(assets, eq(slams.assetId, assets.id))
-    .where(eq(slams.artistId, artist.id));
+  const slamsData = await logQuery("getArtistSlams", async () => {
+    return await db
+      .select({
+        slam: slams,
+        asset: assets,
+      })
+      .from(slams)
+      .innerJoin(assets, eq(slams.assetId, assets.id))
+      .where(eq(slams.artistId, artist.id));
+  });
 
   // Fetch itch.io profile data
   const itchData = {

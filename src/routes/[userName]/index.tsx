@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { getUserByName } from "~/db/queries/users";
-import { db } from "~/db";
+import { db, logQuery } from "~/db/logger";
 import { slams } from "~/db/schema/slams";
 import { slamEntries } from "~/db/schema/slamEntries";
 import { eq, sql } from "drizzle-orm";
@@ -19,25 +19,32 @@ export const useUserProfile = routeLoader$(async (requestEvent) => {
   }
 
   // Get slams created by the user with participant counts
-  const createdSlams = await db
-    .select({
-      slam: slams,
-      participantCount: sql<number>`cast(count(${slamEntries.id}) as int)`,
-    })
-    .from(slams)
-    .leftJoin(slamEntries, eq(slamEntries.slamId, slams.id))
-    .where(eq(slams.createdBy, user.id))
-    .groupBy(slams.id);
+  const createdSlams = await logQuery("getUserCreatedSlams", async () => {
+    return await db
+      .select({
+        slam: slams,
+        participantCount: sql<number>`cast(count(${slamEntries.id}) as int)`,
+      })
+      .from(slams)
+      .leftJoin(slamEntries, eq(slamEntries.slamId, slams.id))
+      .where(eq(slams.createdBy, user.id))
+      .groupBy(slams.id);
+  });
 
   // Get slams the user is participating in
-  const participatingSlams = await db
-    .select({
-      slam: slams,
-      entryId: slamEntries.id,
-    })
-    .from(slamEntries)
-    .innerJoin(slams, eq(slamEntries.slamId, slams.id))
-    .where(eq(slamEntries.userId, user.id));
+  const participatingSlams = await logQuery(
+    "getUserParticipatingSlams",
+    async () => {
+      return await db
+        .select({
+          slam: slams,
+          entryId: slamEntries.id,
+        })
+        .from(slamEntries)
+        .innerJoin(slams, eq(slamEntries.slamId, slams.id))
+        .where(eq(slamEntries.userId, user.id));
+    },
+  );
 
   return {
     user,

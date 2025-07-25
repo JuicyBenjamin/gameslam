@@ -11,5 +11,22 @@ const client = postgres(String(connectionString), {
   },
   idle_timeout: 20, // 20 seconds idle timeout
   max: 10, // Maximum 10 connections in pool
+  onnotice: () => {}, // Suppress notice messages
 });
-export const db = drizzle(client, { casing: "snake_case" });
+
+// Create a logging wrapper for the database
+const dbWithLogging = drizzle(client, {
+  casing: "snake_case",
+  logger: {
+    logQuery(query: string, params: unknown[]) {
+      const timestamp = new Date().toISOString();
+      const queryPreview =
+        query.length > 100 ? query.substring(0, 100) + "..." : query;
+
+      console.log(`[DB Query] ${timestamp} | ${queryPreview}`);
+      console.log(`[DB Query] Params:`, params);
+    },
+  },
+});
+
+export const db = dbWithLogging;

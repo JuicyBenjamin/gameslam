@@ -5,7 +5,7 @@ import type { DocumentHead } from "@builder.io/qwik-city";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { useCurrentUser } from "~/loaders/auth";
 import { getAllSlams } from "~/db/queries/slams";
-import { db } from "~/db";
+import { db, logQuery } from "~/db/logger";
 import { artists } from "~/db/schema/artists";
 import { assets } from "~/db/schema/assets";
 import { artistAssets } from "~/db/schema/artistAssets";
@@ -18,29 +18,35 @@ export const useFeaturedContent = routeLoader$(async () => {
   const topSlams = await getAllSlams().then((slams) => slams.slice(0, 5));
 
   // Get top 5 artists with their asset counts
-  const topArtists = await db
-    .select({
-      artist: artists,
-      assetCount: count(artistAssets.assetId),
-    })
-    .from(artists)
-    .leftJoin(artistAssets, eq(artistAssets.artistId, artists.id))
-    .groupBy(artists.id)
-    .orderBy(count(artistAssets.assetId))
-    .limit(5);
+  const topArtists = await logQuery("getTopArtists", async () => {
+    return await db
+      .select({
+        artist: artists,
+        assetCount: count(artistAssets.assetId),
+      })
+      .from(artists)
+      .leftJoin(artistAssets, eq(artistAssets.artistId, artists.id))
+      .groupBy(artists.id)
+      .orderBy(count(artistAssets.assetId))
+      .limit(5);
+  });
 
   // Get top 5 assets
-  const topAssets = await db.select().from(assets).limit(5);
+  const topAssets = await logQuery("getTopAssets", async () => {
+    return await db.select().from(assets).limit(5);
+  });
 
   // Get top 5 entries with user information
-  const topEntries = await db
-    .select({
-      entry: slamEntries,
-      user: users,
-    })
-    .from(slamEntries)
-    .leftJoin(users, eq(slamEntries.userId, users.id))
-    .limit(5);
+  const topEntries = await logQuery("getTopEntries", async () => {
+    return await db
+      .select({
+        entry: slamEntries,
+        user: users,
+      })
+      .from(slamEntries)
+      .leftJoin(users, eq(slamEntries.userId, users.id))
+      .limit(5);
+  });
 
   return {
     slams: topSlams,

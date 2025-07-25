@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
-import { db } from "~/db";
+import { db, logQuery, printQueryStats } from "~/db/logger";
 import { slamEntries } from "~/db/schema/slamEntries";
 import { users } from "~/db/schema/users";
 import { eq } from "drizzle-orm";
@@ -8,14 +8,26 @@ import { eq } from "drizzle-orm";
 export const useSlamEntries = routeLoader$(async (requestEvent) => {
   const slamId = requestEvent.params.id;
 
-  const entries = await db
-    .select({
-      entry: slamEntries,
-      user: users,
-    })
-    .from(slamEntries)
-    .where(eq(slamEntries.slamId, slamId))
-    .leftJoin(users, eq(slamEntries.userId, users.id));
+  // Add caching to prevent duplicate queries
+  requestEvent.cacheControl({
+    // Cache for 1 minute
+    maxAge: 60,
+    staleWhileRevalidate: 15,
+  });
+
+  const entries = await logQuery("getSlamEntries", async () => {
+    return await db
+      .select({
+        entry: slamEntries,
+        user: users,
+      })
+      .from(slamEntries)
+      .where(eq(slamEntries.slamId, slamId))
+      .leftJoin(users, eq(slamEntries.userId, users.id));
+  });
+
+  // Print statistics at the end of this request
+  printQueryStats();
 
   return entries;
 });

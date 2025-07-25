@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { getUserByName } from "~/db/queries/users";
-import { db, logQuery } from "~/db/logger";
+import { db, logQuery, printQueryStats } from "~/db/logger";
 import { slams } from "~/db/schema/slams";
 import { slamEntries } from "~/db/schema/slamEntries";
 import { eq, sql } from "drizzle-orm";
@@ -12,6 +12,14 @@ import {
 
 export const useUserProfile = routeLoader$(async (requestEvent) => {
   const userName = requestEvent.params.userName;
+
+  // Add caching to prevent duplicate queries
+  requestEvent.cacheControl({
+    // Cache for 1 minute
+    maxAge: 60,
+    staleWhileRevalidate: 15,
+  });
+
   const user = await getUserByName(userName);
 
   if (!user) {
@@ -46,7 +54,7 @@ export const useUserProfile = routeLoader$(async (requestEvent) => {
     },
   );
 
-  return {
+  const result = {
     user,
     createdSlams: createdSlams.map((s) => ({
       ...s.slam,
@@ -57,6 +65,11 @@ export const useUserProfile = routeLoader$(async (requestEvent) => {
       entryId: s.entryId,
     })),
   };
+
+  // Print statistics at the end of this request
+  printQueryStats();
+
+  return result;
 });
 
 export default component$(() => {

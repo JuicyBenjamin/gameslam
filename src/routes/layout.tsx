@@ -1,7 +1,6 @@
 import { component$, Slot } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import RootLayout from "~/components/layouts/root-layout";
-import { printQueryStats } from "~/db/logger";
 
 export { useCurrentUser } from "~/loaders/auth";
 export { useLogout } from "~/components/actions/logout";
@@ -15,14 +14,6 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
     // Max once every 5 seconds, revalidate on the server to get a fresh version of this page
     maxAge: 5,
   });
-};
-
-export const onRequest: RequestHandler = async ({ next }) => {
-  // Let the request proceed
-  await next();
-
-  // Print query statistics after the request is complete
-  printQueryStats();
 };
 
 export default component$(() => {

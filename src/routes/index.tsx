@@ -5,7 +5,7 @@ import type { DocumentHead } from "@builder.io/qwik-city";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { useCurrentUser } from "~/loaders/auth";
 import { getAllSlams } from "~/db/queries/slams";
-import { db, logQuery } from "~/db/logger";
+import { db, logQuery, printQueryStats } from "~/db/logger";
 import { artists } from "~/db/schema/artists";
 import { assets } from "~/db/schema/assets";
 import { artistAssets } from "~/db/schema/artistAssets";
@@ -13,7 +13,14 @@ import { slamEntries } from "~/db/schema/slamEntries";
 import { users } from "~/db/schema/users";
 import { count, eq } from "drizzle-orm";
 
-export const useFeaturedContent = routeLoader$(async () => {
+export const useFeaturedContent = routeLoader$(async (requestEvent) => {
+  // Add caching to prevent duplicate queries
+  requestEvent.cacheControl({
+    // Cache for 5 minutes
+    maxAge: 300,
+    staleWhileRevalidate: 60,
+  });
+
   // Get top 5 slams
   const topSlams = await getAllSlams().then((slams) => slams.slice(0, 5));
 
@@ -48,7 +55,7 @@ export const useFeaturedContent = routeLoader$(async () => {
       .limit(5);
   });
 
-  return {
+  const result = {
     slams: topSlams,
     artists: topArtists.map((a) => ({
       ...a.artist,
@@ -60,6 +67,11 @@ export const useFeaturedContent = routeLoader$(async () => {
       userName: e.user?.name,
     })),
   };
+
+  // Print statistics at the end of this request
+  printQueryStats();
+
+  return result;
 });
 
 export default component$(() => {

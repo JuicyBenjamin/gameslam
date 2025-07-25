@@ -6,6 +6,8 @@
 @plugin "daisyui";
 @plugin "@tailwindcss/typography";
 
+/* TODO: Set specific theme */
+
 /* Prevent layout shifts from scrollbar */
 html {
   scrollbar-gutter: stable;

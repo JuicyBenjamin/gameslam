@@ -1,10 +1,23 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { getAllSlams } from "~/db/queries/slams";
+import { printQueryStats } from "~/db/logger";
 import { SolarPallete2Outline } from "~/lib/icons";
 
-export const useSlams = routeLoader$(() => {
-  return getAllSlams();
+export const useSlams = routeLoader$(async (requestEvent) => {
+  // Add caching to prevent duplicate queries
+  requestEvent.cacheControl({
+    // Cache for 2 minutes
+    maxAge: 120,
+    staleWhileRevalidate: 30,
+  });
+
+  const result = await getAllSlams();
+
+  // Print statistics at the end of this request
+  printQueryStats();
+
+  return result;
 });
 
 // TODO: Move to utils and exchange for temporal solution

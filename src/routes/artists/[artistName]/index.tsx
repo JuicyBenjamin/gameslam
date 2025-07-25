@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
-import { db, logQuery } from "~/db/logger";
+import { db, logQuery, printQueryStats } from "~/db/logger";
 import { artists } from "~/db/schema/artists";
 import { assets } from "~/db/schema/assets";
 import { artistAssets } from "~/db/schema/artistAssets";
@@ -14,6 +14,13 @@ import { parse } from "node-html-parser";
 
 export const useArtistProfile = routeLoader$(async (requestEvent) => {
   const artistName = requestEvent.params.artistName;
+
+  // Add caching to prevent duplicate queries
+  requestEvent.cacheControl({
+    // Cache for 2 minutes
+    maxAge: 120,
+    staleWhileRevalidate: 30,
+  });
 
   // Get artist by name
   const artistData = await logQuery("getArtistByName", async () => {
@@ -113,7 +120,7 @@ export const useArtistProfile = routeLoader$(async (requestEvent) => {
     // Continue without itch data if fetch fails
   }
 
-  return {
+  const result = {
     artist,
     assets: artistAssetsData.map((a) => a.asset),
     slams: slamsData.map((s) => ({
@@ -122,6 +129,11 @@ export const useArtistProfile = routeLoader$(async (requestEvent) => {
     })),
     itchData,
   };
+
+  // Print statistics at the end of this request
+  printQueryStats();
+
+  return result;
 });
 
 export default component$(() => {

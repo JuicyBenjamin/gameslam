@@ -63,7 +63,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     },
     preview: {
       host: "0.0.0.0",
-      allowedHosts: ["gameslam.io"],
+      allowedHosts: ["gameslam.io", "www.gameslam.io"],
       headers: {
         // Do cache the server response in preview (non-adapter production build)
         "Cache-Control": "public, max-age=600",

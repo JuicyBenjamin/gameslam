@@ -1,33 +1,46 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
-import { db } from "~/db";
+import { db, logQuery, printQueryStats } from "~/db/logger";
 import { artists } from "~/db/schema/artists";
 import { artistAssets } from "~/db/schema/artistAssets";
 import { slams } from "~/db/schema/slams";
 import { count } from "drizzle-orm";
 import { SolarPallete2Outline, SolarGameboyLinear } from "~/lib/icons";
 
-export const useArtists = routeLoader$(async () => {
+export const useArtists = routeLoader$(async (requestEvent) => {
+  // Add caching to prevent duplicate queries
+  requestEvent.cacheControl({
+    // Cache for 2 minutes
+    maxAge: 120,
+    staleWhileRevalidate: 30,
+  });
+
   // Get all artists
-  const artistsData = await db.select().from(artists);
+  const artistsData = await logQuery("getAllArtists", async () => {
+    return await db.select().from(artists);
+  });
 
   // Get asset counts for each artist
-  const assetCounts = await db
-    .select({
-      artistId: artistAssets.artistId,
-      count: count(artistAssets.assetId),
-    })
-    .from(artistAssets)
-    .groupBy(artistAssets.artistId);
+  const assetCounts = await logQuery("getArtistAssetCounts", async () => {
+    return await db
+      .select({
+        artistId: artistAssets.artistId,
+        count: count(artistAssets.assetId),
+      })
+      .from(artistAssets)
+      .groupBy(artistAssets.artistId);
+  });
 
   // Get slam counts for each artist
-  const slamCounts = await db
-    .select({
-      artistId: slams.artistId,
-      count: count(slams.id),
-    })
-    .from(slams)
-    .groupBy(slams.artistId);
+  const slamCounts = await logQuery("getArtistSlamCounts", async () => {
+    return await db
+      .select({
+        artistId: slams.artistId,
+        count: count(slams.id),
+      })
+      .from(slams)
+      .groupBy(slams.artistId);
+  });
 
   // Combine the data
   const artistsWithCounts = artistsData.map((artist) => {
@@ -41,6 +54,9 @@ export const useArtists = routeLoader$(async () => {
       slamCount,
     };
   });
+
+  // Print statistics at the end of this request
+  printQueryStats();
 
   return artistsWithCounts;
 });

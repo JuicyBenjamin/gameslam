@@ -13,7 +13,7 @@ import {
   type InitialValues,
 } from "@modular-forms/qwik";
 import { getSlamById } from "~/db/queries/slams";
-import { db } from "~/db";
+import { db, printQueryStats } from "~/db/logger";
 import { slamEntries } from "~/db/schema/slamEntries";
 import { supabaseClient } from "~/lib/supabase";
 import * as v from "valibot";
@@ -100,8 +100,20 @@ export const useJoinSlamAction = formAction$<TJoinSlamForm>(
   valiForm$(JoinSlamSchema),
 );
 
-export const useGetSlam = routeLoader$(async ({ params }) => {
-  return await getSlamById(params.id);
+export const useGetSlam = routeLoader$(async ({ params, cacheControl }) => {
+  // Add caching to prevent duplicate queries
+  cacheControl({
+    // Cache for 1 minute
+    maxAge: 60,
+    staleWhileRevalidate: 15,
+  });
+
+  const result = await getSlamById(params.id);
+
+  // Print statistics at the end of this request
+  printQueryStats();
+
+  return result;
 });
 
 export default component$(() => {

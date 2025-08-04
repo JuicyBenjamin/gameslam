@@ -6,12 +6,11 @@ import {
   createRootRoute,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { createServerFn } from '@tanstack/react-start'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '../components/DefaultCatchBoundary'
 import { NotFound } from '../components/NotFound'
 
-
+import appCss from "@/styles/app.css?url"
 
 import { seo } from '../utils/seo'
 
@@ -58,7 +57,7 @@ export const Route = createRootRoute({
           ],
 
       links: [
-      { rel: 'stylesheet', href: '/app.css' },
+      { rel: 'stylesheet', href: appCss },
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',

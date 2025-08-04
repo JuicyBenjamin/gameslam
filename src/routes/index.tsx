@@ -1,117 +1,103 @@
-// TODO: Migrate from Qwik component$ to React functional component
-// TODO: Replace Qwik routeLoader$ with TanStack Router loader
-// TODO: Replace Qwik RequestHandler with TanStack Router equivalent
-// TODO: Replace Qwik Link with TanStack Router Link
-// TODO: Replace Qwik DocumentHead with React Helmet or similar
-// TODO: Replace Qwik useCurrentUser with TanStack Router loader
-// TODO: Replace Qwik useFeaturedContent with TanStack Router loader
+import { createFileRoute } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import React from 'react'
+import { getAllSlams } from '../db/queries/slams'
+import { printQueryStats, logQuery } from '../db/logger'
+import { db } from '../db/logger'
+import { artists } from '../db/schema/artists'
+import { assets } from '../db/schema/assets'
+import { artistAssets } from '../db/schema/artistAssets'
+import { slamEntries } from '../db/schema/slamEntries'
+import { users } from '../db/schema/users'
+import { count, eq } from 'drizzle-orm'
+import { getCurrentUser } from '../loaders/auth'
 
-// Original Qwik code (commented out for reference):
-// export const prerender = false;
+// Server function for fetching featured content (SSR)
+const fetchFeaturedContent = createServerFn({ method: 'GET' }).handler(async () => {
+  console.log('Fetching featured content on server...')
 
-// import { component$ } from "@builder.io/qwik";
-// import type { DocumentHead, RequestHandler } from "@builder.io/qwik-city";
-// import { Link, routeLoader$ } from "@builder.io/qwik-city";
-// import { useCurrentUser } from "~/loaders/auth";
-// import { getAllSlams } from "~/db/queries/slams";
-// import { printQueryStats, logQuery } from "~/db/logger";
-// import { db } from "~/db/logger";
-// import { artists } from "~/db/schema/artists";
-// import { assets } from "~/db/schema/assets";
-// import { artistAssets } from "~/db/schema/artistAssets";
-// import { slamEntries } from "~/db/schema/slamEntries";
-// import { users } from "~/db/schema/users";
-// import { count, eq } from "drizzle-orm";
+  try {
+    // Get top 5 slams
+    const topSlams = await getAllSlams().then((slams) => slams.slice(0, 5))
 
-// export const onGet: RequestHandler = async ({ cacheControl }) => {
-//   // Ensure fresh user data on home page
-//   cacheControl({
-//     maxAge: 0,
-//   });
-// };
+    // Get top 5 artists with their asset counts
+    const topArtists = await logQuery("getTopArtists", async () => {
+      return await db
+        .select({
+          artist: artists,
+          assetCount: count(artistAssets.assetId),
+        })
+        .from(artists)
+        .leftJoin(artistAssets, eq(artistAssets.artistId, artists.id))
+        .groupBy(artists.id)
+        .orderBy(count(artistAssets.assetId))
+        .limit(5)
+    })
 
-// export const useFeaturedContent = routeLoader$(async (requestEvent) => {
-//   // Add caching to prevent duplicate queries
-//   requestEvent.cacheControl({
-//     // Cache for 5 minutes
-//     maxAge: 300,
-//     staleWhileRevalidate: 60,
-//   });
+    // Get top 5 assets
+    const topAssets = await logQuery("getTopAssets", async () => {
+      return await db.select().from(assets).limit(5)
+    })
 
-//   // Get top 5 slams
-//   const topSlams = await getAllSlams().then((slams) => slams.slice(0, 5));
+    // Get top 5 entries with user information
+    const topEntries = await logQuery("getTopEntries", async () => {
+      return await db
+        .select({
+          entry: slamEntries,
+          user: users,
+        })
+        .from(slamEntries)
+        .leftJoin(users, eq(slamEntries.userId, users.id))
+        .limit(5)
+    })
 
-//   // Get top 5 artists with their asset counts
-//   const topArtists = await logQuery("getTopArtists", async () => {
-//     return await db
-//       .select({
-//         artist: artists,
-//         assetCount: count(artistAssets.assetId),
-//       })
-//       .from(artists)
-//       .leftJoin(artistAssets, eq(artistAssets.artistId, artists.id))
-//       .groupBy(artists.id)
-//       .orderBy(count(artistAssets.assetId))
-//       .limit(5);
-//   });
+    const result = {
+      slams: topSlams,
+      artists: topArtists.map((a) => ({
+        ...a.artist,
+        assetCount: Number(a.assetCount),
+      })),
+      assets: topAssets,
+      entries: topEntries.map((e) => ({
+        ...e.entry,
+        userName: e.user?.name,
+      })),
+    }
 
-//   // Get top 5 assets
-//   const topAssets = await logQuery("getTopAssets", async () => {
-//     return await db.select().from(assets).limit(5);
-//   });
+    // Print statistics at the end of this request
+    printQueryStats()
 
-//   // Get top 5 entries with user information
-//   const topEntries = await logQuery("getTopEntries", async () => {
-//     return await db
-//       .select({
-//         entry: slamEntries,
-//         user: users,
-//       })
-//       .from(slamEntries)
-//       .leftJoin(users, eq(slamEntries.userId, users.id))
-//       .limit(5);
-//   });
+    return result
+  } catch (error) {
+    console.error('Error fetching featured content:', error)
+    throw error
+  }
+})
 
-//   const result = {
-//     slams: topSlams,
-//     artists: topArtists.map((a) => ({
-//       ...a.artist,
-//       assetCount: Number(a.assetCount),
-//     })),
-//     assets: topAssets,
-//     entries: topEntries.map((e) => ({
-//       ...e.entry,
-//       userName: e.user?.name,
-//     })),
-//   };
+export const Route = createFileRoute('/')({
+  component: Index,
+  loader: async ({ context }) => {
+    // This runs on the server and provides data for SSR
+    try {
+      // Fetch featured content and current user in parallel
+      const [featuredContent, user] = await Promise.all([
+        fetchFeaturedContent(),
+        getCurrentUser()
+      ])
 
-//   // Print statistics at the end of this request
-//   printQueryStats();
+      console.log('Loader data:', { featuredContent, user })
+      return { featuredContent, user }
+    } catch (error) {
+      console.error('Loader error:', error)
+      throw error
+    }
+  }
+})
 
-//   return result;
-// });
-
-import React from 'react';
-
-// TODO: Replace with proper TanStack Router imports
-// import { Link } from '@tanstack/react-router';
-// import { useCurrentUser } from "~/loaders/auth";
-// import { getAllSlams } from "~/db/queries/slams";
-
-export default function Index() {
-  // TODO: Replace with TanStack Router equivalents
-  // const user = useCurrentUser();
-  // const isLoggedIn = user.value != null;
-  // const featuredContent = useFeaturedContent();
-
-  // Mock data for now
-  const isLoggedIn = false;
-  const featuredContent = {
-    slams: [],
-    artists: [],
-    assets: [],
-    entries: []
-  };
+function Index() {
+  // Get data from the loader (SSR)
+  const { featuredContent, user } = Route.useLoaderData()
+  const isLoggedIn = user != null
 
   return (
     <div className="min-h-screen">

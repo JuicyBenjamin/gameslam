@@ -2,7 +2,7 @@
 // TODO: Replace requestEvent with TanStack Router context
 // TODO: Implement proper redirect handling for TanStack Router
 
-import { supabaseClient } from "~/lib/supabase";
+import { getSupabaseServerClient } from "~/utils/supabase";
 
 // Original Qwik code (commented out for reference):
 // import { globalAction$ } from "@builder.io/qwik-city";
@@ -22,8 +22,8 @@ import { supabaseClient } from "~/lib/supabase";
 // });
 
 // TODO: Implement TanStack Router equivalent action
-export const logout = async (context: any) => {
-  const supabase = supabaseClient(context);
+export const logout = async () => {
+  const supabase = getSupabaseServerClient();
 
   // Sign out and clear session
   const { error } = await supabase.auth.signOut();

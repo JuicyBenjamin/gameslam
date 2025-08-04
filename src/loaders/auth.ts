@@ -2,7 +2,7 @@
 // TODO: Replace RequestEventLoader with TanStack Router context
 // TODO: Implement proper caching strategy for TanStack Router
 
-import { supabaseClient } from "~/lib/supabase";
+import { getSupabaseServerClient } from "~/utils/supabase";
 import { getUserById } from "~/db/queries/users";
 
 // Original Qwik code (commented out for reference):
@@ -48,7 +48,7 @@ import { getUserById } from "~/db/queries/users";
 // TODO: Implement TanStack Router equivalent loaders
 export const redirectIfLoggedIn = async (context: any) => {
   // TODO: Implement TanStack Router redirect logic
-  const supabase = supabaseClient(context);
+  const supabase = getSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   if (data.user) {
     // TODO: Use TanStack Router redirect
@@ -56,8 +56,8 @@ export const redirectIfLoggedIn = async (context: any) => {
   }
 };
 
-export const getCurrentUser = async (context: any) => {
-  const supabase = supabaseClient(context);
+export const getCurrentUser = async () => {
+  const supabase = getSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
 
   if (!data.user) {

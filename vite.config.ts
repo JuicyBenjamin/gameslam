@@ -7,6 +7,12 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  build: {
+    rollupOptions: {
+      // Use Rolldown bundler
+      external: []
+    }
+  },
   plugins: [
     tsConfigPaths({
       projects: ['./tsconfig.json'],
@@ -14,4 +20,8 @@ export default defineConfig({
     tailwindcss(),
     tanstackStart(),
   ],
+  // Configure Rolldown as the bundler
+  experimental: {
+    rollupVersion: 'rolldown'
+  }
 })

@@ -1,18 +1,15 @@
 /// <reference types="vite/client" />
-import {
-  HeadContent,
-  Outlet,
-  Scripts,
-  createRootRoute,
-} from '@tanstack/react-router'
+import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '../components/DefaultCatchBoundary'
 import { NotFound } from '../components/NotFound'
 
-import appCss from "@/styles/app.css?url"
+import appCss from '@/styles/app.css?url'
 
 import { seo } from '../utils/seo'
+import { Footer } from '~/components/footer'
+import { Header } from '~/components/header'
 
 // TODO: Replace with proper Supabase client from our migrated utils
 // import { getSupabaseServerClient } from './utils/supabase'
@@ -52,11 +49,12 @@ export const Route = createRootRoute({
       },
       ...seo({
         title: 'GameSlam - Game Development Challenges',
-        description: 'Join the GameSlam community and participate in game development challenges with other developers.',
+        description:
+          'Join the GameSlam community and participate in game development challenges with other developers.',
       }),
-          ],
+    ],
 
-      links: [
+    links: [
       { rel: 'stylesheet', href: appCss },
       {
         rel: 'apple-touch-icon',
@@ -79,7 +77,7 @@ export const Route = createRootRoute({
       { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
-  errorComponent: (props) => {
+  errorComponent: props => {
     return (
       <RootDocument>
         <DefaultCatchBoundary {...props} />
@@ -107,18 +105,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="h-full bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200">
-                {/* TODO: Replace with our migrated Header component */}
-        {/* <Header /> */}
-
-        {children}
-
-        {/* TODO: Replace with our migrated Footer component */}
-        {/* <Footer /> */}
-
+        <Header />
+        <main className="contaier flex min-h-[80vh] flex-col justify-start gap-4 ">{children}</main>
+        <Footer />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
     </html>
   )
 }
-

@@ -1,299 +1,150 @@
-// TODO: Migrate from Qwik component$ to React functional component
-// TODO: Replace Qwik routeLoader$ with TanStack Router loader
-// TODO: Replace Qwik Link with TanStack Router Link
+import { createFileRoute } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { Link } from '@tanstack/react-router'
+import { Plus, Gamepad2, User, Trophy } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { getAllSlams } from '~/db/queries/slams'
+import { printQueryStats } from '~/db/logger'
 
-// Original Qwik code (commented out for reference):
-// import { component$ } from "@builder.io/qwik";
-// import { Link, routeLoader$ } from "@builder.io/qwik-city";
-// import { getAllSlams } from "~/db/queries/slams";
-// import { printQueryStats } from "~/db/logger";
-// import { SolarPallete2Outline } from "~/lib/icons";
+// Server function for fetching slams data (SSR)
+const fetchSlams = createServerFn({ method: 'GET' }).handler(async () => {
+  console.log('Fetching slams on server...')
 
-// export const useSlams = routeLoader$(async (requestEvent) => {
-//   // Add caching to prevent duplicate queries
-//   requestEvent.cacheControl({
-//     // Cache for 2 minutes
-//     maxAge: 120,
-//     staleWhileRevalidate: 30,
-//   });
+  try {
+    const result = await getAllSlams()
 
-//   const result = await getAllSlams();
+    // Print statistics at the end of this request
+    printQueryStats()
 
-//   // Print statistics at the end of this request
-//   printQueryStats();
+    return result
+  } catch (error) {
+    console.error('Error fetching slams:', error)
+    throw error
+  }
+})
 
-//   return result;
-// });
-
-// // TODO: Move to utils and exchange for temporal solution
-// function formatDate(date: Date) {
-//   return date.toLocaleDateString("en-US", {
-//     month: "short",
-//     day: "numeric",
-//     year: "numeric",
-//   });
-// }
-
-// export default component$(() => {
-//   const slams = useSlams();
-
-//   return (
-//     <div class="bg-base-200 min-h-screen">
-//       {/* Main Content */}
-//       <main class="mx-auto max-w-7xl px-6 py-8">
-//         <div class="mb-8 flex items-center justify-between">
-//           <h1 class="text-base-content text-4xl font-bold">Slams</h1>
-//           <Link class="btn btn-primary" href="/slams/create">
-//             <svg
-//               class="mr-2 h-4 w-4"
-//               fill="none"
-//               stroke="currentColor"
-//               viewBox="0 0 24 24"
-//             >
-//               <path
-//                 stroke-linecap="round"
-//                 stroke-linejoin="round"
-//                 stroke-width="2"
-//                 d="M12 4v16m8-8H4"
-//               />
-//             </svg>
-//             Create your own Slam
-//           </Link>
-//         </div>
-
-//         {/* Slams Grid */}
-//         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-//           {slams.value.map((slamData) => (
-//             <Link
-//               key={slamData.slam.id}
-//               href={`/slams/show/${slamData.slam.id}`}
-//               class="h-full"
-//             >
-//               <div class="card bg-base-100 h-full shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-//                 <div class="card-body">
-//                   <h2 class="card-title text-base-content mb-3 text-lg leading-tight">
-//                     {slamData.slam.name}
-//                   </h2>
-
-//                   <p class="text-base-content/70 mb-4 line-clamp-2 text-sm">
-//                     {slamData.slam.description}
-//                   </p>
-
-//                   <div class="text-base-content/50 mb-4 flex flex-col gap-2 text-xs">
-//                     <div class="flex items-center space-x-1">
-//                       <SolarPallete2Outline class="h-3 w-3" key="artist-icon" />
-//                       <span>
-//                         Artist: {slamData.artist?.name || "Unknown Artist"}
-//                       </span>
-//                     </div>
-//                     <div class="flex items-center justify-between">
-//                       <div class="flex items-center space-x-1">
-//                         <svg
-//                           class="h-3 w-3"
-//                           fill="none"
-//                           stroke="currentColor"
-//                           viewBox="0 0 24 24"
-//                         >
-//                           <path
-//                             stroke-linecap="round"
-//                             stroke-linejoin="round"
-//                             stroke-width="2"
-//                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-//                           />
-//                         </svg>
-//                         <span>
-//                           Created by:{" "}
-//                           {slamData.creator?.name || "Unknown Creator"}
-//                         </span>
-//                       </div>
-//                       <div class="flex items-center space-x-1">
-//                         <svg
-//                           class="h-3 w-3"
-//                           fill="none"
-//                           stroke="currentColor"
-//                           viewBox="0 0 24 24"
-//                         >
-//                           <path
-//                             stroke-linecap="round"
-//                             stroke-linejoin="round"
-//                             stroke-width="2"
-//                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-//                           />
-//                         </svg>
-//                         <span>{formatDate(slamData.slam.createdAt)}</span>
-//                       </div>
-//                     </div>
-//                   </div>
-
-//                   <div class="flex items-center justify-between">
-//                     <div class="badge badge-outline badge-primary text-xs">
-//                       {slamData.entryCount} entries
-//                     </div>
-//                     <span class="btn btn-primary btn-sm">View Slam</span>
-//                   </div>
-//                 </div>
-//               </div>
-//             </Link>
-//           ))}
-//         </div>
-
-//         {/* Load More */}
-//         {/* TODO: Add load more */}
-//         {/* <div class="mt-12 text-center">
-//           <button class="btn btn-outline btn-primary">Load More Slams</button>
-//         </div> */}
-//       </main>
-//     </div>
-//   );
-// });
-
-import React from 'react';
-import { getAllSlams } from "~/db/queries/slams";
-import { printQueryStats } from "~/db/logger";
-
-// TODO: Replace with TanStack Router Link
-// import { Link } from '@tanstack/react-router';
-
-// TODO: Move to utils and exchange for temporal solution
-function formatDate(date: Date) {
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-// TODO: Replace with TanStack Router loader
-// export const useSlams = routeLoader$(async (requestEvent) => {
-//   // Add caching to prevent duplicate queries
-//   requestEvent.cacheControl({
-//     // Cache for 2 minutes
-//     maxAge: 120,
-//     staleWhileRevalidate: 30,
-//   });
-
-//   const result = await getAllSlams();
-
-//   // Print statistics at the end of this request
-//   printQueryStats();
-
-//   return result;
-// });
+export const Route = createFileRoute('/slams/')({
+  component: Slams,
+  loader: async () => {
+    // This runs on the server and provides data for SSR
+    try {
+      const slams = await fetchSlams()
+      console.log('Slams loader data:', slams)
+      return { slams }
+    } catch (error) {
+      console.error('Slams loader error:', error)
+      throw error
+    }
+  },
+})
 
 export default function Slams() {
-  // TODO: Replace with TanStack Router loader
-  // const slams = useSlams();
-  const slams = { value: [] }; // Mock for now
+  const { slams } = Route.useLoaderData()
 
   return (
-    <div className="bg-base-200 min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-base-content text-4xl font-bold">Slams</h1>
-          <a className="btn btn-primary" href="/slams/create">
-            <svg
-              className="mr-2 h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Create your own Slam
-          </a>
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Game Slams</h1>
+            <p className="mt-2 text-lg text-slate-600 dark:text-slate-400">
+              Discover ongoing creative challenges and showcase your game development skills
+            </p>
+          </div>
+          <Button asChild size="lg" className="w-fit">
+            <Link to="/slams/create">
+              <Plus className="mr-2 h-4 w-4" />
+              Create your own Slam
+            </Link>
+          </Button>
         </div>
 
         {/* Slams Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {slams.value.map((slamData: any) => (
-            <a
+          {slams.map((slamData: any) => (
+            <Card
               key={slamData.slam.id}
-              href={`/slams/show/${slamData.slam.id}`}
-              className="h-full"
+              className="group h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer flex flex-col"
             >
-              <div className="card bg-base-100 h-full shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-                <div className="card-body">
-                  <h2 className="card-title text-base-content mb-3 text-lg leading-tight">
+              <Link to={`/slams/show/${slamData.slam.id}`} className="h-full flex flex-col">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-xl leading-tight line-clamp-2 group-hover:text-primary transition-colors">
                     {slamData.slam.name}
-                  </h2>
-
-                  <p className="text-base-content/70 mb-4 line-clamp-2 text-sm">
+                  </CardTitle>
+                  <CardDescription className="line-clamp-3 text-sm leading-relaxed">
                     {slamData.slam.description}
-                  </p>
+                  </CardDescription>
+                </CardHeader>
 
-                  <div className="text-base-content/50 mb-4 flex flex-col gap-2 text-xs">
-                    <div className="flex items-center space-x-1">
-                      {/* TODO: Replace with proper icon component */}
-                      <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
-                      </svg>
-                      <span>
-                        Artist: {slamData.artist?.name || "Unknown Artist"}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-1">
-                        <svg
-                          className="h-3 w-3"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                          />
-                        </svg>
-                        <span>
-                          Created by:{" "}
-                          {slamData.creator?.name || "Unknown Creator"}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <svg
-                          className="h-3 w-3"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                          />
-                        </svg>
-                        <span>{formatDate(slamData.slam.createdAt)}</span>
-                      </div>
-                    </div>
+                <CardContent className="space-y-3 flex-grow">
+                  {/* Featured Artist */}
+                  <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                    <Gamepad2 className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">
+                      <span className="font-medium">Featured Artist:</span> {slamData.artist?.name || 'TBA'}
+                    </span>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="badge badge-outline badge-primary text-xs">
-                      {slamData.entryCount} entries
-                    </div>
-                    <span className="btn btn-primary btn-sm">View Slam</span>
+                  {/* Organizer */}
+                  <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                    <User className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">
+                      <span className="font-medium">Organized by:</span> {slamData.creator?.name || 'Unknown Organizer'}
+                    </span>
                   </div>
-                </div>
-              </div>
-            </a>
+                </CardContent>
+
+                <CardFooter className="flex items-center justify-between pt-3">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="text-xs">
+                      <Trophy className="mr-1 h-3 w-3" />
+                      {slamData.entryCount} {slamData.entryCount === 1 ? 'submission' : 'submissions'}
+                    </Badge>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors bg-transparent"
+                  >
+                    Join Slam
+                  </Button>
+                </CardFooter>
+              </Link>
+            </Card>
           ))}
         </div>
 
-        {/* Load More */}
-        {/* TODO: Add load more */}
-        {/* <div className="mt-12 text-center">
-          <button className="btn btn-outline btn-primary">Load More Slams</button>
-        </div> */}
+        {/* Empty State */}
+        {slams.length === 0 && (
+          <div className="text-center py-12">
+            <Gamepad2 className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
+            <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">No game slams yet</h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              Be the first to create a game slam and challenge the community with your creative theme.
+            </p>
+            <Button asChild>
+              <Link to="/slams/create">
+                <Plus className="mr-2 h-4 w-4" />
+                Create your first Slam
+              </Link>
+            </Button>
+          </div>
+        )}
+
+        {/* Load More Section - Commented out as requested */}
+        {/* TODO: Add load more functionality */}
+        {/*
+        <div className="mt-12 text-center">
+          <Button variant="outline" size="lg">
+            Load More Slams
+          </Button>
+        </div>
+        */}
       </main>
     </div>
-  );
+  )
 }

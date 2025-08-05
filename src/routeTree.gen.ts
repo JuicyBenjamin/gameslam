@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WhatIsAGameSlamIndexRouteImport } from './routes/what-is-a-game-slam/index'
+import { Route as SlamsIndexRouteImport } from './routes/slams/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const WhatIsAGameSlamIndexRoute = WhatIsAGameSlamIndexRouteImport.update({
   path: '/what-is-a-game-slam/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SlamsIndexRoute = SlamsIndexRouteImport.update({
+  id: '/slams/',
+  path: '/slams/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/slams': typeof SlamsIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/slams': typeof SlamsIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/slams/': typeof SlamsIndexRoute
   '/what-is-a-game-slam/': typeof WhatIsAGameSlamIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/what-is-a-game-slam'
+  fullPaths: '/' | '/slams' | '/what-is-a-game-slam'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/what-is-a-game-slam'
-  id: '__root__' | '/' | '/what-is-a-game-slam/'
+  to: '/' | '/slams' | '/what-is-a-game-slam'
+  id: '__root__' | '/' | '/slams/' | '/what-is-a-game-slam/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SlamsIndexRoute: typeof SlamsIndexRoute
   WhatIsAGameSlamIndexRoute: typeof WhatIsAGameSlamIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WhatIsAGameSlamIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/slams/': {
+      id: '/slams/'
+      path: '/slams'
+      fullPath: '/slams'
+      preLoaderRoute: typeof SlamsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SlamsIndexRoute: SlamsIndexRoute,
   WhatIsAGameSlamIndexRoute: WhatIsAGameSlamIndexRoute,
 }
 export const routeTree = rootRouteImport

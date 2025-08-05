@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as WhatIsAGameSlamIndexRouteImport } from './routes/what-is-a-game-slam/index'
 import { Route as SlamsIndexRouteImport } from './routes/slams/index'
 import { Route as ArtistsIndexRouteImport } from './routes/artists/index'
+import { Route as UserProfileUserNameRouteImport } from './routes/_user-profile/$userName'
 import { Route as ArtistsArtistNameIndexRouteImport } from './routes/artists/$artistName/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const ArtistsIndexRoute = ArtistsIndexRouteImport.update({
   path: '/artists/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UserProfileUserNameRoute = UserProfileUserNameRouteImport.update({
+  id: '/_user-profile/$userName',
+  path: '/$userName',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArtistsArtistNameIndexRoute = ArtistsArtistNameIndexRouteImport.update({
   id: '/artists/$artistName/',
   path: '/artists/$artistName/',
@@ -43,6 +49,7 @@ const ArtistsArtistNameIndexRoute = ArtistsArtistNameIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$userName': typeof UserProfileUserNameRoute
   '/artists': typeof ArtistsIndexRoute
   '/slams': typeof SlamsIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$userName': typeof UserProfileUserNameRoute
   '/artists': typeof ArtistsIndexRoute
   '/slams': typeof SlamsIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_user-profile/$userName': typeof UserProfileUserNameRoute
   '/artists/': typeof ArtistsIndexRoute
   '/slams/': typeof SlamsIndexRoute
   '/what-is-a-game-slam/': typeof WhatIsAGameSlamIndexRoute
@@ -67,6 +76,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$userName'
     | '/artists'
     | '/slams'
     | '/what-is-a-game-slam'
@@ -74,6 +84,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$userName'
     | '/artists'
     | '/slams'
     | '/what-is-a-game-slam'
@@ -81,6 +92,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_user-profile/$userName'
     | '/artists/'
     | '/slams/'
     | '/what-is-a-game-slam/'
@@ -89,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  UserProfileUserNameRoute: typeof UserProfileUserNameRoute
   ArtistsIndexRoute: typeof ArtistsIndexRoute
   SlamsIndexRoute: typeof SlamsIndexRoute
   WhatIsAGameSlamIndexRoute: typeof WhatIsAGameSlamIndexRoute
@@ -125,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArtistsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_user-profile/$userName': {
+      id: '/_user-profile/$userName'
+      path: '/$userName'
+      fullPath: '/$userName'
+      preLoaderRoute: typeof UserProfileUserNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/artists/$artistName/': {
       id: '/artists/$artistName/'
       path: '/artists/$artistName'
@@ -137,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  UserProfileUserNameRoute: UserProfileUserNameRoute,
   ArtistsIndexRoute: ArtistsIndexRoute,
   SlamsIndexRoute: SlamsIndexRoute,
   WhatIsAGameSlamIndexRoute: WhatIsAGameSlamIndexRoute,

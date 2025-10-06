@@ -1,6 +1,27 @@
 import { Link } from '@tanstack/react-router'
+import { logout } from '~/actions/logout'
+import { useAuth } from '~/hooks/useAuth'
+import { useState } from 'react'
 
 export const Header = () => {
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const { user, loading } = useAuth()
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    try {
+      await logout()
+      // The logout function will handle the redirect
+    } catch (error) {
+      console.error('Logout error:', error)
+      setIsLoggingOut(false)
+    }
+  }
+
+  const isLoggedIn = user != null
+
+  console.log({ user })
+
   return (
     <header className="navbar bg-primary sticky top-0 z-50 text-white shadow-md">
       <div className="container mx-auto flex">
@@ -40,13 +61,43 @@ export const Header = () => {
           >
             Artists
           </Link>
-          {/* TODO: Implement user authentication state */}
-          <Link className="btn btn-neutral" to="/login">
-            Login
-          </Link>
-          <Link className="btn btn-neutral" to="/sign-up">
-            Sign Up
-          </Link>
+          {isLoggedIn ? (
+            <div className="dropdown dropdown-end">
+              <label className="btn btn-ghost">
+                {user.email}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </label>
+              <ul className="menu-compact menu dropdown-content rounded-box bg-primary mt-3 w-52 p-2 text-white shadow">
+                <li>
+                  <Link to="/$userName" params={{ userName: user.email?.split('@')[0] || 'user' }} search={{ userName: user.email?.split('@')[0] || 'user' }}>
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <button onClick={handleLogout} disabled={isLoggingOut} className="w-full text-left">
+                    {isLoggingOut ? 'Logging out...' : 'Logout'}
+                  </button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <>
+              <Link className="btn btn-neutral" to="/login">
+                Login
+              </Link>
+              <Link className="btn btn-neutral" to="/sign-up">
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* <!-- Mobile Menu Toggle --> */}
@@ -96,28 +147,45 @@ export const Header = () => {
                 Artists
               </Link>
             </li>
-            <li>
-              <Link
-                to="/login"
-                className=""
-                activeProps={{
-                  className: 'rounded bg-white/20',
-                }}
-              >
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/sign-up"
-                className=""
-                activeProps={{
-                  className: 'rounded bg-white/20',
-                }}
-              >
-                Sign Up
-              </Link>
-            </li>
+            {isLoggedIn ? (
+              <>
+                <li>
+                  <Link to="/$userName" params={{ userName: user.email?.split('@')[0] || 'user' }} search={{ userName: user.email?.split('@')[0] || 'user' }}>
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <button onClick={handleLogout} disabled={isLoggingOut} className="w-full text-left">
+                    {isLoggingOut ? 'Logging out...' : 'Logout'}
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/login"
+                    className=""
+                    activeProps={{
+                      className: 'rounded bg-white/20',
+                    }}
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/sign-up"
+                    className=""
+                    activeProps={{
+                      className: 'rounded bg-white/20',
+                    }}
+                  >
+                    Sign Up
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

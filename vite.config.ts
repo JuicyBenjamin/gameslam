@@ -1,27 +1,20 @@
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+// vite.config.ts
 import { defineConfig } from 'vite'
 import tsConfigPaths from 'vite-tsconfig-paths'
+import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  server: {
-    port: 3000,
+  server: { port: 3000 },
+  ssr: {
+    noExternal: ['@tanstack/start'],
+    external: ['node:async_hooks', '@tanstack/start-storage-context'],
   },
   build: {
     rollupOptions: {
-      // Use Rolldown bundler
-      external: []
-    }
+      external: ['node:async_hooks', '@tanstack/start-storage-context'],
+    },
   },
-  plugins: [
-    tsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
-    tailwindcss(),
-    tanstackStart(),
-  ],
-  // Configure Rolldown as the bundler
-  experimental: {
-    rollupVersion: 'rolldown'
-  }
+  plugins: [tsConfigPaths({ projects: ['./tsconfig.json'] }), tanstackStart(), tailwindcss(), viteReact()],
 })

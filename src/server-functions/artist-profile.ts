@@ -1,0 +1,60 @@
+import { createServerFn } from '@tanstack/react-start'
+
+// Server function for fetching artist profile
+export const fetchArtistProfile = createServerFn({ method: 'GET' }).handler(async ctx => {
+  const artistName = (ctx.data as any)?.artistName || ''
+  console.log('Fetching artist profile on server for:', artistName)
+
+  try {
+    // Import server-side dependencies only inside the server function
+    const { db } = await import('~/server-functions/database')
+    const { artists, assets, artistAssets, slams } = await import('~/db/server-only')
+    const { eq } = await import('drizzle-orm')
+    const { parse } = await import('node-html-parser')
+
+    // Get artist by name
+    const artistData = await db.select().from(artists).where(eq(artists.name, artistName)).limit(1)
+
+    if (artistData.length === 0) {
+      throw new Error('Artist not found')
+    }
+
+    const artist = artistData[0]
+
+    // Get artist's assets
+    const artistAssetsData = await db
+      .select({
+        asset: assets,
+        artistAsset: artistAssets,
+      })
+      .from(artistAssets)
+      .leftJoin(assets, eq(artistAssets.assetId, assets.id))
+      .where(eq(artistAssets.artistId, artist.id))
+
+    // Get artist's slams
+    const artistSlams = await db.select().from(slams).where(eq(slams.artistId, artist.id))
+
+    // Parse HTML description if it exists
+    let parsedDescription = ''
+    if (artist.link) {
+      try {
+        const parsed = parse(artist.link)
+        parsedDescription = parsed.textContent || artist.link
+      } catch (error) {
+        console.warn('Failed to parse HTML description:', error)
+      }
+    }
+
+    const result = {
+      artist,
+      assets: artistAssetsData.map(aa => aa.asset),
+      slams: artistSlams,
+      description: parsedDescription,
+    }
+
+    return result
+  } catch (error) {
+    console.error('Error fetching artist profile:', error)
+    throw error
+  }
+})

@@ -1,29 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
 import { Link } from '@tanstack/react-router'
 import { Plus, Gamepad2, User, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { getAllSlams } from '~/db/queries/slams'
-import { printQueryStats } from '~/db/logger'
-
-// Server function for fetching slams data (SSR)
-const fetchSlams = createServerFn({ method: 'GET' }).handler(async () => {
-  console.log('Fetching slams on server...')
-
-  try {
-    const result = await getAllSlams()
-
-    // Print statistics at the end of this request
-    printQueryStats()
-
-    return result
-  } catch (error) {
-    console.error('Error fetching slams:', error)
-    throw error
-  }
-})
+import { fetchSlams } from '~/server-functions/slams'
 
 export const Route = createFileRoute('/slams/')({
   component: Slams,
@@ -40,7 +21,7 @@ export const Route = createFileRoute('/slams/')({
   },
 })
 
-export default function Slams() {
+function Slams() {
   const { slams } = Route.useLoaderData()
 
   return (
@@ -70,7 +51,7 @@ export default function Slams() {
               key={slamData.slam.id}
               className="group h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer flex flex-col"
             >
-              <Link to={`/slams/show/${slamData.slam.id}`} className="h-full flex flex-col">
+              <Link to="/slams/show/$id" params={{ id: slamData.slam.id }} search={{}} className="h-full flex flex-col">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-xl leading-tight line-clamp-2 group-hover:text-primary transition-colors">
                     {slamData.slam.name}

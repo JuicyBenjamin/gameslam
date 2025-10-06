@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '../components/DefaultCatchBoundary'
 import { NotFound } from '../components/NotFound'
@@ -11,32 +12,13 @@ import { seo } from '../utils/seo'
 import { Footer } from '~/components/footer'
 import { Header } from '~/components/header'
 
-// TODO: Replace with proper Supabase client from our migrated utils
-// import { getSupabaseServerClient } from './utils/supabase'
-
-// TODO: Implement proper user fetching with our migrated Supabase setup
-// const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
-//   const supabase = getSupabaseServerClient()
-//   const { data, error: _error } = await supabase.auth.getUser()
-
-//   if (!data.user?.email) {
-//     return null
-//   }
-
-//   return {
-//     email: data.user.email,
-//   }
-// })
+// Create a client
+const queryClient = new QueryClient()
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
-    // TODO: Replace with proper user fetching
-    // const user = await fetchUser()
-    const user = null
-
-    return {
-      user,
-    }
+    // No need to fetch user on server since we use client-side auth
+    return {}
   },
   head: () => ({
     meta: [
@@ -90,23 +72,23 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <QueryClientProvider client={queryClient}>
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </QueryClientProvider>
   )
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const { user } = Route.useRouteContext()
-
   return (
-    <html className="h-full">
+    <html>
       <head>
         <HeadContent />
       </head>
-      <body className="h-full bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-200">
+      <body>
         <Header />
-        <main className="contaier flex min-h-[80vh] flex-col justify-start gap-4 ">{children}</main>
+        <main>{children}</main>
         <Footer />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />

@@ -1,16 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Shield, Plus, Trophy, Users, Calendar, ArrowUpRight, CheckCircle } from 'lucide-react'
+import { Shield, Plus, Trophy, Users, Calendar, ArrowUpRight, CheckCircle, ExternalLink } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { Button } from '~/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Badge } from '~/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
-import { db, logQuery, printQueryStats } from '~/db/logger'
-import { users } from '~/db/schema/users'
-import { slams } from '~/db/schema/slams'
-import { slamEntries } from '~/db/schema/slamEntries'
-import { eq, sql } from 'drizzle-orm'
-import { getUserByName } from '~/db/queries/users'
+import { fetchUserProfile } from '~/server-functions/user-profile'
 
 // Mock function for date formatting
 function formatDate(date: string) {
@@ -24,81 +19,27 @@ function formatDate(date: string) {
 // Function to get slam rarity badge
 function getSlamRarity(participantCount: number) {
   if (participantCount === 0) return { label: 'New', variant: 'secondary' as const }
-  if (participantCount <= 10) return { label: 'Growing', variant: 'default' as const }
-  if (participantCount <= 20) return { label: 'Popular', variant: 'default' as const }
-  return { label: 'Hot', variant: 'destructive' as const }
+  if (participantCount < 5) return { label: 'Rare', variant: 'default' as const }
+  if (participantCount < 10) return { label: 'Common', variant: 'outline' as const }
+  return { label: 'Popular', variant: 'destructive' as const }
 }
 
 export const Route = createFileRoute('/_user-profile/$userName')({
-  component: UserProfile,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      userName: search.userName as string,
+    }
+  },
+  beforeLoad: ({ params }) => {
+    const userName = params.userName
+    console.log('✅ Valid username for profile lookup:', userName)
+  },
   loader: async ({ params }) => {
     // This runs on the server and provides data for SSR
     try {
-      const userName = params.userName
-      console.log('Fetching user profile on server for:', userName)
-
-      // Get user by name
-      const user = await getUserByName(userName)
-
-      if (!user) {
-        throw new Error('User not found')
-      }
-
-      // Get slams created by the user with participant counts
-      const createdSlams = await logQuery('getUserCreatedSlams', async () => {
-        return await db
-          .select({
-            slam: slams,
-            participantCount: sql<number>`cast(count(${slamEntries.id}) as int)`,
-          })
-          .from(slams)
-          .leftJoin(slamEntries, eq(slamEntries.slamId, slams.id))
-          .where(eq(slams.createdBy, user.id))
-          .groupBy(slams.id)
-          .orderBy(slams.createdAt)
-      })
-
-      // Get slams the user is participating in
-      const participatingSlams = await logQuery('getUserParticipatingSlams', async () => {
-        return await db
-          .select({
-            slam: slams,
-            entry: slamEntries,
-          })
-          .from(slamEntries)
-          .innerJoin(slams, eq(slamEntries.slamId, slams.id))
-          .where(eq(slamEntries.userId, user.id))
-          .orderBy(slamEntries.createdAt)
-      })
-
-      const userProfile = {
-        user: {
-          ...user,
-          bio: 'Game jam enthusiast and organizer. Love creating challenging themes that push creative boundaries. Always excited to see what the community builds!',
-          joinedDate: '2023-01-15', // Using fallback since createdAt doesn't exist on user schema
-          location: 'San Francisco, CA',
-        },
-        createdSlams: createdSlams.map(s => ({
-          ...s.slam,
-          participantCount: s.participantCount,
-          status:
-            s.slam.createdAt && new Date(s.slam.createdAt) < new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-              ? 'completed'
-              : 'active',
-        })),
-        participatingSlams: participatingSlams.map(s => ({
-          ...s.slam,
-          entryId: s.entry.id,
-          submissionDate: s.entry.createdAt,
-          status: 'submitted',
-        })),
-      }
-
-      // Print statistics at the end of this request
-      printQueryStats()
-
-      console.log('User profile loader data:', userProfile)
-      return { userProfile }
+      const profileData = await fetchUserProfile({ data: { userName: params.userName } } as any)
+      console.log('User profile data:', profileData)
+      return profileData
     } catch (error) {
       console.error('User profile loader error:', error)
       throw error
@@ -106,212 +47,179 @@ export const Route = createFileRoute('/_user-profile/$userName')({
   },
 })
 
-export default function UserProfile() {
-  const { userProfile } = Route.useLoaderData()
-
-  // Debug logging to see what we're working with
-  console.log('User profile data:', userProfile)
-  console.log('Avatar link:', userProfile.user.avatarLink)
+function UserProfile() {
+  const { user, slams, entries, stats } = Route.useLoaderData()
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
-        <div className="container mx-auto px-4 py-12">
-          <div className="flex flex-col items-center gap-8 md:flex-row">
-            <div className="relative">
-              <Avatar className="h-32 w-32 ring-4 ring-primary-foreground/20 ring-offset-4 ring-offset-primary">
-                <img
-                  src={userProfile.user.avatarLink}
-                  alt={`${userProfile.user.name}'s avatar`}
-                  className="aspect-square size-full object-cover rounded-full"
-                  onError={e => {
-                    console.error('Image failed to load:', userProfile.user.avatarLink)
-                    console.error('Error event:', e)
-                  }}
-                  onLoad={() => {
-                    console.log('Image loaded successfully:', userProfile.user.avatarLink)
-                  }}
-                />
-                <AvatarFallback className="text-2xl bg-primary-foreground/20">
-                  {userProfile.user.name
-                    .split(' ')
-                    .map((n: string) => n[0])
-                    .join('')}
-                </AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="flex-1 text-center md:text-left">
-              <div className="mb-4">
-                <h1 className="mb-2 text-4xl font-bold md:text-5xl flex items-center justify-center md:justify-start gap-3">
-                  {userProfile.user.name}
-                  {userProfile.user.isVerified && <CheckCircle className="h-8 w-8 text-primary-foreground" />}
-                </h1>
-                <p className="text-lg text-primary-foreground/90 max-w-2xl mb-4">{userProfile.user.bio}</p>
-                <div className="flex items-center justify-center md:justify-start gap-4 text-sm text-primary-foreground/80">
-                  <span>📍 {userProfile.user.location}</span>
-                  <span>📅 Joined {formatDate(userProfile.user.joinedDate)}</span>
-                </div>
+      {/* Header Section */}
+      <div className="bg-white dark:bg-slate-800 shadow-sm">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left">
+            {/* Avatar */}
+            <Avatar className="mb-4 h-24 w-24 md:mb-0 md:mr-6">
+              <AvatarImage src={user.avatarLink || '/placeholder.svg'} alt={user.name} />
+              <AvatarFallback className="text-2xl">
+                {user.name
+                  .split(' ')
+                  .map((n: string) => n[0])
+                  .join('')}
+              </AvatarFallback>
+            </Avatar>
+
+            {/* User Info */}
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{user.name}</h1>
+              <p className="mt-2 text-lg text-slate-600 dark:text-slate-400">@{user.name}</p>
+              <div className="mt-4 flex items-center gap-2">
+                <Shield className="h-4 w-4 text-slate-500" />
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  {user.isVerified ? 'Verified User' : 'User'}
+                </span>
               </div>
+            </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <Card className="bg-primary-foreground/10 border-primary-foreground/20 backdrop-blur-sm">
-                  <CardContent className="p-4 text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <Shield className="h-6 w-6" />
-                      <span className="text-2xl font-bold">{userProfile.createdSlams.length}</span>
-                    </div>
-                    <p className="text-sm text-primary-foreground/80">Created Slams</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-primary-foreground/10 border-primary-foreground/20 backdrop-blur-sm">
-                  <CardContent className="p-4 text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <Trophy className="h-6 w-6" />
-                      <span className="text-2xl font-bold">{userProfile.participatingSlams.length}</span>
-                    </div>
-                    <p className="text-sm text-primary-foreground/80">Participating Slams</p>
-                  </CardContent>
-                </Card>
+            {/* Stats */}
+            <div className="mt-6 grid grid-cols-2 gap-4 md:mt-0 md:grid-cols-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">{stats.totalSlams}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Slams Created</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-slate-900 dark:text-slate-100">{stats.totalEntries}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Entries</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content Section */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid gap-8 lg:grid-cols-2">
-          {/* Created Slams */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 mb-6">
-              <Shield className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Created Slams</h2>
-            </div>
+      {/* Main Content */}
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        {/* Slams Created Section */}
+        <section className="mb-12">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Created Slams</h2>
+            <Badge variant="secondary">{slams.length} slams</Badge>
+          </div>
 
-            {userProfile.createdSlams.length === 0 ? (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <Plus className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
-                  <p className="text-slate-600 dark:text-slate-400 mb-4">No slams created yet</p>
-                  <Button asChild>
-                    <Link to="/slams/create">
-                      <Plus className="mr-2 h-4 w-4" />
-                      Create your first slam
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {userProfile.createdSlams.map((slam: any) => {
-                  const rarity = getSlamRarity(slam.participantCount)
-                  return (
-                    <Card key={`created-${slam.id}`} className="group hover:shadow-lg transition-all duration-300">
-                      <Link to={`/slams/show/${slam.id}`} className="block">
-                        <CardHeader className="pb-3">
-                          <CardTitle className="text-lg group-hover:text-primary transition-colors flex items-center justify-between">
-                            <span>{slam.name}</span>
-                            <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </CardTitle>
+          {slams.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {slams.map((slam: any) => {
+                const rarity = getSlamRarity(slam.entryCount)
+                return (
+                  <Card key={slam.id} className="group h-full transition-all duration-300 hover:shadow-lg">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="line-clamp-2">{slam.name}</CardTitle>
                           <CardDescription className="line-clamp-2">{slam.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
-                              <div className="flex items-center gap-1">
-                                <Users className="h-4 w-4" />
-                                <span>
-                                  {slam.participantCount} {slam.participantCount === 1 ? 'participant' : 'participants'}
-                                </span>
-                              </div>
-                              {slam.createdAt && (
-                                <div className="flex items-center gap-1">
-                                  <Calendar className="h-4 w-4" />
-                                  <span>{formatDate(slam.createdAt)}</span>
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Badge variant={rarity.variant}>{rarity.label}</Badge>
-                              <Badge variant={slam.status === 'active' ? 'default' : 'secondary'}>
-                                {slam.status === 'active' ? 'Active' : 'Completed'}
-                              </Badge>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Link>
-                    </Card>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Participating Slams */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-3 mb-6">
-              <Trophy className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Participating Slams</h2>
-            </div>
-
-            {userProfile.participatingSlams.length === 0 ? (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <Trophy className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
-                  <p className="text-slate-600 dark:text-slate-400 mb-4">Not participating in any slams yet</p>
-                  <Button asChild variant="outline">
-                    <Link to="/slams">
-                      <Trophy className="mr-2 h-4 w-4" />
-                      Browse slams
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {userProfile.participatingSlams.map((slam: any) => (
-                  <Card
-                    key={`participating-${slam.entryId}`}
-                    className="group hover:shadow-lg transition-all duration-300"
-                  >
-                    <Link to={`/slams/show/${slam.id}`} className="block">
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-lg group-hover:text-primary transition-colors flex items-center justify-between">
-                          <span>{slam.name}</span>
-                          <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </CardTitle>
-                        <CardDescription className="line-clamp-2">{slam.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
-                            <div className="flex items-center gap-1">
-                              <Calendar className="h-4 w-4" />
-                              <span>Joined {formatDate(slam.createdAt)}</span>
-                            </div>
-                            {slam.submissionDate && (
-                              <div className="flex items-center gap-1">
-                                <CheckCircle className="h-4 w-4" />
-                                <span>Submitted {formatDate(slam.submissionDate)}</span>
-                              </div>
-                            )}
-                          </div>
-                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                            Submitted
-                          </Badge>
                         </div>
-                      </CardContent>
-                    </Link>
+                        <Badge variant={rarity.variant} className="ml-2">
+                          {rarity.label}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-600 dark:text-slate-400">Created</span>
+                          <span className="font-medium">{formatDate(slam.createdAt)}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-600 dark:text-slate-400">Status</span>
+                          <Badge variant={slam.status === 'active' ? 'default' : 'secondary'}>{slam.status}</Badge>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-600 dark:text-slate-400">Participants</span>
+                          <span className="font-medium">{slam.entryCount} entries</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardContent className="pt-0">
+                      <Button asChild size="sm" className="w-full">
+                        <Link to="/slams/show/$id" params={{ id: slam.id }}>
+                          <ArrowUpRight className="mr-2 h-4 w-4" />
+                          View Slam
+                        </Link>
+                      </Button>
+                    </CardContent>
                   </Card>
-                ))}
-              </div>
-            )}
+                )
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Trophy className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
+              <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">No slams created yet</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-6">This user hasn't created any slams yet.</p>
+              <Button asChild>
+                <Link to="/slams/create">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Create Your First Slam
+                </Link>
+              </Button>
+            </div>
+          )}
+        </section>
+
+        {/* Slam Entries Section */}
+        <section>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Slam Entries</h2>
+            <Badge variant="secondary">{entries.length} entries</Badge>
           </div>
-        </div>
-      </div>
+
+          {entries.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {entries.map((entry: any) => (
+                <Card key={entry.id} className="group h-full transition-all duration-300 hover:shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="line-clamp-2">{entry.name}</CardTitle>
+                    <CardDescription className="line-clamp-2">
+                      {entry.description || 'No description provided'}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">Submitted</span>
+                        <span className="font-medium">{formatDate(entry.createdAt)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-600 dark:text-slate-400">Slam</span>
+                        <span className="font-medium">{entry.slam?.name || 'Unknown Slam'}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardContent className="pt-0">
+                    <Button asChild size="sm" className="w-full">
+                      <a href={entry.linkToEntry} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="mr-2 h-4 w-4" />
+                        View Entry
+                      </a>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <CheckCircle className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
+              <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">No entries yet</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-6">
+                This user hasn't submitted any slam entries yet.
+              </p>
+              <Button asChild>
+                <Link to="/slams">
+                  <Users className="mr-2 h-4 w-4" />
+                  Explore Slams
+                </Link>
+              </Button>
+            </div>
+          )}
+        </section>
+      </main>
     </div>
   )
 }

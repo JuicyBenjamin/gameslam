@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WhatIsAGameSlamIndexRouteImport } from './routes/what-is-a-game-slam/index'
 import { Route as SlamsIndexRouteImport } from './routes/slams/index'
+import { Route as SignUpIndexRouteImport } from './routes/sign-up/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as ArtistsIndexRouteImport } from './routes/artists/index'
 import { Route as UserProfileUserNameRouteImport } from './routes/_user-profile/$userName'
 import { Route as SlamsCreateIndexRouteImport } from './routes/slams/create/index'
@@ -31,6 +33,16 @@ const WhatIsAGameSlamIndexRoute = WhatIsAGameSlamIndexRouteImport.update({
 const SlamsIndexRoute = SlamsIndexRouteImport.update({
   id: '/slams/',
   path: '/slams/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignUpIndexRoute = SignUpIndexRouteImport.update({
+  id: '/sign-up/',
+  path: '/sign-up/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArtistsIndexRoute = ArtistsIndexRouteImport.update({
@@ -63,6 +75,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$userName': typeof UserProfileUserNameRoute
   '/artists': typeof ArtistsIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/sign-up': typeof SignUpIndexRoute
   '/slams': typeof SlamsIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
   '/slams/show/$id': typeof SlamsShowIdRoute
@@ -73,6 +87,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$userName': typeof UserProfileUserNameRoute
   '/artists': typeof ArtistsIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/sign-up': typeof SignUpIndexRoute
   '/slams': typeof SlamsIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
   '/slams/show/$id': typeof SlamsShowIdRoute
@@ -84,6 +100,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_user-profile/$userName': typeof UserProfileUserNameRoute
   '/artists/': typeof ArtistsIndexRoute
+  '/login/': typeof LoginIndexRoute
+  '/sign-up/': typeof SignUpIndexRoute
   '/slams/': typeof SlamsIndexRoute
   '/what-is-a-game-slam/': typeof WhatIsAGameSlamIndexRoute
   '/slams/show/$id': typeof SlamsShowIdRoute
@@ -96,6 +114,8 @@ export interface FileRouteTypes {
     | '/'
     | '/$userName'
     | '/artists'
+    | '/login'
+    | '/sign-up'
     | '/slams'
     | '/what-is-a-game-slam'
     | '/slams/show/$id'
@@ -106,6 +126,8 @@ export interface FileRouteTypes {
     | '/'
     | '/$userName'
     | '/artists'
+    | '/login'
+    | '/sign-up'
     | '/slams'
     | '/what-is-a-game-slam'
     | '/slams/show/$id'
@@ -116,6 +138,8 @@ export interface FileRouteTypes {
     | '/'
     | '/_user-profile/$userName'
     | '/artists/'
+    | '/login/'
+    | '/sign-up/'
     | '/slams/'
     | '/what-is-a-game-slam/'
     | '/slams/show/$id'
@@ -127,6 +151,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UserProfileUserNameRoute: typeof UserProfileUserNameRoute
   ArtistsIndexRoute: typeof ArtistsIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
+  SignUpIndexRoute: typeof SignUpIndexRoute
   SlamsIndexRoute: typeof SlamsIndexRoute
   WhatIsAGameSlamIndexRoute: typeof WhatIsAGameSlamIndexRoute
   SlamsShowIdRoute: typeof SlamsShowIdRoute
@@ -155,6 +181,20 @@ declare module '@tanstack/react-router' {
       path: '/slams'
       fullPath: '/slams'
       preLoaderRoute: typeof SlamsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-up/': {
+      id: '/sign-up/'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof SignUpIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/artists/': {
@@ -199,6 +239,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UserProfileUserNameRoute: UserProfileUserNameRoute,
   ArtistsIndexRoute: ArtistsIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
+  SignUpIndexRoute: SignUpIndexRoute,
   SlamsIndexRoute: SlamsIndexRoute,
   WhatIsAGameSlamIndexRoute: WhatIsAGameSlamIndexRoute,
   SlamsShowIdRoute: SlamsShowIdRoute,
@@ -208,3 +250,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

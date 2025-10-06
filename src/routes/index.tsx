@@ -1,101 +1,25 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
 import React from 'react'
-import { getAllSlams } from '../db/queries/slams'
-import { printQueryStats, logQuery } from '../db/logger'
-import { db } from '../db/logger'
-import { artists } from '../db/schema/artists'
-import { assets } from '../db/schema/assets'
-import { artistAssets } from '../db/schema/artistAssets'
-import { slamEntries } from '../db/schema/slamEntries'
-import { users } from '../db/schema/users'
-import { count, eq } from 'drizzle-orm'
 import { getCurrentUser } from '../loaders/auth'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card'
 import { Gamepad2, Users, Palette, Trophy, Star, ExternalLink, User, Folder } from 'lucide-react'
-
-// Server function for fetching featured content (SSR)
-const fetchFeaturedContent = createServerFn({ method: 'GET' }).handler(async () => {
-  console.log('Fetching featured content on server...')
-
-  try {
-    // Get top 5 slams
-    const topSlams = await getAllSlams().then((slams) => slams.slice(0, 5))
-
-    // Get top 5 artists with their asset counts
-    const topArtists = await logQuery("getTopArtists", async () => {
-      return await db
-        .select({
-          artist: artists,
-          assetCount: count(artistAssets.assetId),
-        })
-        .from(artists)
-        .leftJoin(artistAssets, eq(artistAssets.artistId, artists.id))
-        .groupBy(artists.id)
-        .orderBy(count(artistAssets.assetId))
-        .limit(5)
-    })
-
-    // Get top 5 assets
-    const topAssets = await logQuery("getTopAssets", async () => {
-      return await db.select().from(assets).limit(5)
-    })
-
-    // Get top 5 entries with user information
-    const topEntries = await logQuery("getTopEntries", async () => {
-      return await db
-        .select({
-          entry: slamEntries,
-          user: users,
-        })
-        .from(slamEntries)
-        .leftJoin(users, eq(slamEntries.userId, users.id))
-        .limit(5)
-    })
-
-    const result = {
-      slams: topSlams,
-      artists: topArtists.map((a) => ({
-        ...a.artist,
-        assetCount: Number(a.assetCount),
-      })),
-      assets: topAssets,
-      entries: topEntries.map((e) => ({
-        ...e.entry,
-        userName: e.user?.name,
-      })),
-    }
-
-    // Print statistics at the end of this request
-    printQueryStats()
-
-    return result
-  } catch (error) {
-    console.error('Error fetching featured content:', error)
-    throw error
-  }
-})
+import { fetchFeaturedContent } from '~/server-functions/index'
 
 export const Route = createFileRoute('/')({
   component: Index,
   loader: async ({ context }) => {
     // This runs on the server and provides data for SSR
     try {
-      // Fetch featured content and current user in parallel
-      const [featuredContent, user] = await Promise.all([
-        fetchFeaturedContent(),
-        getCurrentUser()
-      ])
-
+      const [featuredContent, user] = await Promise.all([fetchFeaturedContent(), getCurrentUser()])
       console.log('Loader data:', { featuredContent, user })
       return { featuredContent, user }
     } catch (error) {
       console.error('Loader error:', error)
       throw error
     }
-  }
+  },
 })
 
 function Index() {
@@ -279,7 +203,7 @@ function Index() {
                   </div>
                   <h3 className="mb-2 line-clamp-2 text-lg font-semibold">{entry.name}</h3>
                   <p className="mb-3 line-clamp-2 text-sm text-muted-foreground">
-                    {entry.description || "No description provided"}
+                    {entry.description || 'No description provided'}
                   </p>
                   <p className="mb-4 text-xs text-muted-foreground">By {entry.userName}</p>
                   <Button asChild size="sm" className="w-full">
@@ -316,5 +240,5 @@ function Index() {
         </section>
       )}
     </div>
-  );
+  )
 }

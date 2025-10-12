@@ -1,15 +1,18 @@
 import { createServerFn } from '@tanstack/react-start'
+import { artists } from '~/db/schema/artists'
+import { assets } from '~/db/schema/assets'
+import { artistAssets } from '~/db/schema/artistAssets'
+import { slamEntries } from '~/db/schema/slamEntries'
+import { users } from '~/db/schema/users'
+import { slams } from '~/db/schema/slams'
+import { db } from '~/server-functions/database'
+import { count, eq, getTableColumns, sql } from 'drizzle-orm'
 
 // Server function for fetching featured content (SSR)
 export const fetchFeaturedContent = createServerFn({ method: 'GET' }).handler(async () => {
   console.log('Fetching featured content on server...')
 
   try {
-    // Import server-side dependencies only inside the server function
-    const { artists, assets, artistAssets, slamEntries, users, slams } = await import('~/db/server-only')
-    const { db } = await import('~/server-functions/database')
-    const { count, eq, getTableColumns, sql } = await import('drizzle-orm')
-
     // Get top 5 slams
     const allSlams = await db
       .select({

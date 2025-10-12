@@ -72,11 +72,9 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RootDocument>
-        <Outlet />
-      </RootDocument>
-    </QueryClientProvider>
+    <RootDocument>
+      <Outlet />
+    </RootDocument>
   )
 }
 
@@ -87,10 +85,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <TanStackRouterDevtools position="bottom-right" />
+        <QueryClientProvider client={queryClient}>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <TanStackRouterDevtools position="bottom-right" />
+        </QueryClientProvider>
         <Scripts />
       </body>
     </html>

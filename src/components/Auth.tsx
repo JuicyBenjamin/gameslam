@@ -6,8 +6,8 @@ import { parse, safeParse } from 'valibot'
 import type { TAuthForm } from '~/schemas/auth'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
+import { Field, FieldContent, FieldError, FieldLabel } from '~/components/ui/field'
 import { AlertTriangle } from 'lucide-react'
 
 interface AuthProps {
@@ -23,17 +23,16 @@ export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
       email: '',
       password: '',
     },
-    // validators: {
-    //   onSubmit: ({ value }) => {
-    //     const result = safeParse(AuthSchema, value)
-    //     return result.success ? undefined : result.issues[0]?.message
-    //   }
-    // },
+    validators: {
+      onSubmit: ({ value }) => {
+        const result = safeParse(AuthSchema, value)
+        return result.success ? undefined : result.issues[0]?.message
+      },
+    },
     onSubmit: async ({ value }) => {
       console.log('🚀 TanStack form onSubmit callback triggered!')
-      alert('Form submitted with: ' + JSON.stringify(value))
       console.log('Form submitted with:', value)
-      // await onSubmit(value)
+      await onSubmit(value)
     },
   })
 
@@ -65,41 +64,85 @@ export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
               </div>
             )}
 
-            {/* ULTRA SIMPLE TEST */}
-            <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">Testing form submission...</p>
+            {/* Auth Form */}
+            <form
+              onSubmit={e => {
+                e.preventDefault()
+                e.stopPropagation()
+                form.handleSubmit()
+              }}
+              className="space-y-4"
+            >
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldContent>
+                  <form.Field
+                    name="email"
+                    validators={{
+                      onChange: ({ value }) => {
+                        if (!value) return 'Email is required'
+                        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                          return 'Please enter a valid email address'
+                        }
+                        return undefined
+                      },
+                    }}
+                  >
+                    {field => (
+                      <>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="Enter your email"
+                          value={field.state.value}
+                          onChange={e => field.handleChange(e.target.value)}
+                          onBlur={field.handleBlur}
+                          aria-invalid={field.state.meta.errors.length > 0}
+                        />
+                        <FieldError>{field.state.meta.errors}</FieldError>
+                      </>
+                    )}
+                  </form.Field>
+                </FieldContent>
+              </Field>
 
-              <form
-                onSubmit={e => {
-                  console.log('🔥 ULTRA SIMPLE FORM SUBMITTED!')
-                  console.log('Event defaultPrevented before:', e.defaultPrevented)
-                  e.preventDefault()
-                  e.stopPropagation()
-                  console.log('Event defaultPrevented after:', e.defaultPrevented)
-                  alert('ULTRA SIMPLE FORM WORKS!')
-                  return false
-                }}
-              >
-                <form.Field name="email">{() => <input type="text" placeholder="test input" />}</form.Field>
-                <input type="text" placeholder="test input" />
-                <button onClick={form.handleSubmit} className="w-full bg-red-500 text-white p-2 rounded mt-2">
-                  ULTRA SIMPLE SUBMIT
-                </button>
-              </form>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldContent>
+                  <form.Field
+                    name="password"
+                    validators={{
+                      onChange: ({ value }) => {
+                        if (!value) return 'Password is required'
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long'
+                        }
+                        return undefined
+                      },
+                    }}
+                  >
+                    {field => (
+                      <>
+                        <Input
+                          id="password"
+                          type="password"
+                          placeholder="Enter your password"
+                          value={field.state.value}
+                          onChange={e => field.handleChange(e.target.value)}
+                          onBlur={field.handleBlur}
+                          aria-invalid={field.state.meta.errors.length > 0}
+                        />
+                        <FieldError>{field.state.meta.errors}</FieldError>
+                      </>
+                    )}
+                  </form.Field>
+                </FieldContent>
+              </Field>
 
-              <button
-                onClick={e => {
-                  console.log('🔥 BUTTON CLICKED!')
-                  console.log('Button click event:', e)
-                  e.preventDefault()
-                  e.stopPropagation()
-                  alert('BUTTON CLICK WORKS!')
-                }}
-                className="w-full bg-green-500 text-white p-2 rounded"
-              >
-                TEST BUTTON CLICK
-              </button>
-            </div>
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? 'Processing...' : actionText}
+              </Button>
+            </form>
 
             {/* Link to other auth page */}
             <div className="text-center">

@@ -1,6 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'
 import { object, string, pipe, nonEmpty, url, custom, safeParse } from 'valibot'
+import { supabase } from '~/lib/supabase.server'
+import { slamEntries } from '~/db/schema/slamEntries'
+import { db } from '~/server-functions/database'
 
 // Validation schema for join slam form
 const JoinSlamSchema = object({
@@ -17,11 +20,6 @@ const JoinSlamSchema = object({
 
 // Server function for joining slam
 export const joinSlamFn = createServerFn({ method: 'POST' }).handler(async () => {
-  // Import server-side dependencies only inside the server function
-  const { getSupabaseServerClient } = await import('~/server-functions/supabase')
-  const { slamEntries } = await import('~/db/server-only')
-  const { db } = await import('~/server-functions/database')
-
   // Get the data from the request body
   const { itchIoLink, slamId } = await getRequest().json()
 
@@ -35,10 +33,10 @@ export const joinSlamFn = createServerFn({ method: 'POST' }).handler(async () =>
     }
   }
 
-  const supabase = await getSupabaseServerClient()
+  const supabaseClient = supabase()
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabaseClient.auth.getUser()
 
   if (!user?.id) {
     return {
@@ -75,4 +73,3 @@ export const joinSlamFn = createServerFn({ method: 'POST' }).handler(async () =>
     }
   }
 })
-

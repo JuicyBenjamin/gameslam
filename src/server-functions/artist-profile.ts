@@ -1,4 +1,11 @@
 import { createServerFn } from '@tanstack/react-start'
+import { db } from '~/server-functions/database'
+import { artists } from '~/db/schema/artists'
+import { assets } from '~/db/schema/assets'
+import { artistAssets } from '~/db/schema/artistAssets'
+import { slams } from '~/db/schema/slams'
+import { eq } from 'drizzle-orm'
+import { parse } from 'node-html-parser'
 
 // Server function for fetching artist profile
 export const fetchArtistProfile = createServerFn({ method: 'GET' }).handler(async ctx => {
@@ -6,12 +13,6 @@ export const fetchArtistProfile = createServerFn({ method: 'GET' }).handler(asyn
   console.log('Fetching artist profile on server for:', artistName)
 
   try {
-    // Import server-side dependencies only inside the server function
-    const { db } = await import('~/server-functions/database')
-    const { artists, assets, artistAssets, slams } = await import('~/db/server-only')
-    const { eq } = await import('drizzle-orm')
-    const { parse } = await import('node-html-parser')
-
     // Get artist by name
     const artistData = await db.select().from(artists).where(eq(artists.name, artistName)).limit(1)
 

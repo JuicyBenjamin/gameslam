@@ -1,4 +1,12 @@
 import { createServerFn } from '@tanstack/react-start'
+import { db } from '~/server-functions/database'
+import { slams } from '~/db/schema/slams'
+import { artists } from '~/db/schema/artists'
+import { assets } from '~/db/schema/assets'
+import { users } from '~/db/schema/users'
+import { slamEntries } from '~/db/schema/slamEntries'
+import { eq, getTableColumns, sql } from 'drizzle-orm'
+import { alias } from 'drizzle-orm/pg-core'
 
 // Server function for fetching slam details
 export const fetchSlamDetails = createServerFn({ method: 'GET' }).handler(async ctx => {
@@ -6,12 +14,6 @@ export const fetchSlamDetails = createServerFn({ method: 'GET' }).handler(async 
   console.log('Fetching slam details on server for:', slamId)
 
   try {
-    // Import server-side dependencies only inside the server function
-    const { db } = await import('~/server-functions/database')
-    const { slams, artists, assets, users, slamEntries } = await import('~/db/server-only')
-    const { eq, getTableColumns, sql } = await import('drizzle-orm')
-    const { alias } = await import('drizzle-orm/pg-core')
-
     const entryUsers = alias(users, 'entryUsers')
 
     const slamsResult = await db

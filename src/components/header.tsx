@@ -17,58 +17,61 @@ export const Header = () => {
   return (
     <header className="navbar bg-primary sticky top-0 z-50 text-white shadow-md">
       <div className="container mx-auto flex items-center">
-        {/* <!-- Left Side: Logo and Navigation --> */}
-        <div className="flex items-center space-x-4">
+        {/* <!-- Left Side: Logo --> */}
+        <div className="flex items-center">
           <Link className="btn btn-ghost text-xl" to="/">
             Logo
           </Link>
-
-          {/* <!-- Navigation Links --> */}
-          <div className="hidden items-center space-x-4 md:flex">
-            <Link
-              className="btn btn-ghost"
-              to="/what-is-a-game-slam"
-              activeProps={{
-                className: 'btn btn-ghost underline',
-              }}
-            >
-              What is a Game Slam?
-            </Link>
-            <Link
-              className="btn btn-ghost"
-              to="/slams"
-              activeProps={{
-                className: 'btn btn-ghost underline',
-              }}
-            >
-              Slams
-            </Link>
-            <Link
-              className="btn btn-ghost"
-              to="/artists"
-              activeProps={{
-                className: 'btn btn-ghost underline',
-              }}
-            >
-              Artists
-            </Link>
-          </div>
         </div>
 
-        {/* <!-- Right Side: User Menu --> */}
+        {/* <!-- Right Side: Navigation and User Menu --> */}
         <div className="flex-1 flex justify-end">
-          {isLoggedIn ? (
-            <UserAvatarMenu user={user} />
-          ) : (
-            <div className="hidden md:flex items-center space-x-2">
-              <Link className="btn btn-neutral" to="/login">
-                Login
+          <div className="flex items-center space-x-4">
+            {/* <!-- Navigation Links --> */}
+            <div className="hidden items-center space-x-4 md:flex">
+              <Link
+                className="btn btn-ghost"
+                to="/what-is-a-game-slam"
+                activeProps={{
+                  className: 'btn btn-ghost underline',
+                }}
+              >
+                What is a Game Slam?
               </Link>
-              <Link className="btn btn-neutral" to="/sign-up">
-                Sign Up
+              <Link
+                className="btn btn-ghost"
+                to="/slams"
+                activeProps={{
+                  className: 'btn btn-ghost underline',
+                }}
+              >
+                Slams
+              </Link>
+              <Link
+                className="btn btn-ghost"
+                to="/artists"
+                activeProps={{
+                  className: 'btn btn-ghost underline',
+                }}
+              >
+                Artists
               </Link>
             </div>
-          )}
+
+            {/* <!-- User Menu --> */}
+            {isLoggedIn ? (
+              <UserAvatarMenu user={user} />
+            ) : (
+              <div className="hidden md:flex items-center space-x-2">
+                <Link className="btn btn-neutral" to="/login">
+                  Login
+                </Link>
+                <Link className="btn btn-neutral" to="/sign-up">
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* <!-- Mobile Menu Toggle --> */}

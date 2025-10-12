@@ -121,7 +121,9 @@ export const Header = () => {
             {isLoggedIn ? (
               <>
                 <li>
-                  <Link to={`/${user.name}`}>Profile</Link>
+                  <Link to="/$userName" params={{ userName: user.name }}>
+                    Profile
+                  </Link>
                 </li>
                 <li>
                   <UserAvatarMenu user={user} />

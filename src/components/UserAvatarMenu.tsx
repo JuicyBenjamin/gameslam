@@ -42,7 +42,9 @@ export const UserAvatarMenu = ({ user }: UserAvatarMenuProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem asChild>
-          <Link to={`/${user.name}`}>Profile</Link>
+          <Link to="/$userName" params={{ userName: user.name }}>
+            Profile
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <button onClick={handleLogout} disabled={logoutMutation.isPending} className="w-full text-left">

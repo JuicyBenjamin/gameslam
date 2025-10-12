@@ -25,11 +25,6 @@ function getSlamRarity(participantCount: number) {
 }
 
 export const Route = createFileRoute('/_user-profile/$userName')({
-  validateSearch: (search: Record<string, unknown>) => {
-    return {
-      userName: search.userName as string,
-    }
-  },
   beforeLoad: ({ params }) => {
     const userName = params.userName
     console.log('✅ Valid username for profile lookup:', userName)

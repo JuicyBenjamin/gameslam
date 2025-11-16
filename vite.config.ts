@@ -7,6 +7,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   server: { port: 3000 },
+  preview: { port: 3000, host: '0.0.0.0' },
   ssr: {
     noExternal: ['@tanstack/start'],
     external: ['node:async_hooks', '@tanstack/start-storage-context'],

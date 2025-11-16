@@ -12,8 +12,6 @@ export const Header = () => {
   const user = userData?.user
   const isLoggedIn = user != null
 
-  console.log({ user })
-
   return (
     <header className="navbar bg-primary sticky top-0 z-50 text-white shadow-md">
       <div className="container mx-auto flex items-center">

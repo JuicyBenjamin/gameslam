@@ -6,21 +6,17 @@ interface HealthStatus {
 }
 
 export const Route = createFileRoute('/health/')({
-  server: {
-    handlers: {
-      GET: async () => {
-        const healthStatus: HealthStatus = {
-          status: 'healthy',
-          timestamp: new Date().toISOString(),
-        }
-
-        return new Response(JSON.stringify(healthStatus), {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-      },
-    },
+  loader: async () => {
+    const healthStatus: HealthStatus = {
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+    }
+    return healthStatus
   },
+  component: HealthCheck,
 })
+
+function HealthCheck() {
+  const healthStatus = Route.useLoaderData()
+  return <pre className="p-4 font-mono text-sm">{JSON.stringify(healthStatus, null, 2)}</pre>
+}

@@ -14,6 +14,7 @@ import { Route as WhatIsAGameSlamIndexRouteImport } from './routes/what-is-a-gam
 import { Route as SlamsIndexRouteImport } from './routes/slams/index'
 import { Route as SignUpIndexRouteImport } from './routes/sign-up/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as HealthIndexRouteImport } from './routes/health/index'
 import { Route as ArtistsIndexRouteImport } from './routes/artists/index'
 import { Route as UserProfileUserNameRouteImport } from './routes/_user-profile/$userName'
 import { Route as SlamsCreateIndexRouteImport } from './routes/slams/create/index'
@@ -43,6 +44,11 @@ const SignUpIndexRoute = SignUpIndexRouteImport.update({
 const LoginIndexRoute = LoginIndexRouteImport.update({
   id: '/login/',
   path: '/login/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthIndexRoute = HealthIndexRouteImport.update({
+  id: '/health/',
+  path: '/health/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArtistsIndexRoute = ArtistsIndexRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$userName': typeof UserProfileUserNameRoute
   '/artists': typeof ArtistsIndexRoute
+  '/health': typeof HealthIndexRoute
   '/login': typeof LoginIndexRoute
   '/sign-up': typeof SignUpIndexRoute
   '/slams': typeof SlamsIndexRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$userName': typeof UserProfileUserNameRoute
   '/artists': typeof ArtistsIndexRoute
+  '/health': typeof HealthIndexRoute
   '/login': typeof LoginIndexRoute
   '/sign-up': typeof SignUpIndexRoute
   '/slams': typeof SlamsIndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_user-profile/$userName': typeof UserProfileUserNameRoute
   '/artists/': typeof ArtistsIndexRoute
+  '/health/': typeof HealthIndexRoute
   '/login/': typeof LoginIndexRoute
   '/sign-up/': typeof SignUpIndexRoute
   '/slams/': typeof SlamsIndexRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$userName'
     | '/artists'
+    | '/health'
     | '/login'
     | '/sign-up'
     | '/slams'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$userName'
     | '/artists'
+    | '/health'
     | '/login'
     | '/sign-up'
     | '/slams'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_user-profile/$userName'
     | '/artists/'
+    | '/health/'
     | '/login/'
     | '/sign-up/'
     | '/slams/'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UserProfileUserNameRoute: typeof UserProfileUserNameRoute
   ArtistsIndexRoute: typeof ArtistsIndexRoute
+  HealthIndexRoute: typeof HealthIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   SignUpIndexRoute: typeof SignUpIndexRoute
   SlamsIndexRoute: typeof SlamsIndexRoute
@@ -197,6 +210,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/health/': {
+      id: '/health/'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof HealthIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/artists/': {
       id: '/artists/'
       path: '/artists'
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UserProfileUserNameRoute: UserProfileUserNameRoute,
   ArtistsIndexRoute: ArtistsIndexRoute,
+  HealthIndexRoute: HealthIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   SignUpIndexRoute: SignUpIndexRoute,
   SlamsIndexRoute: SlamsIndexRoute,

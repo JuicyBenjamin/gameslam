@@ -153,7 +153,7 @@ function RouteComponent() {
           <Button
             variant="ghost"
             asChild
-            className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+            className="text-muted-foreground hover:text-foreground"
           >
             <Link to="/slams">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -171,7 +171,7 @@ function RouteComponent() {
           <h1 className="mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-4xl font-bold text-transparent md:text-6xl">
             {slam.slam.name}
           </h1>
-          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+          <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted-foreground">
             {slam.slam.description}
           </p>
         </div>
@@ -189,7 +189,7 @@ function RouteComponent() {
                       <Trophy className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Entries</p>
+                      <p className="text-sm text-muted-foreground">Entries</p>
                       <Button variant="link" asChild className="p-0 h-auto text-lg font-semibold">
                         <a href={`/slams/show/${slam.slam.id}/entries`}>{validEntries.length}</a>
                       </Button>
@@ -205,7 +205,7 @@ function RouteComponent() {
                       <User className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Created by</p>
+                      <p className="text-sm text-muted-foreground">Created by</p>
                       <Button variant="link" asChild className="p-0 h-auto text-lg font-semibold">
                         <a href={`/${slam.createdBy?.name}`}>{slam.createdBy?.name}</a>
                       </Button>
@@ -242,8 +242,8 @@ function RouteComponent() {
                           <a href={`/artists/${slam.artist.name}`}>{slam.asset.name}</a>
                         </Button>
                       </div>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">by {slam.artist.name}</p>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">Featured asset for this slam</p>
+                      <p className="text-sm text-muted-foreground mb-2">by {slam.artist.name}</p>
+                      <p className="text-sm text-muted-foreground">Featured asset for this slam</p>
                     </div>
                   </div>
                 </CardContent>
@@ -268,11 +268,11 @@ function RouteComponent() {
                   {validEntries.slice(0, 3).map((entry: any) => (
                     <div
                       key={entry.id}
-                      className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800"
+                      className="flex items-center justify-between p-3 rounded-lg bg-muted"
                     >
                       <div>
                         <p className="font-medium">{entry.name}</p>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                        <p className="text-sm text-muted-foreground">
                           by {entry.user?.name || 'Unknown User'}
                         </p>
                       </div>
@@ -331,7 +331,7 @@ function RouteComponent() {
                             onChange={e => setItchIoLink(e.target.value)}
                             required
                           />
-                          <p className="text-sm text-slate-600 dark:text-slate-400">
+                          <p className="text-sm text-muted-foreground">
                             Paste the URL of your itch.io game entry
                           </p>
                         </div>
@@ -362,7 +362,7 @@ function RouteComponent() {
                 <CardContent className="p-6 text-center">
                   <Package className="mx-auto h-12 w-12 text-primary mb-4" />
                   <h3 className="text-xl font-bold mb-4">View Asset</h3>
-                  <p className="mb-6 text-slate-600 dark:text-slate-400">
+                  <p className="mb-6 text-muted-foreground">
                     Check out the asset that inspired this game slam challenge.
                   </p>
                   <Button variant="outline" size="lg" asChild className="w-full">
@@ -382,19 +382,19 @@ function RouteComponent() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-600 dark:text-slate-400">Status:</span>
+                  <span className="text-muted-foreground">Status:</span>
                   <Badge variant="default">Active</Badge>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-600 dark:text-slate-400">Entries:</span>
+                  <span className="text-muted-foreground">Entries:</span>
                   <span className="font-medium">{validEntries.length}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-600 dark:text-slate-400">Created:</span>
+                  <span className="text-muted-foreground">Created:</span>
                   <span className="font-medium">{formatDate(slam.slam.createdAt.toISOString())}</span>
                 </div>
                 <div className="flex justify-between items-start">
-                  <span className="text-slate-600 dark:text-slate-400">Prize:</span>
+                  <span className="text-muted-foreground">Prize:</span>
                   <span className="font-medium text-right max-w-[60%]">TBD</span>
                 </div>
               </CardContent>
@@ -406,8 +406,8 @@ function RouteComponent() {
         <div className="text-center">
           <Separator className="mb-6" />
           <div className="mb-4">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">Share this slam</h3>
-            <p className="text-slate-600 dark:text-slate-400">Help spread the word about this awesome challenge!</p>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Share this slam</h3>
+            <p className="text-muted-foreground">Help spread the word about this awesome challenge!</p>
           </div>
           <div className="flex justify-center space-x-4">
             <Button variant="outline" size="icon" onClick={() => handleShare('twitter')} title="Share on X (Twitter)">

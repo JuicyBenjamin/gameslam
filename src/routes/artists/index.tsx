@@ -27,14 +27,14 @@ function Artists() {
 
   const getSpecialtyColor = (specialty: string) => {
     const colors = {
-      '2D Art': 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200',
-      'Game Dev': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-      Audio: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-      '3D Art': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-      'UI/UX': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
-      Programming: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200',
+      '2D Art': 'bg-primary/10 text-primary',
+      'Game Dev': 'bg-primary/20 text-primary',
+      Audio: 'bg-accent/10 text-accent-foreground',
+      '3D Art': 'bg-accent/20 text-accent-foreground',
+      'UI/UX': 'bg-primary/15 text-primary',
+      Programming: 'bg-accent/15 text-accent-foreground',
     }
-    return colors[specialty as keyof typeof colors] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+    return colors[specialty as keyof typeof colors] || 'bg-muted text-muted-foreground'
   }
 
   return (
@@ -124,7 +124,7 @@ function Artists() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors bg-transparent"
+                      className="w-full"
                     >
                       <User className="mr-2 h-4 w-4" />
                       View Profile

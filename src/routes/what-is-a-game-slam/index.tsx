@@ -31,10 +31,10 @@ function WhatIsAGameSlam() {
         {/* What Makes Game Slams Different */}
         <section className="mb-20">
           <div className="text-center">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               What Makes Game Slams Different?
             </h2>
-            <p className="mx-auto mb-12 max-w-2xl text-lg text-gray-600">
+            <p className="mx-auto mb-12 max-w-2xl text-lg text-muted-foreground">
               Discover why Game Slams offer a unique approach to learning game development
             </p>
           </div>
@@ -42,7 +42,7 @@ function WhatIsAGameSlam() {
           <div className="grid gap-8 md:grid-cols-3">
             <Card className="group transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-100 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <Clock className="h-8 w-8" />
                 </div>
                 <CardTitle className="text-xl">Learn at Your Own Pace</CardTitle>
@@ -56,7 +56,7 @@ function WhatIsAGameSlam() {
 
             <Card className="group transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 text-accent-foreground group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
                   <Target className="h-8 w-8" />
                 </div>
                 <CardTitle className="text-xl">Focus on What Matters</CardTitle>
@@ -70,7 +70,7 @@ function WhatIsAGameSlam() {
 
             <Card className="group transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <CheckCircle className="h-8 w-8" />
                 </div>
                 <CardTitle className="text-xl">Clear Goals</CardTitle>
@@ -87,8 +87,8 @@ function WhatIsAGameSlam() {
         {/* How It Works */}
         <section className="mb-20">
           <Card className="overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 to-gray-50 text-center">
-              <CardTitle className="text-3xl font-bold text-gray-900 sm:text-4xl">How It Works</CardTitle>
+            <CardHeader className="bg-gradient-to-r from-muted to-muted/80 text-center">
+              <CardTitle className="text-3xl font-bold text-foreground sm:text-4xl">How It Works</CardTitle>
               <CardDescription className="mx-auto mt-4 max-w-3xl text-lg">
                 When you join a Game Slam, you'll get a challenge and a set of game assets to work with. Here's why this
                 approach is helpful:
@@ -96,32 +96,32 @@ function WhatIsAGameSlam() {
             </CardHeader>
             <CardContent className="p-8">
               <div className="grid gap-8 lg:grid-cols-3">
-                <div className="flex flex-col items-center rounded-xl bg-purple-50 p-6 text-center">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-600">
+                <div className="flex flex-col items-center rounded-xl bg-primary/10 p-6 text-center">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary">
                     <Palette className="h-6 w-6" />
                   </div>
-                  <h3 className="mb-2 text-lg font-bold text-purple-900">Skip the Art Part</h3>
-                  <p className="text-gray-600">
+                  <h3 className="mb-2 text-lg font-bold text-primary">Skip the Art Part</h3>
+                  <p className="text-muted-foreground">
                     We point you to the game assets, so you can focus on making the game feel fun to play.
                   </p>
                 </div>
 
-                <div className="flex flex-col items-center rounded-xl bg-blue-50 p-6 text-center">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                <div className="flex flex-col items-center rounded-xl bg-accent/10 p-6 text-center">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-accent/20 text-accent-foreground">
                     <Users className="h-6 w-6" />
                   </div>
-                  <h3 className="mb-2 text-lg font-bold text-blue-900">Discover New Assets</h3>
-                  <p className="text-gray-600">
+                  <h3 className="mb-2 text-lg font-bold text-accent-foreground">Discover New Assets</h3>
+                  <p className="text-muted-foreground">
                     Each slam features work from game artists, helping you find cool assets for your future projects.
                   </p>
                 </div>
 
-                <div className="flex flex-col items-center rounded-xl bg-green-50 p-6 text-center">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600">
+                <div className="flex flex-col items-center rounded-xl bg-primary/5 p-6 text-center">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
                     <CheckCircle className="h-6 w-6" />
                   </div>
-                  <h3 className="mb-2 text-lg font-bold text-green-900">Know When You're Done</h3>
-                  <p className="text-gray-600">
+                  <h3 className="mb-2 text-lg font-bold text-primary">Know When You're Done</h3>
+                  <p className="text-muted-foreground">
                     Each challenge has a simple list of requirements, so you know exactly what you need to build.
                   </p>
                 </div>
@@ -134,7 +134,7 @@ function WhatIsAGameSlam() {
         <section className="mb-20">
           <Card className="overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
             <CardHeader className="text-center">
-              <CardTitle className="text-3xl font-bold text-gray-900 sm:text-4xl">Join the Community</CardTitle>
+              <CardTitle className="text-3xl font-bold text-foreground sm:text-4xl">Join the Community</CardTitle>
               <CardDescription className="mx-auto mt-4 max-w-2xl text-lg">
                 Game Slam is a place where you can:
               </CardDescription>
@@ -142,42 +142,42 @@ function WhatIsAGameSlam() {
             <CardContent className="p-8">
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="flex items-start space-x-4 rounded-lg bg-white/60 p-4 backdrop-blur-sm">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-600">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
                     <Target className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="mb-1 text-lg font-semibold text-gray-900">Try New Challenges</h3>
-                    <p className="text-gray-600">Try out new game development challenges</p>
+                    <h3 className="mb-1 text-lg font-semibold text-foreground">Try New Challenges</h3>
+                    <p className="text-muted-foreground">Try out new game development challenges</p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4 rounded-lg bg-white/60 p-4 backdrop-blur-sm">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent-foreground">
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="mb-1 text-lg font-semibold text-gray-900">Meet Developers</h3>
-                    <p className="text-gray-600">Meet other game developers</p>
+                    <h3 className="mb-1 text-lg font-semibold text-foreground">Meet Developers</h3>
+                    <p className="text-muted-foreground">Meet other game developers</p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4 rounded-lg bg-white/60 p-4 backdrop-blur-sm">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
                     <Package className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="mb-1 text-lg font-semibold text-gray-900">Find Assets</h3>
-                    <p className="text-gray-600">Find game assets for your projects</p>
+                    <h3 className="mb-1 text-lg font-semibold text-foreground">Find Assets</h3>
+                    <p className="text-muted-foreground">Find game assets for your projects</p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4 rounded-lg bg-white/60 p-4 backdrop-blur-sm">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-orange-100 text-orange-600">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent-foreground">
                     <MessageSquare className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="mb-1 text-lg font-semibold text-gray-900">Share Progress</h3>
-                    <p className="text-gray-600">Share what you're working on</p>
+                    <h3 className="mb-1 text-lg font-semibold text-foreground">Share Progress</h3>
+                    <p className="text-muted-foreground">Share what you're working on</p>
                   </div>
                 </div>
               </div>
@@ -196,7 +196,7 @@ function WhatIsAGameSlam() {
                 Join our community and participate in your first Game Slam today!
               </p>
 
-              <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
+              <Button asChild size="lg" className="bg-card text-primary hover:bg-muted">
                 <Link to="/slams">Check Out Current Slams</Link>
               </Button>
             </CardContent>

@@ -110,7 +110,7 @@ function Index() {
                     <Users className="h-3 w-3" />
                     {slamData.entryCount} entries
                   </Badge>
-                  <Button asChild size="sm">
+                  <Button asChild size="sm" variant="outline">
                     <a href={`/slams/show/${slamData.slam.id}`}>View Slam</a>
                   </Button>
                 </CardFooter>
@@ -145,7 +145,7 @@ function Index() {
                     <Folder className="h-3 w-3" />
                     {artist.assetCount} assets
                   </Badge>
-                  <Button asChild size="sm">
+                  <Button asChild size="sm" variant="outline">
                     <a href={`/artists/${artist.name}`}>View Profile</a>
                   </Button>
                 </CardFooter>
@@ -174,7 +174,7 @@ function Index() {
                 </CardHeader>
                 <CardFooter className="flex items-center justify-between">
                   <Badge variant="secondary">Asset</Badge>
-                  <Button asChild size="sm">
+                  <Button asChild size="sm" variant="outline">
                     <a href={asset.link} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-1 h-3 w-3" />
                       View Asset
@@ -206,7 +206,7 @@ function Index() {
                     {entry.description || 'No description provided'}
                   </p>
                   <p className="mb-4 text-xs text-muted-foreground">By {entry.userName}</p>
-                  <Button asChild size="sm" className="w-full">
+                  <Button asChild size="sm" variant="outline" className="w-full">
                     <a href={entry.linkToEntry} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-1 h-3 w-3" />
                       View Entry

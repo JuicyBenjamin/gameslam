@@ -133,11 +133,11 @@ function UserProfile() {
   const totalAchievements = achievements.length
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted to-accent/10 dark:from-background dark:via-muted dark:to-accent/20">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10"></div>
         <div className="absolute inset-0 opacity-20">
           <div
             className="w-full h-full"
@@ -148,14 +148,14 @@ function UserProfile() {
           ></div>
         </div>
 
-        <div className="relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-lg">
+        <div className="relative bg-card/80 backdrop-blur-sm shadow-lg">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <div className="flex flex-col items-center text-center lg:flex-row lg:items-start lg:text-left">
               {/* Enhanced Avatar with Status */}
               <div className="relative mb-6 lg:mb-0 lg:mr-8">
-                <Avatar className="h-32 w-32 ring-4 ring-white dark:ring-slate-700 shadow-xl">
+                <Avatar className="h-32 w-32 ring-4 ring-card shadow-xl">
                   <AvatarImage src={user.avatarLink || '/placeholder.svg'} alt={user.name} />
-                  <AvatarFallback className="text-3xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+                  <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
                     {user.name
                       .split(' ')
                       .map((n: string) => n[0])
@@ -163,8 +163,8 @@ function UserProfile() {
                   </AvatarFallback>
                 </Avatar>
                 {/* Online Status Indicator */}
-                <div className="absolute bottom-2 right-2 h-6 w-6 rounded-full bg-green-500 border-2 border-white dark:border-slate-800 flex items-center justify-center">
-                  <div className="h-2 w-2 rounded-full bg-white"></div>
+                <div className="absolute bottom-2 right-2 h-6 w-6 rounded-full bg-accent border-2 border-card flex items-center justify-center">
+                  <div className="h-2 w-2 rounded-full bg-card"></div>
                 </div>
               </div>
 
@@ -172,30 +172,30 @@ function UserProfile() {
               <div className="flex-1">
                 <div className="flex flex-col items-center lg:items-start">
                   <div className="flex items-center gap-3 mb-2">
-                    <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
+                    <h1 className="text-4xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
                       {user.name}
                     </h1>
                     {user.isVerified && (
-                      <Badge variant="default" className="bg-blue-500 hover:bg-blue-600 text-white">
+                      <Badge variant="default">
                         <Shield className="h-3 w-3 mr-1" />
                         Verified
                       </Badge>
                     )}
                   </div>
 
-                  <p className="text-xl text-slate-600 dark:text-slate-400 mb-4">@{user.name}</p>
+                  <p className="text-xl text-muted-foreground mb-4">@{user.name}</p>
 
                   {/* Achievement Progress */}
                   <div className="flex items-center gap-4 mb-6">
                     <div className="flex items-center gap-2">
-                      <Trophy className="h-5 w-5 text-yellow-500" />
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <Trophy className="h-5 w-5 text-primary" />
+                      <span className="text-sm font-medium text-foreground">
                         {earnedAchievements.length}/{totalAchievements} Achievements
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-5 w-5 text-blue-500" />
-                      <span className="text-sm text-slate-600 dark:text-slate-400">
+                      <Calendar className="h-5 w-5 text-primary" />
+                      <span className="text-sm text-muted-foreground">
                         Member since {new Date().getFullYear()}
                       </span>
                     </div>
@@ -205,32 +205,32 @@ function UserProfile() {
 
               {/* Enhanced Stats Grid */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-8 lg:mt-0">
-                <div className="text-center p-4 bg-white/60 dark:bg-slate-700/60 rounded-xl backdrop-blur-sm border border-white/20 dark:border-slate-600/20">
-                  <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{stats.totalSlams}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center gap-1">
+                <div className="text-center p-4 bg-card/60 rounded-xl backdrop-blur-sm border">
+                  <div className="text-3xl font-bold text-foreground mb-1">{stats.totalSlams}</div>
+                  <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                     <Gamepad2 className="h-4 w-4" />
                     Slams Created
                   </div>
                 </div>
-                <div className="text-center p-4 bg-white/60 dark:bg-slate-700/60 rounded-xl backdrop-blur-sm border border-white/20 dark:border-slate-600/20">
-                  <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{stats.totalEntries}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center gap-1">
+                <div className="text-center p-4 bg-card/60 rounded-xl backdrop-blur-sm border">
+                  <div className="text-3xl font-bold text-foreground mb-1">{stats.totalEntries}</div>
+                  <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                     <Target className="h-4 w-4" />
                     Entries
                   </div>
                 </div>
-                <div className="text-center p-4 bg-white/60 dark:bg-slate-700/60 rounded-xl backdrop-blur-sm border border-white/20 dark:border-slate-600/20">
-                  <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{activeSlams}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center gap-1">
+                <div className="text-center p-4 bg-card/60 rounded-xl backdrop-blur-sm border">
+                  <div className="text-3xl font-bold text-foreground mb-1">{activeSlams}</div>
+                  <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                     <Zap className="h-4 w-4" />
                     Active Slams
                   </div>
                 </div>
-                <div className="text-center p-4 bg-white/60 dark:bg-slate-700/60 rounded-xl backdrop-blur-sm border border-white/20 dark:border-slate-600/20">
-                  <div className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">
+                <div className="text-center p-4 bg-card/60 rounded-xl backdrop-blur-sm border">
+                  <div className="text-3xl font-bold text-foreground mb-1">
                     {earnedAchievements.length}
                   </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center justify-center gap-1">
+                  <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                     <Award className="h-4 w-4" />
                     Achievements
                   </div>
@@ -246,14 +246,11 @@ function UserProfile() {
         {/* Achievements Section */}
         <section className="mb-12">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Trophy className="h-6 w-6 text-yellow-500" />
+            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+              <Trophy className="h-6 w-6 text-primary" />
               Achievements
             </h2>
-            <Badge
-              variant="secondary"
-              className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300"
-            >
+            <Badge variant="secondary">
               {earnedAchievements.length}/{totalAchievements} earned
             </Badge>
           </div>
@@ -263,10 +260,10 @@ function UserProfile() {
               const IconComponent = achievement.icon
               const isEarned = achievement.earned
               const rarityColors = {
-                common: 'border-gray-300 bg-gray-50 dark:bg-gray-800/50',
-                rare: 'border-blue-300 bg-blue-50 dark:bg-blue-900/20',
-                epic: 'border-purple-300 bg-purple-50 dark:bg-purple-900/20',
-                legendary: 'border-yellow-300 bg-yellow-50 dark:bg-yellow-900/20',
+                common: 'border-border bg-muted',
+                rare: 'border-primary/30 bg-primary/10',
+                epic: 'border-primary/50 bg-primary/20',
+                legendary: 'border-primary bg-primary/30',
               }
 
               return (
@@ -275,7 +272,7 @@ function UserProfile() {
                   className={`transition-all duration-300 hover:shadow-lg ${
                     isEarned
                       ? `border-2 ${rarityColors[achievement.rarity as keyof typeof rarityColors]} shadow-md`
-                      : 'border-gray-200 bg-gray-50/50 dark:bg-slate-800/50 opacity-60'
+                      : 'border-border bg-muted/50 opacity-60'
                   }`}
                 >
                   <CardContent className="p-4">
@@ -283,8 +280,8 @@ function UserProfile() {
                       <div
                         className={`p-2 rounded-lg ${
                           isEarned
-                            ? 'bg-gradient-to-br from-yellow-400 to-orange-500 text-white'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-400'
+                            ? 'bg-gradient-to-br from-primary to-primary/80 text-primary-foreground'
+                            : 'bg-muted text-muted-foreground'
                         }`}
                       >
                         <IconComponent className="h-5 w-5" />
@@ -292,16 +289,16 @@ function UserProfile() {
                       <div className="flex-1">
                         <h3
                           className={`font-semibold ${
-                            isEarned ? 'text-slate-900 dark:text-slate-100' : 'text-gray-500'
+                            isEarned ? 'text-foreground' : 'text-muted-foreground'
                           }`}
                         >
                           {achievement.name}
                         </h3>
-                        <p className={`text-sm ${isEarned ? 'text-slate-600 dark:text-slate-400' : 'text-gray-400'}`}>
+                        <p className={`text-sm ${isEarned ? 'text-muted-foreground' : 'text-muted-foreground/70'}`}>
                           {achievement.description}
                         </p>
                       </div>
-                      {isEarned && <CheckCircle className="h-5 w-5 text-green-500" />}
+                      {isEarned && <CheckCircle className="h-5 w-5 text-accent" />}
                     </div>
                   </CardContent>
                 </Card>
@@ -313,61 +310,61 @@ function UserProfile() {
         {/* Enhanced Stats Overview */}
         <section className="mb-12">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <BarChart3 className="h-6 w-6 text-blue-500" />
+            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+              <BarChart3 className="h-6 w-6 text-primary" />
               Performance Overview
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-700">
+            <Card className="bg-gradient-to-br from-primary/10 to-primary/20 border-primary/30">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Success Rate</p>
-                    <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+                    <p className="text-sm font-medium text-primary">Success Rate</p>
+                    <p className="text-2xl font-bold text-foreground">
                       {slams.length > 0 ? Math.round((completedSlams / slams.length) * 100) : 0}%
                     </p>
                   </div>
-                  <TrendingUp className="h-8 w-8 text-blue-500" />
+                  <TrendingUp className="h-8 w-8 text-primary" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-700">
+            <Card className="bg-gradient-to-br from-accent/10 to-accent/20 border-accent/30">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-green-600 dark:text-green-400">Avg. Entries/Slam</p>
-                    <p className="text-2xl font-bold text-green-900 dark:text-green-100">{averageEntriesPerSlam}</p>
+                    <p className="text-sm font-medium text-accent-foreground">Avg. Entries/Slam</p>
+                    <p className="text-2xl font-bold text-foreground">{averageEntriesPerSlam}</p>
                   </div>
-                  <Target className="h-8 w-8 text-green-500" />
+                  <Target className="h-8 w-8 text-accent" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-700">
+            <Card className="bg-gradient-to-br from-primary/5 to-primary/15 border-primary/20">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-purple-600 dark:text-purple-400">Active Slams</p>
-                    <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">{activeSlams}</p>
+                    <p className="text-sm font-medium text-primary">Active Slams</p>
+                    <p className="text-2xl font-bold text-foreground">{activeSlams}</p>
                   </div>
-                  <Zap className="h-8 w-8 text-purple-500" />
+                  <Zap className="h-8 w-8 text-primary" />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-orange-200 dark:border-orange-700">
+            <Card className="bg-gradient-to-br from-accent/5 to-accent/15 border-accent/20">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-orange-600 dark:text-orange-400">Total Activity</p>
-                    <p className="text-2xl font-bold text-orange-900 dark:text-orange-100">
+                    <p className="text-sm font-medium text-accent-foreground">Total Activity</p>
+                    <p className="text-2xl font-bold text-foreground">
                       {stats.totalSlams + stats.totalEntries}
                     </p>
                   </div>
-                  <Heart className="h-8 w-8 text-orange-500" />
+                  <Heart className="h-8 w-8 text-accent" />
                 </div>
               </CardContent>
             </Card>
@@ -377,11 +374,11 @@ function UserProfile() {
         {/* Slams Created Section */}
         <section className="mb-12">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Gamepad2 className="h-6 w-6 text-blue-500" />
+            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+              <Gamepad2 className="h-6 w-6 text-primary" />
               Created Slams
             </h2>
-            <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
+            <Badge variant="secondary">
               {slams.length} slams
             </Badge>
           </div>
@@ -406,21 +403,21 @@ function UserProfile() {
                     <CardContent>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-slate-600 dark:text-slate-400">Created</span>
+                          <span className="text-muted-foreground">Created</span>
                           <span className="font-medium">{formatDate(slam.createdAt)}</span>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-slate-600 dark:text-slate-400">Status</span>
+                          <span className="text-muted-foreground">Status</span>
                           <Badge variant={slam.status === 'active' ? 'default' : 'secondary'}>{slam.status}</Badge>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-slate-600 dark:text-slate-400">Participants</span>
+                          <span className="text-muted-foreground">Participants</span>
                           <span className="font-medium">{slam.entryCount} entries</span>
                         </div>
                       </div>
                     </CardContent>
                     <CardContent className="pt-0">
-                      <Button asChild size="sm" className="w-full">
+                      <Button asChild size="sm" variant="outline" className="w-full">
                         <Link to="/slams/show/$id" params={{ id: slam.id }}>
                           <ArrowUpRight className="mr-2 h-4 w-4" />
                           View Slam
@@ -433,9 +430,9 @@ function UserProfile() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <Trophy className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
-              <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">No slams created yet</h3>
-              <p className="text-slate-600 dark:text-slate-400 mb-6">This user hasn't created any slams yet.</p>
+              <Trophy className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium text-foreground mb-2">No slams created yet</h3>
+              <p className="text-muted-foreground mb-6">This user hasn't created any slams yet.</p>
               <Button asChild>
                 <Link to="/slams/create">
                   <Plus className="mr-2 h-4 w-4" />
@@ -449,11 +446,11 @@ function UserProfile() {
         {/* Slam Entries Section */}
         <section className="mb-12">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Target className="h-6 w-6 text-green-500" />
+            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+              <Target className="h-6 w-6 text-accent" />
               Slam Entries
             </h2>
-            <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300">
+            <Badge variant="secondary">
               {entries.length} entries
             </Badge>
           </div>
@@ -471,17 +468,17 @@ function UserProfile() {
                   <CardContent>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-600 dark:text-slate-400">Submitted</span>
+                        <span className="text-muted-foreground">Submitted</span>
                         <span className="font-medium">{formatDate(entry.createdAt)}</span>
                       </div>
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-slate-600 dark:text-slate-400">Slam</span>
+                        <span className="text-muted-foreground">Slam</span>
                         <span className="font-medium">{entry.slam?.name || 'Unknown Slam'}</span>
                       </div>
                     </div>
                   </CardContent>
                   <CardContent className="pt-0">
-                    <Button asChild size="sm" className="w-full">
+                    <Button asChild size="sm" variant="outline" className="w-full">
                       <a href={entry.linkToEntry} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="mr-2 h-4 w-4" />
                         View Entry
@@ -493,9 +490,9 @@ function UserProfile() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <CheckCircle className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
-              <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">No entries yet</h3>
-              <p className="text-slate-600 dark:text-slate-400 mb-6">
+              <CheckCircle className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium text-foreground mb-2">No entries yet</h3>
+              <p className="text-muted-foreground mb-6">
                 This user hasn't submitted any slam entries yet.
               </p>
               <Button asChild>
@@ -511,13 +508,13 @@ function UserProfile() {
         {/* Activity Timeline */}
         <section className="mb-12">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Clock className="h-6 w-6 text-purple-500" />
+            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
+              <Clock className="h-6 w-6 text-primary" />
               Recent Activity
             </h2>
           </div>
 
-          <Card className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-slate-200 dark:border-slate-700">
+          <Card className="bg-gradient-to-br from-muted to-muted/80">
             <CardContent className="p-6">
               <div className="space-y-4">
                 {/* Mock recent activities - in a real app, this would come from the database */}
@@ -527,42 +524,42 @@ function UserProfile() {
                     title: 'Created "48-Hour Game Jam"',
                     time: '2 hours ago',
                     icon: Gamepad2,
-                    color: 'text-blue-500',
+                    color: 'text-primary',
                   },
                   {
                     type: 'entry_submitted',
                     title: 'Submitted entry to "Pixel Art Challenge"',
                     time: '1 day ago',
                     icon: Target,
-                    color: 'text-green-500',
+                    color: 'text-accent',
                   },
                   {
                     type: 'achievement_earned',
                     title: 'Earned "Active Creator" achievement',
                     time: '3 days ago',
                     icon: Trophy,
-                    color: 'text-yellow-500',
+                    color: 'text-primary',
                   },
                   {
                     type: 'slam_completed',
                     title: 'Completed "Music Game Slam"',
                     time: '1 week ago',
                     icon: CheckCircle,
-                    color: 'text-purple-500',
+                    color: 'text-accent',
                   },
                 ].map((activity, index) => {
                   const IconComponent = activity.icon
                   return (
                     <div
                       key={index}
-                      className="flex items-center gap-4 p-3 rounded-lg bg-white/50 dark:bg-slate-700/50 hover:bg-white/80 dark:hover:bg-slate-700/80 transition-colors"
+                      className="flex items-center gap-4 p-3 rounded-lg bg-card/50 hover:bg-card/80 transition-colors"
                     >
-                      <div className={`p-2 rounded-full bg-white dark:bg-slate-600 shadow-sm`}>
+                      <div className="p-2 rounded-full bg-card shadow-sm">
                         <IconComponent className={`h-4 w-4 ${activity.color}`} />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-slate-900 dark:text-slate-100">{activity.title}</p>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">{activity.time}</p>
+                        <p className="font-medium text-foreground">{activity.title}</p>
+                        <p className="text-sm text-muted-foreground">{activity.time}</p>
                       </div>
                     </div>
                   )

@@ -3,8 +3,9 @@ import { getRequest } from '@tanstack/react-start/server'
 import { createServerClient, type CookieMethodsServer } from '@supabase/ssr'
 import { parse as parseCookieHeader, serialize as serializeCookieHeader, type SerializeOptions } from 'cookie'
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL!
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY!
+// Check both import.meta.env (build-time) and process.env (runtime) for Vite variables
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   throw new Error('Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY')
 }

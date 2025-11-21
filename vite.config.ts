@@ -12,11 +12,11 @@ export default defineConfig({
   },
   ssr: {
     noExternal: ['@tanstack/start'],
-    external: ['node:async_hooks', '@tanstack/start-storage-context'],
+    external: ['node:async_hooks'],
   },
   build: {
     rollupOptions: {
-      external: ['node:async_hooks', '@tanstack/start-storage-context'],
+      external: ['node:async_hooks'],
     },
   },
   plugins: [

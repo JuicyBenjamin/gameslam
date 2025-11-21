@@ -18,5 +18,12 @@ export default defineConfig({
       external: ['node:async_hooks', '@tanstack/start-storage-context'],
     },
   },
-  plugins: [tsConfigPaths({ projects: ['./tsconfig.json'] }), tanstackStart(), tailwindcss(), viteReact()],
+  plugins: [
+    tsConfigPaths({ projects: ['./tsconfig.json'] }),
+    tanstackStart({
+      adapter: 'nitro',
+    }),
+    tailwindcss(),
+    viteReact(),
+  ],
 })

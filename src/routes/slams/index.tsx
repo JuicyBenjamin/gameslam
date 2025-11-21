@@ -31,8 +31,8 @@ function Slams() {
         {/* Header */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Game Slams</h1>
-            <p className="mt-2 text-lg text-slate-600 dark:text-slate-400">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground">Game Slams</h1>
+            <p className="mt-2 text-lg text-muted-foreground">
               Discover ongoing creative challenges and showcase your game development skills
             </p>
           </div>
@@ -63,7 +63,7 @@ function Slams() {
 
                 <CardContent className="space-y-3 flex-grow">
                   {/* Featured Artist */}
-                  <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Gamepad2 className="h-4 w-4 flex-shrink-0" />
                     <span className="truncate">
                       <span className="font-medium">Featured Artist:</span> {slamData.artist?.name || 'TBA'}
@@ -71,7 +71,7 @@ function Slams() {
                   </div>
 
                   {/* Organizer */}
-                  <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <User className="h-4 w-4 flex-shrink-0" />
                     <span className="truncate">
                       <span className="font-medium">Organized by:</span> {slamData.creator?.name || 'Unknown Organizer'}
@@ -89,7 +89,6 @@ function Slams() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors bg-transparent"
                   >
                     Join Slam
                   </Button>
@@ -102,9 +101,9 @@ function Slams() {
         {/* Empty State */}
         {slams.length === 0 && (
           <div className="text-center py-12">
-            <Gamepad2 className="mx-auto h-12 w-12 text-slate-400 dark:text-slate-600 mb-4" />
-            <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-2">No game slams yet</h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
+            <Gamepad2 className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-medium text-foreground mb-2">No game slams yet</h3>
+            <p className="text-muted-foreground mb-6">
               Be the first to create a game slam and challenge the community with your creative theme.
             </p>
             <Button asChild>

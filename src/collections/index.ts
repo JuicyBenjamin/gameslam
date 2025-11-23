@@ -1,0 +1,2 @@
+export { artistsCollection } from './artists'
+

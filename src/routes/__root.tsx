@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 import { HeadContent, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '../components/DefaultCatchBoundary'
 import { NotFound } from '../components/NotFound'
@@ -11,9 +11,7 @@ import appCss from '@/styles/app.css?url'
 import { seo } from '../utils/seo'
 import { Footer } from '~/components/footer'
 import { Header } from '~/components/header'
-
-// Create a client
-const queryClient = new QueryClient()
+import { queryClient } from '~/lib/query-client'
 
 export const Route = createRootRoute({
   beforeLoad: async () => {

@@ -5,25 +5,17 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { fetchArtists } from '~/server-functions/artists'
+import { useLiveQuery } from '@tanstack/react-db'
+import { artistsCollection } from '~/collections'
 
 export const Route = createFileRoute('/artists/')({
   component: Artists,
-  loader: async () => {
-    // This runs on the server and provides data for SSR
-    try {
-      const artists = await fetchArtists()
-      console.log('Artists loader data:', artists)
-      return { artists }
-    } catch (error) {
-      console.error('Artists loader error:', error)
-      throw error
-    }
-  },
 })
 
 function Artists() {
-  const { artists } = Route.useLoaderData()
+  const { data: artists = [] } = useLiveQuery(q =>
+    q.from({ artist: artistsCollection }).orderBy(({ artist }) => artist.artist.name, 'asc'),
+  )
 
   const getSpecialtyColor = (specialty: string) => {
     const colors = {
@@ -51,7 +43,7 @@ function Artists() {
 
         {/* Artists Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {artists.map((item: any) => {
+          {artists.map(item => {
             const artist = item.artist
             const assetCount = Number(item.assetCount)
 
@@ -121,11 +113,7 @@ function Artists() {
                   </CardContent>
 
                   <CardFooter className="pt-4">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full"
-                    >
+                    <Button variant="outline" size="sm" className="w-full">
                       <User className="mr-2 h-4 w-4" />
                       View Profile
                     </Button>

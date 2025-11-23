@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useLiveQuery, eq } from '@tanstack/react-db'
+import { artistsCollection } from '~/collections'
 import { fetchArtistProfile } from '~/server-functions/artist-profile'
 
 // Mock function for date formatting
@@ -22,7 +24,7 @@ export const Route = createFileRoute('/artists/$artistName/')({
     // This runs on the server and provides data for SSR
     try {
       const profileData = await fetchArtistProfile({ data: { artistName: params.artistName } } as any)
-      console.log('Artist profile data:', profileData)
+      console.log('Artist profile loader data:', profileData)
       return profileData
     } catch (error) {
       console.error('Artist profile loader error:', error)
@@ -32,7 +34,30 @@ export const Route = createFileRoute('/artists/$artistName/')({
 })
 
 function ArtistProfile() {
-  const { artist, assets, slams } = Route.useLoaderData()
+  const { artistName } = Route.useParams()
+  const loaderData = Route.useLoaderData()
+
+  // Find the artist from the collection
+  const { data: artists = [] } = useLiveQuery((q) =>
+    q
+      .from({ artist: artistsCollection })
+      .where(({ artist }) => eq(artist.artist.name, artistName)),
+  )
+
+  // Use loader data (collection will update reactively on client)
+  const profileData = loaderData
+
+  if (!profileData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-muted-foreground">Loading artist profile...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const { artist, assets, slams } = profileData
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">

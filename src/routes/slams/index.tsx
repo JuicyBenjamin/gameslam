@@ -4,6 +4,8 @@ import { Plus, Gamepad2, User, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useLiveQuery } from '@tanstack/react-db'
+import { slamsCollection } from '~/collections'
 import { fetchSlams } from '~/server-functions/slams'
 
 export const Route = createFileRoute('/slams/')({
@@ -22,7 +24,10 @@ export const Route = createFileRoute('/slams/')({
 })
 
 function Slams() {
-  const { slams } = Route.useLoaderData()
+  const { slams: initialSlams } = Route.useLoaderData()
+  const { data: slams = initialSlams } = useLiveQuery(q =>
+    q.from({ slam: slamsCollection }).orderBy(({ slam }) => slam.slam.createdAt, 'desc'),
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -86,10 +91,7 @@ function Slams() {
                       {slamData.entryCount} {slamData.entryCount === 1 ? 'submission' : 'submissions'}
                     </Badge>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                  >
+                  <Button variant="outline" size="sm">
                     Join Slam
                   </Button>
                 </CardFooter>

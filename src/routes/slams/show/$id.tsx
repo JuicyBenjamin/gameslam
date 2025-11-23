@@ -20,6 +20,8 @@ import { getCurrentUser } from '~/loaders/auth'
 import { object, string, pipe, nonEmpty, url, custom, safeParse } from 'valibot'
 import { toast } from 'sonner'
 import { fetchSlamDetails } from '~/server-functions/slam-show'
+import { useLiveQuery, eq } from '@tanstack/react-db'
+import { slamsCollection, slamEntriesCollection } from '~/collections'
 
 // Validation schema for join slam form
 const JoinSlamSchema = object({
@@ -73,9 +75,38 @@ function formatDate(date: string) {
 }
 
 function RouteComponent() {
-  const { slam, user } = Route.useLoaderData()
+  const { slam: initialSlam, user } = Route.useLoaderData()
+  const { id: slamId } = Route.useParams()
   const navigate = Route.useNavigate()
   // const joinSlamMutation = useServerFn(joinSlamFn)
+
+  // Get slam from collection
+  const { data: slams = [] } = useLiveQuery(q =>
+    q.from({ slam: slamsCollection }).where(({ slam }) => eq(slam.slam.id, slamId)),
+  )
+  const slamFromCollection = slams[0]
+
+  // Get entries from collection filtered by slamId
+  const { data: entries = [] } = useLiveQuery(q =>
+    q
+      .from({ entry: slamEntriesCollection })
+      .where(({ entry }) => eq(entry.entry.slamId, slamId))
+      .orderBy(({ entry }) => entry.entry.createdAt, 'desc'),
+  )
+
+  // Merge collection data with loader data
+  // Use collection data for slam and entries (reactive), loader data for artist, asset, createdBy
+  const slam = {
+    ...initialSlam,
+    slam: slamFromCollection?.slam || initialSlam.slam,
+    entries:
+      entries.length > 0
+        ? entries.map(e => ({
+            ...e.entry,
+            user: e.user,
+          }))
+        : initialSlam.entries,
+  }
 
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false)
   const [itchIoLink, setItchIoLink] = useState('')

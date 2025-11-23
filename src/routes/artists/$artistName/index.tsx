@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useLiveQuery, eq } from '@tanstack/react-db'
-import { artistsCollection } from '~/collections'
+import { artistsCollection, slamsCollection } from '~/collections'
 import { fetchArtistProfile } from '~/server-functions/artist-profile'
 
 // Mock function for date formatting
@@ -36,18 +36,17 @@ export const Route = createFileRoute('/artists/$artistName/')({
 function ArtistProfile() {
   const { artistName } = Route.useParams()
   const loaderData = Route.useLoaderData()
+  const { artist: initialArtist, assets: initialAssets, slams: initialSlams } = loaderData
 
-  // Find the artist from the collection
-  const { data: artists = [] } = useLiveQuery((q) =>
-    q
-      .from({ artist: artistsCollection })
-      .where(({ artist }) => eq(artist.artist.name, artistName)),
+  // Get artist from collection for reactive updates
+  const { data: artists = [] } = useLiveQuery(query =>
+    query.from({ artistItem: artistsCollection }).where(({ artistItem }) => eq(artistItem.artist.name, artistName)),
   )
 
-  // Use loader data (collection will update reactively on client)
-  const profileData = loaderData
+  const artistFromCollection = artists[0]
+  const artist = artistFromCollection?.artist || initialArtist
 
-  if (!profileData) {
+  if (!artist) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
         <div className="text-center">
@@ -57,7 +56,24 @@ function ArtistProfile() {
     )
   }
 
-  const { artist, assets, slams } = profileData
+  // Get artist's slams from collection filtered by artistId (use artist.id from collection)
+  const { data: artistSlams = [] } = useLiveQuery(query =>
+    query
+      .from({ slamItem: slamsCollection })
+      .where(({ slamItem }) => eq(slamItem.slam.artistId, artist.id))
+      .orderBy(({ slamItem }) => slamItem.slam.createdAt, 'desc'),
+  )
+
+  // Use collection data for artist, assets, and slams (reactive)
+  const assets = artistFromCollection?.assets || initialAssets
+  const slams =
+    artistSlams.length > 0
+      ? artistSlams.map(slamItem => ({
+          ...slamItem.slam,
+          entryCount: slamItem.entryCount,
+          status: slamItem.slam.isDeleted ? 'deleted' : 'active',
+        }))
+      : initialSlams
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">

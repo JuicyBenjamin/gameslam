@@ -13,8 +13,8 @@ export const Route = createFileRoute('/artists/')({
 })
 
 function Artists() {
-  const { data: artists = [] } = useLiveQuery(q =>
-    q.from({ artist: artistsCollection }).orderBy(({ artist }) => artist.artist.name, 'asc'),
+  const { data: artists = [] } = useLiveQuery(query =>
+    query.from({ artistItem: artistsCollection }).orderBy(({ artistItem }) => artistItem.artist.name, 'asc'),
   )
 
   const getSpecialtyColor = (specialty: string) => {

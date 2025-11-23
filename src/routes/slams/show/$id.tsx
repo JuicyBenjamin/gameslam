@@ -81,17 +81,17 @@ function RouteComponent() {
   // const joinSlamMutation = useServerFn(joinSlamFn)
 
   // Get slam from collection
-  const { data: slams = [] } = useLiveQuery(q =>
-    q.from({ slam: slamsCollection }).where(({ slam }) => eq(slam.slam.id, slamId)),
+  const { data: slams = [] } = useLiveQuery(query =>
+    query.from({ slamItem: slamsCollection }).where(({ slamItem }) => eq(slamItem.slam.id, slamId)),
   )
   const slamFromCollection = slams[0]
 
   // Get entries from collection filtered by slamId
-  const { data: entries = [] } = useLiveQuery(q =>
-    q
-      .from({ entry: slamEntriesCollection })
-      .where(({ entry }) => eq(entry.entry.slamId, slamId))
-      .orderBy(({ entry }) => entry.entry.createdAt, 'desc'),
+  const { data: entries = [] } = useLiveQuery(query =>
+    query
+      .from({ entryItem: slamEntriesCollection })
+      .where(({ entryItem }) => eq(entryItem.entry.slamId, slamId))
+      .orderBy(({ entryItem }) => entryItem.entry.createdAt, 'desc'),
   )
 
   // Merge collection data with loader data

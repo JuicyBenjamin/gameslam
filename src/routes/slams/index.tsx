@@ -25,8 +25,8 @@ export const Route = createFileRoute('/slams/')({
 
 function Slams() {
   const { slams: initialSlams } = Route.useLoaderData()
-  const { data: slams = initialSlams } = useLiveQuery(q =>
-    q.from({ slam: slamsCollection }).orderBy(({ slam }) => slam.slam.createdAt, 'desc'),
+  const { data: slams = initialSlams } = useLiveQuery(query =>
+    query.from({ slamItem: slamsCollection }).orderBy(({ slamItem }) => slamItem.slam.createdAt, 'desc'),
   )
 
   return (

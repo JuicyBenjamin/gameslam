@@ -28,6 +28,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { Badge } from '~/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { fetchUserProfile, getCurrentUser } from '~/server-functions/user-profile'
+import { useLiveQuery, eq } from '@tanstack/react-db'
+import { usersCollection, slamsCollection, slamEntriesCollection } from '~/collections'
 
 // Mock function for date formatting
 function formatDate(date: string) {
@@ -69,7 +71,74 @@ export const Route = createFileRoute('/_user-profile/$userName')({
 })
 
 function UserProfile() {
-  const { user, slams, entries, stats, currentUser } = Route.useLoaderData()
+  const { userName } = Route.useParams()
+  const loaderData = Route.useLoaderData()
+  const { user: initialUser, slams: initialSlams, entries: initialEntries, currentUser } = loaderData
+
+  // Get user from collection for reactive updates
+  const { data: users = [] } = useLiveQuery(query =>
+    query.from({ user: usersCollection }).where(({ user }) => eq(user.name, userName)),
+  )
+  const user = users[0] || initialUser
+
+  // Use initialUser.id from loader to ensure queries run immediately (SSR data available)
+  // This prevents blank page - queries can start immediately with loader data
+  const userId = initialUser?.id || user?.id
+
+  if (!userId) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-muted-foreground">User not found</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Get user's slams from collection - use loader data structure as fallback
+  const { data: userSlams } = useLiveQuery(query =>
+    query
+      .from({ slamItem: slamsCollection })
+      .where(({ slamItem }) => eq(slamItem.slam.createdBy, userId))
+      .orderBy(({ slamItem }) => slamItem.slam.createdAt, 'desc'),
+  )
+
+  // Get user's entries from collection - use loader data structure as fallback
+  const { data: userEntries } = useLiveQuery(query =>
+    query
+      .from({ entryItem: slamEntriesCollection })
+      .where(({ entryItem }) => eq(entryItem.entry.userId, userId))
+      .orderBy(({ entryItem }) => entryItem.entry.createdAt, 'desc'),
+  )
+
+  // Map collection data to match component expectations
+  // Use collection data if available, otherwise use loader data (instant render)
+  const slams =
+    userSlams && userSlams.length > 0
+      ? userSlams.map(slamItem => ({
+          ...slamItem.slam,
+          entryCount: slamItem.entryCount,
+          status: slamItem.slam.isDeleted ? 'deleted' : 'active',
+        }))
+      : initialSlams.map(slam => ({
+          ...slam,
+          entryCount: 0,
+          status: slam.isDeleted ? 'deleted' : 'active',
+        }))
+
+  const entries =
+    userEntries && userEntries.length > 0
+      ? userEntries.map(entryItem => ({
+          ...entryItem.entry,
+          slam: entryItem.slam ? { name: entryItem.slam.name } : null,
+        }))
+      : initialEntries
+
+  // Calculate stats from collection data
+  const stats = {
+    totalSlams: slams.length,
+    totalEntries: entries.length,
+  }
 
   // Calculate additional stats
   const totalParticipations = entries.length
@@ -195,9 +264,7 @@ function UserProfile() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Calendar className="h-5 w-5 text-primary" />
-                      <span className="text-sm text-muted-foreground">
-                        Member since {new Date().getFullYear()}
-                      </span>
+                      <span className="text-sm text-muted-foreground">Member since {new Date().getFullYear()}</span>
                     </div>
                   </div>
                 </div>
@@ -227,9 +294,7 @@ function UserProfile() {
                   </div>
                 </div>
                 <div className="text-center p-4 bg-card/60 rounded-xl backdrop-blur-sm border">
-                  <div className="text-3xl font-bold text-foreground mb-1">
-                    {earnedAchievements.length}
-                  </div>
+                  <div className="text-3xl font-bold text-foreground mb-1">{earnedAchievements.length}</div>
                   <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
                     <Award className="h-4 w-4" />
                     Achievements
@@ -287,11 +352,7 @@ function UserProfile() {
                         <IconComponent className="h-5 w-5" />
                       </div>
                       <div className="flex-1">
-                        <h3
-                          className={`font-semibold ${
-                            isEarned ? 'text-foreground' : 'text-muted-foreground'
-                          }`}
-                        >
+                        <h3 className={`font-semibold ${isEarned ? 'text-foreground' : 'text-muted-foreground'}`}>
                           {achievement.name}
                         </h3>
                         <p className={`text-sm ${isEarned ? 'text-muted-foreground' : 'text-muted-foreground/70'}`}>
@@ -360,9 +421,7 @@ function UserProfile() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-accent-foreground">Total Activity</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      {stats.totalSlams + stats.totalEntries}
-                    </p>
+                    <p className="text-2xl font-bold text-foreground">{stats.totalSlams + stats.totalEntries}</p>
                   </div>
                   <Heart className="h-8 w-8 text-accent" />
                 </div>
@@ -378,9 +437,7 @@ function UserProfile() {
               <Gamepad2 className="h-6 w-6 text-primary" />
               Created Slams
             </h2>
-            <Badge variant="secondary">
-              {slams.length} slams
-            </Badge>
+            <Badge variant="secondary">{slams.length} slams</Badge>
           </div>
 
           {slams.length > 0 ? (
@@ -450,9 +507,7 @@ function UserProfile() {
               <Target className="h-6 w-6 text-accent" />
               Slam Entries
             </h2>
-            <Badge variant="secondary">
-              {entries.length} entries
-            </Badge>
+            <Badge variant="secondary">{entries.length} entries</Badge>
           </div>
 
           {entries.length > 0 ? (
@@ -492,9 +547,7 @@ function UserProfile() {
             <div className="text-center py-12">
               <CheckCircle className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <h3 className="text-lg font-medium text-foreground mb-2">No entries yet</h3>
-              <p className="text-muted-foreground mb-6">
-                This user hasn't submitted any slam entries yet.
-              </p>
+              <p className="text-muted-foreground mb-6">This user hasn't submitted any slam entries yet.</p>
               <Button asChild>
                 <Link to="/slams">
                   <Users className="mr-2 h-4 w-4" />

@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/slams/create/')({
-  component: RouteComponent,
-})
-
-function RouteComponent() {
+const CreateSlamPage = () => {
   return <div>Hello "/slams/create/"!</div>
 }
+
+export const Route = createFileRoute('/slams/create/')({
+  component: CreateSlamPage,
+})

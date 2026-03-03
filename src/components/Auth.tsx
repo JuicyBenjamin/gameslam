@@ -1,23 +1,22 @@
-import React from 'react'
 import { Link } from '@tanstack/react-router'
 import { useForm } from '@tanstack/react-form'
-import { AuthSchema } from '~/schemas/auth'
-import { parse, safeParse } from 'valibot'
-import type { TAuthForm } from '~/schemas/auth'
-import { Button } from '~/components/ui/button'
-import { Input } from '~/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import { Field, FieldContent, FieldError, FieldLabel } from '~/components/ui/field'
+import { safeParse } from 'valibot'
+import { AuthSchema } from '@/schemas/auth'
+import type { TAuthForm } from '@/schemas/auth'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
 import { AlertTriangle } from 'lucide-react'
 
-interface AuthProps {
+interface IAuthProps {
   mode: 'login' | 'signup'
   onSubmit: (data: TAuthForm) => void
   isSubmitting: boolean
   error?: string
 }
 
-export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
+export const Auth = ({ mode, onSubmit, isSubmitting, error }: IAuthProps) => {
   const form = useForm({
     defaultValues: {
       email: '',
@@ -30,8 +29,6 @@ export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
       },
     },
     onSubmit: async ({ value }) => {
-      console.log('🚀 TanStack form onSubmit callback triggered!')
-      console.log('Form submitted with:', value)
       await onSubmit(value)
     },
   })
@@ -57,7 +54,7 @@ export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Server Error Display */}
-            {error && (
+            {error != null && error !== '' && (
               <div className="flex items-center gap-2 rounded-md border border-destructive bg-destructive/10 p-3 text-sm text-destructive">
                 <AlertTriangle className="h-4 w-4" />
                 <span>{error}</span>
@@ -80,7 +77,7 @@ export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
                     name="email"
                     validators={{
                       onChange: ({ value }) => {
-                        if (!value) return 'Email is required'
+                        if (value === '') return 'Email is required'
                         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                           return 'Please enter a valid email address'
                         }
@@ -113,7 +110,7 @@ export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
                     name="password"
                     validators={{
                       onChange: ({ value }) => {
-                        if (!value) return 'Password is required'
+                        if (value === '') return 'Password is required'
                         if (value.length < 8) {
                           return 'Password must be at least 8 characters long'
                         }

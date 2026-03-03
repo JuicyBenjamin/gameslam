@@ -1,0 +1,48 @@
+import { Link } from '@tanstack/react-router'
+import { ArrowUpRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
+}
+
+interface ISlamCardProps {
+  slam: any
+}
+
+export const SlamCard = ({ slam }: ISlamCardProps) => {
+  return (
+    <Card className="group h-full transition-all duration-300 hover:shadow-lg">
+      <CardHeader>
+        <CardTitle className="line-clamp-2">{slam.name}</CardTitle>
+        <CardDescription className="line-clamp-2">{slam.description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Created</span>
+            <span className="font-medium">{formatDate(slam.createdAt)}</span>
+          </div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted-foreground">Status</span>
+            <Badge variant={slam.status === 'active' ? 'default' : 'secondary'}>{slam.status}</Badge>
+          </div>
+        </div>
+      </CardContent>
+      <CardContent className="pt-0">
+        <Button asChild size="sm" variant="outline" className="w-full">
+          <Link to="/slams/show/$id" params={{ id: slam.id }}>
+            <ArrowUpRight className="mr-2 h-4 w-4" />
+            View Slam
+          </Link>
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}

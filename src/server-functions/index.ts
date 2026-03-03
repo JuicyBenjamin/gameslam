@@ -1,20 +1,17 @@
 import { createServerFn } from '@tanstack/react-start'
-import { artists } from '~/db/schema/artists'
-import { assets } from '~/db/schema/assets'
-import { artistAssets } from '~/db/schema/artistAssets'
-import { slamEntries } from '~/db/schema/slamEntries'
-import { users } from '~/db/schema/users'
-import { slams } from '~/db/schema/slams'
-import { db } from '~/server-functions/database'
+import { artists } from '@/db/schema/artists'
+import { assets } from '@/db/schema/assets'
+import { artistAssets } from '@/db/schema/artistAssets'
+import { slamEntries } from '@/db/schema/slamEntries'
+import { users } from '@/db/schema/users'
+import { slams } from '@/db/schema/slams'
+import { db } from '@/server-functions/database'
 import { count, eq, getTableColumns, sql } from 'drizzle-orm'
 
 // Server function for fetching featured content (SSR)
 export const fetchFeaturedContent = createServerFn({ method: 'GET' }).handler(async () => {
-  console.log('Fetching featured content on server...')
-
-  try {
-    // Get top 5 slams
-    const allSlams = await db
+  const [allSlams, topArtists, topAssets, topEntries] = await Promise.all([
+    db
       .select({
         slam: getTableColumns(slams),
         artist: {
@@ -34,12 +31,8 @@ export const fetchFeaturedContent = createServerFn({ method: 'GET' }).handler(as
       .from(slams)
       .leftJoin(artists, eq(slams.artistId, artists.id))
       .leftJoin(users, eq(slams.createdBy, users.id))
-      .orderBy(slams.createdAt)
-
-    const topSlams = allSlams.slice(0, 5)
-
-    // Get top 5 artists with their asset counts
-    const topArtists = await db
+      .orderBy(slams.createdAt),
+    db
       .select({
         artist: artists,
         assetCount: count(artistAssets.assetId),
@@ -48,37 +41,28 @@ export const fetchFeaturedContent = createServerFn({ method: 'GET' }).handler(as
       .leftJoin(artistAssets, eq(artistAssets.artistId, artists.id))
       .groupBy(artists.id)
       .orderBy(count(artistAssets.assetId))
-      .limit(5)
-
-    // Get top 5 assets
-    const topAssets = await db.select().from(assets).limit(5)
-
-    // Get top 5 entries with user information
-    const topEntries = await db
+      .limit(5),
+    db.select().from(assets).limit(5),
+    db
       .select({
         entry: slamEntries,
         user: users,
       })
       .from(slamEntries)
       .leftJoin(users, eq(slamEntries.userId, users.id))
-      .limit(5)
+      .limit(5),
+  ])
 
-    const result = {
-      slams: topSlams,
-      artists: topArtists.map(a => ({
-        ...a.artist,
-        assetCount: Number(a.assetCount),
-      })),
-      assets: topAssets,
-      entries: topEntries.map(e => ({
-        ...e.entry,
-        userName: e.user?.name,
-      })),
-    }
-
-    return result
-  } catch (error) {
-    console.error('Error fetching featured content:', error)
-    throw error
+  return {
+    slams: allSlams.slice(0, 5),
+    artists: topArtists.map(a => ({
+      ...a.artist,
+      assetCount: Number(a.assetCount),
+    })),
+    assets: topAssets,
+    entries: topEntries.map(e => ({
+      ...e.entry,
+      userName: e.user?.name,
+    })),
   }
 })

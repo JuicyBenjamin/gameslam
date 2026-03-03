@@ -2,31 +2,31 @@ import { notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import axios from 'redaxios'
 
-export type PostType = {
+export interface IPost {
   id: string
   title: string
   body: string
 }
 
-export const fetchPost = createServerFn({ method: 'GET' }).handler(async ctx => {
-  const postId = (ctx.data as any)?.postId || ''
-  console.info(`Fetching post with id ${postId}...`)
-  const post = await axios
-    .get<PostType>(`https://jsonplaceholder.typicode.com/posts/${postId}`)
-    .then(r => r.data)
-    .catch(err => {
-      console.error(err)
-      if (err.status === 404) {
-        throw notFound()
-      }
-      throw err
-    })
+export const fetchPost = createServerFn({ method: 'GET' })
+  .inputValidator((data: { postId: IPost['id'] }) => data)
+  .handler(async ({ data }) => {
+    const { postId } = data
+    const post = await axios
+      .get<IPost>(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+      .then(response => response.data)
+      .catch(error => {
+        console.error(error)
+        if (error.status === 404) {
+          throw notFound()
+        }
+        throw error
+      })
 
-  return post
-})
+    return post
+  })
 
 export const fetchPosts = createServerFn({ method: 'GET' }).handler(async () => {
-  console.info('Fetching posts...')
-  await new Promise(r => setTimeout(r, 1000))
-  return axios.get<Array<PostType>>('https://jsonplaceholder.typicode.com/posts').then(r => r.data.slice(0, 10))
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  return axios.get<Array<IPost>>('https://jsonplaceholder.typicode.com/posts').then(response => response.data.slice(0, 10))
 })

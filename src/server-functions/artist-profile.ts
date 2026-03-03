@@ -8,9 +8,10 @@ import { eq } from 'drizzle-orm'
 import { parse } from 'node-html-parser'
 
 // Server function for fetching artist profile
-export const fetchArtistProfile = createServerFn({ method: 'GET' }).handler(async ctx => {
-  const artistName = (ctx.data as any)?.artistName || ''
-  console.log('Fetching artist profile on server for:', artistName)
+export const fetchArtistProfile = createServerFn({ method: 'GET' })
+  .inputValidator((data: { artistName: string }) => data)
+  .handler(async ({ data }) => {
+  const { artistName } = data
 
   try {
     // Get artist by name

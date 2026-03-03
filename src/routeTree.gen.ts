@@ -16,10 +16,10 @@ import { Route as SignUpIndexRouteImport } from './routes/sign-up/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as HealthIndexRouteImport } from './routes/health/index'
 import { Route as ArtistsIndexRouteImport } from './routes/artists/index'
-import { Route as UserProfileUserNameRouteImport } from './routes/_user-profile/$userName'
 import { Route as SlamsCreateIndexRouteImport } from './routes/slams/create/index'
 import { Route as ArtistsArtistNameIndexRouteImport } from './routes/artists/$artistName/index'
-import { Route as SlamsShowIdRouteImport } from './routes/slams/show/$id'
+import { Route as UserProfileUserNameIndexRouteImport } from './routes/_user-profile/$userName/index'
+import { Route as SlamsShowIdIndexRouteImport } from './routes/slams/show/$id/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -56,11 +56,6 @@ const ArtistsIndexRoute = ArtistsIndexRouteImport.update({
   path: '/artists/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UserProfileUserNameRoute = UserProfileUserNameRouteImport.update({
-  id: '/_user-profile/$userName',
-  path: '/$userName',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SlamsCreateIndexRoute = SlamsCreateIndexRouteImport.update({
   id: '/slams/create/',
   path: '/slams/create/',
@@ -71,106 +66,112 @@ const ArtistsArtistNameIndexRoute = ArtistsArtistNameIndexRouteImport.update({
   path: '/artists/$artistName/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SlamsShowIdRoute = SlamsShowIdRouteImport.update({
-  id: '/slams/show/$id',
-  path: '/slams/show/$id',
+const UserProfileUserNameIndexRoute =
+  UserProfileUserNameIndexRouteImport.update({
+    id: '/_user-profile/$userName/',
+    path: '/$userName/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SlamsShowIdIndexRoute = SlamsShowIdIndexRouteImport.update({
+  id: '/slams/show/$id/',
+  path: '/slams/show/$id/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$userName': typeof UserProfileUserNameRoute
   '/artists': typeof ArtistsIndexRoute
   '/health': typeof HealthIndexRoute
   '/login': typeof LoginIndexRoute
   '/sign-up': typeof SignUpIndexRoute
   '/slams': typeof SlamsIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
-  '/slams/show/$id': typeof SlamsShowIdRoute
+  '/$userName': typeof UserProfileUserNameIndexRoute
   '/artists/$artistName': typeof ArtistsArtistNameIndexRoute
   '/slams/create': typeof SlamsCreateIndexRoute
+  '/slams/show/$id': typeof SlamsShowIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$userName': typeof UserProfileUserNameRoute
   '/artists': typeof ArtistsIndexRoute
   '/health': typeof HealthIndexRoute
   '/login': typeof LoginIndexRoute
   '/sign-up': typeof SignUpIndexRoute
   '/slams': typeof SlamsIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
-  '/slams/show/$id': typeof SlamsShowIdRoute
+  '/$userName': typeof UserProfileUserNameIndexRoute
   '/artists/$artistName': typeof ArtistsArtistNameIndexRoute
   '/slams/create': typeof SlamsCreateIndexRoute
+  '/slams/show/$id': typeof SlamsShowIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_user-profile/$userName': typeof UserProfileUserNameRoute
   '/artists/': typeof ArtistsIndexRoute
   '/health/': typeof HealthIndexRoute
   '/login/': typeof LoginIndexRoute
   '/sign-up/': typeof SignUpIndexRoute
   '/slams/': typeof SlamsIndexRoute
   '/what-is-a-game-slam/': typeof WhatIsAGameSlamIndexRoute
-  '/slams/show/$id': typeof SlamsShowIdRoute
+  '/_user-profile/$userName/': typeof UserProfileUserNameIndexRoute
   '/artists/$artistName/': typeof ArtistsArtistNameIndexRoute
   '/slams/create/': typeof SlamsCreateIndexRoute
+  '/slams/show/$id/': typeof SlamsShowIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/$userName'
     | '/artists'
     | '/health'
     | '/login'
     | '/sign-up'
     | '/slams'
     | '/what-is-a-game-slam'
-    | '/slams/show/$id'
+    | '/$userName'
     | '/artists/$artistName'
     | '/slams/create'
+    | '/slams/show/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/$userName'
     | '/artists'
     | '/health'
     | '/login'
     | '/sign-up'
     | '/slams'
     | '/what-is-a-game-slam'
-    | '/slams/show/$id'
+    | '/$userName'
     | '/artists/$artistName'
     | '/slams/create'
+    | '/slams/show/$id'
   id:
     | '__root__'
     | '/'
-    | '/_user-profile/$userName'
     | '/artists/'
     | '/health/'
     | '/login/'
     | '/sign-up/'
     | '/slams/'
     | '/what-is-a-game-slam/'
-    | '/slams/show/$id'
+    | '/_user-profile/$userName/'
     | '/artists/$artistName/'
     | '/slams/create/'
+    | '/slams/show/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  UserProfileUserNameRoute: typeof UserProfileUserNameRoute
   ArtistsIndexRoute: typeof ArtistsIndexRoute
   HealthIndexRoute: typeof HealthIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   SignUpIndexRoute: typeof SignUpIndexRoute
   SlamsIndexRoute: typeof SlamsIndexRoute
   WhatIsAGameSlamIndexRoute: typeof WhatIsAGameSlamIndexRoute
-  SlamsShowIdRoute: typeof SlamsShowIdRoute
+  UserProfileUserNameIndexRoute: typeof UserProfileUserNameIndexRoute
   ArtistsArtistNameIndexRoute: typeof ArtistsArtistNameIndexRoute
   SlamsCreateIndexRoute: typeof SlamsCreateIndexRoute
+  SlamsShowIdIndexRoute: typeof SlamsShowIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -224,13 +225,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArtistsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_user-profile/$userName': {
-      id: '/_user-profile/$userName'
-      path: '/$userName'
-      fullPath: '/$userName'
-      preLoaderRoute: typeof UserProfileUserNameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/slams/create/': {
       id: '/slams/create/'
       path: '/slams/create'
@@ -245,11 +239,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArtistsArtistNameIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/slams/show/$id': {
-      id: '/slams/show/$id'
+    '/_user-profile/$userName/': {
+      id: '/_user-profile/$userName/'
+      path: '/$userName'
+      fullPath: '/$userName'
+      preLoaderRoute: typeof UserProfileUserNameIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/slams/show/$id/': {
+      id: '/slams/show/$id/'
       path: '/slams/show/$id'
       fullPath: '/slams/show/$id'
-      preLoaderRoute: typeof SlamsShowIdRouteImport
+      preLoaderRoute: typeof SlamsShowIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -257,16 +258,16 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  UserProfileUserNameRoute: UserProfileUserNameRoute,
   ArtistsIndexRoute: ArtistsIndexRoute,
   HealthIndexRoute: HealthIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   SignUpIndexRoute: SignUpIndexRoute,
   SlamsIndexRoute: SlamsIndexRoute,
   WhatIsAGameSlamIndexRoute: WhatIsAGameSlamIndexRoute,
-  SlamsShowIdRoute: SlamsShowIdRoute,
+  UserProfileUserNameIndexRoute: UserProfileUserNameIndexRoute,
   ArtistsArtistNameIndexRoute: ArtistsArtistNameIndexRoute,
   SlamsCreateIndexRoute: SlamsCreateIndexRoute,
+  SlamsShowIdIndexRoute: SlamsShowIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

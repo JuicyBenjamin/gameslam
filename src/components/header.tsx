@@ -1,12 +1,18 @@
 import { Link } from '@tanstack/react-router'
-import { UserAvatarMenu } from '@/components/UserAvatarMenu'
 import { useQuery } from '@tanstack/react-query'
+import { UserAvatarMenu } from '@/components/UserAvatarMenu'
 import { getCurrentUser } from '@/server-functions/auth'
+import type { TUser } from '@/db/schema/users'
 
-export const Header = () => {
-  const { data: user, isLoading } = useQuery({
+interface HeaderProps {
+  initialUser: TUser | null
+}
+
+export const Header = ({ initialUser }: HeaderProps) => {
+  const { data: user } = useQuery({
     queryKey: ['currentUser'],
     queryFn: getCurrentUser,
+    initialData: initialUser,
   })
 
   const isLoggedIn = user != null

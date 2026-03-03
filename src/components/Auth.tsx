@@ -30,8 +30,6 @@ export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
       },
     },
     onSubmit: async ({ value }) => {
-      console.log('🚀 TanStack form onSubmit callback triggered!')
-      console.log('Form submitted with:', value)
       await onSubmit(value)
     },
   })

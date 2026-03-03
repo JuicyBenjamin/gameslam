@@ -12,11 +12,12 @@ import { seo } from '@/utils/seo'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
 import { queryClient } from '@/lib/query-client'
+import { getCurrentUser } from '@/server-functions/auth'
 
 export const Route = createRootRoute({
-  beforeLoad: async () => {
-    // No need to fetch user on server since we use client-side auth
-    return {}
+  loader: async () => {
+    const user = await getCurrentUser()
+    return { user }
   },
   head: () => ({
     meta: [
@@ -69,9 +70,14 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+  const { user } = Route.useLoaderData()
+
   return (
     <RootDocument>
-      <Outlet />
+      <Header initialUser={user} />
+      <main>
+        <Outlet />
+      </main>
     </RootDocument>
   )
 }
@@ -84,8 +90,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          <Header />
-          <main>{children}</main>
+          {children}
           <Footer />
           <TanStackRouterDevtools position="bottom-right" />
         </QueryClientProvider>

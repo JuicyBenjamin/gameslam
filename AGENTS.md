@@ -288,6 +288,21 @@ const ArtistProfile = () => {
 - Valibot for validation schemas (not Zod).
 - Use `import type` for type-only imports.
 - Explicit variable names — no single-letter shorthands. Exception: comparator callbacks like `.sort((a, b) => ...)` or short-lived iterators where the meaning is obvious from context (`e` in event handlers).
+- Explicit boolean checks — never coerce with `!!` or rely on truthiness. Be specific about what you're checking:
+
+```tsx
+// Good
+if (data != null) { ... }
+if (items.length > 0) { ... }
+if (count !== 0) { ... }
+if (user != null && user.name !== '') { ... }
+
+// Bad — implicit coercion, unclear intent
+if (!!data) { ... }
+if (items.length) { ... }
+if (count) { ... }
+if (user && user.name) { ... }
+```
 - Derive parameter types from their source interface using indexed access (`Interface['field']`), not by re-declaring the primitive. This keeps types traceable and auto-updates if the source changes.
 
 ```tsx

@@ -16,12 +16,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { getCurrentUser } from '~/loaders/auth'
+import { getCurrentUser } from '@/loaders/auth'
 import { object, string, pipe, nonEmpty, url, custom, safeParse } from 'valibot'
 import { toast } from 'sonner'
-import { fetchSlamDetails } from '~/server-functions/slam-show'
+import { fetchSlamDetails } from '@/server-functions/slam-show'
 import { useLiveQuery, eq } from '@tanstack/react-db'
-import { slamsCollection, slamEntriesCollection } from '~/collections'
+import { slamsCollection, slamEntriesCollection } from '@/collections'
 
 // Validation schema for join slam form
 const JoinSlamSchema = object({
@@ -54,14 +54,12 @@ async function getItchIoData(url: string) {
 // Loader function
 export const Route = createFileRoute('/slams/show/$id')({
   component: RouteComponent,
-  loader: async ({ params }: { params: { id: string } }) => {
-    const slam = await fetchSlamDetails({ data: { slamId: params.id } } as any)
-    const user = await getCurrentUser()
-
-    return {
-      slam,
-      user,
-    }
+  loader: async ({ params }) => {
+    const [slam, user] = await Promise.all([
+      fetchSlamDetails({ data: { slamId: params.id } }),
+      getCurrentUser(),
+    ])
+    return { slam, user }
   },
 })
 
@@ -121,7 +119,6 @@ function RouteComponent() {
 
     try {
       // TODO: Fix server function mutation
-      console.log('Joining slam with:', { itchIoLink, slamId: slam.slam.id })
       const result = { status: 'success' as const, message: 'Success' }
 
       if (result.status === 'success') {
@@ -221,9 +218,7 @@ function RouteComponent() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Entries</p>
-                      <Button variant="link" asChild className="p-0 h-auto text-lg font-semibold">
-                        <a href={`/slams/show/${slam.slam.id}/entries`}>{validEntries.length}</a>
-                      </Button>
+                      <p className="text-lg font-semibold">{validEntries.length}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -237,9 +232,11 @@ function RouteComponent() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Created by</p>
-                      <Button variant="link" asChild className="p-0 h-auto text-lg font-semibold">
-                        <a href={`/${slam.createdBy?.name}`}>{slam.createdBy?.name}</a>
-                      </Button>
+                      {slam.createdBy?.name && (
+                        <Button variant="link" asChild className="p-0 h-auto text-lg font-semibold">
+                          <Link to="/$userName" params={{ userName: slam.createdBy.name }}>{slam.createdBy.name}</Link>
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -270,7 +267,7 @@ function RouteComponent() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <Button variant="link" asChild className="p-0 h-auto text-lg font-semibold">
-                          <a href={`/artists/${slam.artist.name}`}>{slam.asset.name}</a>
+                          <Link to="/artists/$artistName" params={{ artistName: slam.artist.name }}>{slam.asset.name}</Link>
                         </Button>
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">by {slam.artist.name}</p>
@@ -289,8 +286,8 @@ function RouteComponent() {
                     <Trophy className="h-5 w-5" />
                     Recent Entries
                   </span>
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={`/slams/show/${slam.slam.id}/entries`}>View All</a>
+                  <Button variant="outline" size="sm">
+                    View All
                   </Button>
                 </CardTitle>
               </CardHeader>

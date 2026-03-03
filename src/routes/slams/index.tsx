@@ -11,15 +11,8 @@ import { fetchSlams } from '~/server-functions/slams'
 export const Route = createFileRoute('/slams/')({
   component: Slams,
   loader: async () => {
-    // This runs on the server and provides data for SSR
-    try {
-      const slams = await fetchSlams()
-      console.log('Slams loader data:', slams)
-      return { slams }
-    } catch (error) {
-      console.error('Slams loader error:', error)
-      throw error
-    }
+    const slams = await fetchSlams()
+    return { slams }
   },
 })
 

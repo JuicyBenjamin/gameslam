@@ -10,7 +10,6 @@ import { parse } from 'node-html-parser'
 // Server function for fetching artist profile
 export const fetchArtistProfile = createServerFn({ method: 'GET' }).handler(async ctx => {
   const artistName = (ctx.data as any)?.artistName || ''
-  console.log('Fetching artist profile on server for:', artistName)
 
   try {
     // Get artist by name

@@ -1,24 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router'
-import React from 'react'
-import { getCurrentUser } from '../loaders/auth'
-import { Badge } from '../components/ui/badge'
-import { Button } from '../components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { getCurrentUser } from '@/loaders/auth'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Gamepad2, Users, Palette, Trophy, Star, ExternalLink, User, Folder } from 'lucide-react'
-import { fetchFeaturedContent } from '~/server-functions/index'
+import { fetchFeaturedContent } from '@/server-functions/index'
 
 export const Route = createFileRoute('/')({
   component: Index,
-  loader: async ({ context }) => {
-    // This runs on the server and provides data for SSR
-    try {
-      const [featuredContent, user] = await Promise.all([fetchFeaturedContent(), getCurrentUser()])
-      console.log('Loader data:', { featuredContent, user })
-      return { featuredContent, user }
-    } catch (error) {
-      console.error('Loader error:', error)
-      throw error
-    }
+  loader: async () => {
+    const [featuredContent, user] = await Promise.all([fetchFeaturedContent(), getCurrentUser()])
+    return { featuredContent, user }
   },
 })
 
@@ -50,16 +42,16 @@ function Index() {
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                   <Button asChild size="lg" className="text-lg">
-                    <a href="/slams">
+                    <Link to="/slams">
                       <Trophy className="mr-2 h-5 w-5" />
                       Explore Slams
-                    </a>
+                    </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="text-lg bg-transparent">
-                    <a href="/sign-up">
+                    <Link to="/sign-up">
                       <Users className="mr-2 h-5 w-5" />
                       Join Now
-                    </a>
+                    </Link>
                   </Button>
                 </div>
               </>
@@ -70,16 +62,16 @@ function Index() {
                 </p>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                   <Button asChild size="lg" className="text-lg">
-                    <a href="/slams">
+                    <Link to="/slams">
                       <Trophy className="mr-2 h-5 w-5" />
                       View Slams
-                    </a>
+                    </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="text-lg bg-transparent">
-                    <a href="/slams/create">
+                    <Link to="/slams/create">
                       <Gamepad2 className="mr-2 h-5 w-5" />
                       Create Slam
-                    </a>
+                    </Link>
                   </Button>
                 </div>
               </>
@@ -111,7 +103,7 @@ function Index() {
                     {slamData.entryCount} entries
                   </Badge>
                   <Button asChild size="sm" variant="outline">
-                    <a href={`/slams/show/${slamData.slam.id}`}>View Slam</a>
+                    <Link to="/slams/show/$id" params={{ id: slamData.slam.id }}>View Slam</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -146,7 +138,7 @@ function Index() {
                     {artist.assetCount} assets
                   </Badge>
                   <Button asChild size="sm" variant="outline">
-                    <a href={`/artists/${artist.name}`}>View Profile</a>
+                    <Link to="/artists/$artistName" params={{ artistName: artist.name }}>View Profile</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -231,10 +223,10 @@ function Index() {
               development.
             </p>
             <Button asChild size="lg" variant="secondary" className="text-lg">
-              <a href="/sign-up">
+              <Link to="/sign-up">
                 <Users className="mr-2 h-5 w-5" />
                 Create Your Account
-              </a>
+              </Link>
             </Button>
           </div>
         </section>

@@ -23,13 +23,14 @@ import {
   Flame,
 } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
-import { Button } from '~/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
-import { Badge } from '~/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
-import { fetchUserProfile, getCurrentUser } from '~/server-functions/user-profile'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getCurrentUser } from '@/server-functions/auth'
+import { fetchUserProfile } from '@/server-functions/user-profile'
 import { useLiveQuery, eq } from '@tanstack/react-db'
-import { usersCollection, slamsCollection, slamEntriesCollection } from '~/collections'
+import { usersCollection, slamsCollection, slamEntriesCollection } from '@/collections'
 
 // Mock function for date formatting
 function formatDate(date: string) {
@@ -51,21 +52,13 @@ function getSlamRarity(participantCount: number) {
 export const Route = createFileRoute('/_user-profile/$userName')({
   component: UserProfile,
   loader: async ({ params }) => {
-    // This runs on the server and provides data for SSR
-    try {
-      const [profileData, currentUser] = await Promise.all([
-        fetchUserProfile({ data: { userName: params.userName } } as any),
-        getCurrentUser(),
-      ])
-      console.log('User profile data:', profileData)
-      console.log('Current user:', currentUser)
-      return {
-        ...profileData,
-        currentUser: currentUser.user,
-      }
-    } catch (error) {
-      console.error('User profile loader error:', error)
-      throw error
+    const [profileData, currentUser] = await Promise.all([
+      fetchUserProfile({ data: { userName: params.userName } }),
+      getCurrentUser(),
+    ])
+    return {
+      ...profileData,
+      currentUser,
     }
   },
 })

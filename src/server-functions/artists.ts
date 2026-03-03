@@ -6,8 +6,6 @@ import { assets } from '~/db/schema/assets'
 import { count, eq } from 'drizzle-orm'
 
 export const fetchArtists = createServerFn({ method: 'GET' }).handler(async () => {
-  console.log('Fetching artists on server...')
-
   try {
     // Get all artists with their asset counts
     const artistsData = await db

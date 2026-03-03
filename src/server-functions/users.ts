@@ -3,8 +3,6 @@ import { db } from '~/server-functions/database'
 import { users } from '~/db/schema/users'
 
 export const fetchUsers = createServerFn({ method: 'GET' }).handler(async () => {
-  console.log('Fetching users on server...')
-
   try {
     const usersData = await db.select().from(users).orderBy(users.name)
 

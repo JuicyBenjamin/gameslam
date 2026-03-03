@@ -6,8 +6,6 @@ import { slamEntries } from '~/db/schema/slamEntries'
 import { eq, getTableColumns } from 'drizzle-orm'
 
 export const fetchSlamEntryRatings = createServerFn({ method: 'GET' }).handler(async () => {
-  console.log('Fetching slam entry ratings on server...')
-
   try {
     const ratingsData = await db
       .select({

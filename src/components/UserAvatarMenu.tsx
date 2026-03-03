@@ -1,32 +1,29 @@
-import { Link } from '@tanstack/react-router'
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '~/components/ui/dropdown-menu'
-import { useMutation } from '@tanstack/react-query'
-import type { TUser } from '~/db/schema/users'
-import { supabaseBrowser as supabase } from '~/lib/supabase.client'
+import { Link, useRouter } from '@tanstack/react-router'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { TUser } from '@/db/schema/users'
+import { supabaseBrowser as supabase } from '@/lib/supabase.client'
 
 interface UserAvatarMenuProps {
   user: TUser
 }
 
 export const UserAvatarMenu = ({ user }: UserAvatarMenuProps) => {
-  const logoutMutation = useMutation({
+  const router = useRouter()
+  const queryClient = useQueryClient()
+
+  const { mutate, isPending } = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.auth.signOut()
       if (error) throw error
     },
-    onSuccess: () => {
-      // Redirect to home page after logout
-      window.location.href = '/'
-    },
-    onError: error => {
-      console.error('Logout error:', error)
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['currentUser'] })
+      await router.invalidate()
+      router.navigate({ to: '/' })
     },
   })
-
-  const handleLogout = () => {
-    logoutMutation.mutate()
-  }
 
   return (
     <DropdownMenu>
@@ -47,8 +44,8 @@ export const UserAvatarMenu = ({ user }: UserAvatarMenuProps) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <button onClick={handleLogout} disabled={logoutMutation.isPending} className="w-full text-left">
-            {logoutMutation.isPending ? 'Logging out...' : 'Logout'}
+          <button onClick={() => mutate()} disabled={isPending} className="w-full text-left">
+            {isPending ? 'Logging out...' : 'Logout'}
           </button>
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -18,12 +18,8 @@ const client = postgres(String(connectionString), {
 const dbWithLogging = drizzle(client, {
   casing: 'snake_case',
   logger: {
-    logQuery(query: string, params: unknown[]) {
-      const timestamp = new Date().toISOString()
-      const queryPreview = query.length > 100 ? query.substring(0, 100) + '...' : query
-
-      console.log(`[DB Query] ${timestamp} | ${queryPreview}`)
-      console.log(`[DB Query] Params:`, params)
+    logQuery(_query: string, _params: unknown[]) {
+      // Debug logging removed
     },
   },
 })

@@ -21,15 +21,8 @@ function formatDate(date: string) {
 export const Route = createFileRoute('/artists/$artistName/')({
   component: ArtistProfile,
   loader: async ({ params }) => {
-    // This runs on the server and provides data for SSR
-    try {
-      const profileData = await fetchArtistProfile({ data: { artistName: params.artistName } } as any)
-      console.log('Artist profile loader data:', profileData)
-      return profileData
-    } catch (error) {
-      console.error('Artist profile loader error:', error)
-      throw error
-    }
+    const profileData = await fetchArtistProfile({ data: { artistName: params.artistName } } as any)
+    return profileData
   },
 })
 

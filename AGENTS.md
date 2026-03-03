@@ -37,6 +37,31 @@ mutation.mutate(values)
 
 Exception: when the full object reference is required, such as passing `form` to `form.Field` in TanStack Form.
 
+## Interfaces & Types
+
+- **Interfaces** describe object shapes. Prefix with `I`.
+- **Types** describe values (unions, aliases, inferred types). Prefix with `T`.
+
+```tsx
+// Good
+interface IUser {
+  name: string
+  age: number
+  status: TStatus
+}
+type TStatus = 'single' | 'married' | 'divorced'
+
+// Inferred DB types
+type TUser = typeof users.$inferSelect
+
+// Component props
+interface IHeaderProps {
+  initialUser: TUser | null
+}
+```
+
+Skip the prefix for auto-generated types (e.g. `routeTree.gen.ts`).
+
 ## Components
 
 - Arrow functions with named exports:

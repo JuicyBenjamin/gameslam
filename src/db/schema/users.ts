@@ -12,6 +12,6 @@ export const users = pgTable("users", {
   avatarLink: varchar("avatar_link", { length: 255 }).notNull(),
 });
 
-export type SelectUser = typeof authUsers.$inferSelect;
+export type TSelectUser = typeof authUsers.$inferSelect;
 
 export type TUser = typeof users.$inferSelect;

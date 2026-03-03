@@ -1,13 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-interface HealthStatus {
+interface IHealthStatus {
   status: 'healthy'
   timestamp: string
 }
 
 export const Route = createFileRoute('/health/')({
   loader: async () => {
-    const healthStatus: HealthStatus = {
+    const healthStatus: IHealthStatus = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
     }

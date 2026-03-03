@@ -4,11 +4,11 @@ import { UserAvatarMenu } from '@/components/UserAvatarMenu'
 import { getCurrentUser } from '@/server-functions/auth'
 import type { TUser } from '@/db/schema/users'
 
-interface HeaderProps {
+interface IHeaderProps {
   initialUser: TUser | null
 }
 
-export const Header = ({ initialUser }: HeaderProps) => {
+export const Header = ({ initialUser }: IHeaderProps) => {
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
     queryFn: getCurrentUser,

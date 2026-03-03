@@ -29,4 +29,4 @@ export const slams = pgTable("slams", {
   isDeleted: boolean("is_deleted").default(false).notNull(),
 });
 
-export type SelectSlam = typeof slams.$inferSelect;
+export type TSelectSlam = typeof slams.$inferSelect;

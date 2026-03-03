@@ -5,11 +5,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { TUser } from '@/db/schema/users'
 import { supabaseBrowser as supabase } from '@/lib/supabase.client'
 
-interface UserAvatarMenuProps {
+interface IUserAvatarMenuProps {
   user: TUser
 }
 
-export const UserAvatarMenu = ({ user }: UserAvatarMenuProps) => {
+export const UserAvatarMenu = ({ user }: IUserAvatarMenuProps) => {
   const router = useRouter()
   const queryClient = useQueryClient()
 

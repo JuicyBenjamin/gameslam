@@ -10,14 +10,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { Field, FieldContent, FieldError, FieldLabel } from '~/components/ui/field'
 import { AlertTriangle } from 'lucide-react'
 
-interface AuthProps {
+interface IAuthProps {
   mode: 'login' | 'signup'
   onSubmit: (data: TAuthForm) => void
   isSubmitting: boolean
   error?: string
 }
 
-export function Auth({ mode, onSubmit, isSubmitting, error }: AuthProps) {
+export function Auth({ mode, onSubmit, isSubmitting, error }: IAuthProps) {
   const form = useForm({
     defaultValues: {
       email: '',

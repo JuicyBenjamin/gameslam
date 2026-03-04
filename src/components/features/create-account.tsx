@@ -1,25 +1,14 @@
-// TODO: Migrate from Qwik component$ to React functional component
-// TODO: Add proper form handling for display name selection
+import { Link } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
 
-// Original Qwik code (commented out for reference):
-// import { component$ } from "@builder.io/qwik";
-
-// export default component$(() => {
-//   return (
-//     <div>
-//       <h1>Thank you for joining game slam</h1>
-//       <p>Choose your display name :D</p>
-//     </div>
-//   );
-// });
-
-import React from 'react';
-
-export default function CreateAccount() {
+export const CreateAccount = () => {
   return (
-    <div>
-      <h1>Thank you for joining game slam</h1>
-      <p>Choose your display name :D</p>
+    <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+      <h1 className="text-2xl font-bold">Thank you for joining GameSlam</h1>
+      <p className="text-muted-foreground">Set up your profile to get started.</p>
+      <Button asChild>
+        <Link to="/welcome">Set Up Profile</Link>
+      </Button>
     </div>
-  );
+  )
 }

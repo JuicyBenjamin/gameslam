@@ -24,7 +24,7 @@ const SignUpComponent = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['currentUser'] })
       router.invalidate()
-      await router.navigate({ to: '/' })
+      await router.navigate({ to: '/welcome' })
     },
   })
 

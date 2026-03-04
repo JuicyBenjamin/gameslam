@@ -5,19 +5,6 @@ import { slams } from '@/db/schema/slams'
 import { slamEntries } from '@/db/schema/slamEntries'
 import { eq, sql } from 'drizzle-orm'
 
-export const getCurrentUserName = createServerFn({ method: 'GET' })
-  .inputValidator((data: { userId: string }) => data)
-  .handler(async ({ data }) => {
-    const userData = await db.select().from(users).where(eq(users.id, data.userId)).limit(1)
-    const user = userData[0]
-
-    if (!user) {
-      throw new Error('User not found in database')
-    }
-
-    return { name: user.name }
-  })
-
 export const fetchUserProfile = createServerFn({ method: 'GET' })
   .inputValidator((data: { userName: string }) => data)
   .handler(async ({ data }) => {

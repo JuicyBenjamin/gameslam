@@ -4,11 +4,6 @@ import { Auth } from '@/components/Auth'
 import { supabaseBrowser as supabase } from '@/lib/supabase.client'
 import { redirectIfLoggedIn } from '@/server-functions/auth'
 
-export const Route = createFileRoute('/sign-up/')({
-  beforeLoad: () => redirectIfLoggedIn(),
-  component: SignUpComponent,
-})
-
 const SignUpComponent = () => {
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -42,3 +37,8 @@ const SignUpComponent = () => {
     />
   )
 }
+
+export const Route = createFileRoute('/sign-up/')({
+  beforeLoad: () => redirectIfLoggedIn(),
+  component: SignUpComponent,
+})

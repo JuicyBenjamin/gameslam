@@ -8,17 +8,6 @@ import { CreatedSlamsSection } from './-components/created-slams-section'
 import { SlamEntriesSection } from './-components/slam-entries-section'
 import { RecentActivity } from './-components/recent-activity'
 
-export const Route = createFileRoute('/_user-profile/$userName/')({
-  component: UserProfile,
-  loader: async ({ params }) => {
-    const [profileData, currentUser] = await Promise.all([
-      fetchUserProfile({ data: { userName: params.userName } }),
-      getCurrentUser(),
-    ])
-    return { ...profileData, currentUser }
-  },
-})
-
 const UserProfile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted to-accent/10 dark:from-background dark:via-muted dark:to-accent/20">
@@ -33,3 +22,14 @@ const UserProfile = () => {
     </div>
   )
 }
+
+export const Route = createFileRoute('/_user-profile/$userName/')({
+  component: UserProfile,
+  loader: async ({ params }) => {
+    const [profileData, currentUser] = await Promise.all([
+      fetchUserProfile({ data: { userName: params.userName } }),
+      getCurrentUser(),
+    ])
+    return { ...profileData, currentUser }
+  },
+})

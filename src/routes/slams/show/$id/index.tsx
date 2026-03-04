@@ -11,6 +11,8 @@ import { JoinSlamCard } from './-components/join-slam-card'
 import { ViewAssetCard } from './-components/view-asset-card'
 import { SlamDetailsCard } from './-components/slam-details-card'
 import { ShareSection } from './-components/share-section'
+import { ManageSlamCard } from './-components/manage-slam-card'
+import { CommentsSection } from './-components/comments-section'
 
 export const Route = createFileRoute('/slams/show/$id/')({
   component: SlamShowPage,
@@ -49,9 +51,11 @@ function SlamShowPage() {
             <JoinSlamCard />
             <ViewAssetCard />
             <SlamDetailsCard />
+            <ManageSlamCard />
           </div>
         </div>
 
+        <CommentsSection />
         <ShareSection />
       </main>
     </div>

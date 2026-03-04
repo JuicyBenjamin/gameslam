@@ -3,6 +3,7 @@ import { useLiveQuery, eq } from '@tanstack/react-db'
 import { Shield, Trophy, Calendar } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { usersCollection, slamsCollection, slamEntriesCollection } from '@/collections'
+import { EditProfileDialog } from './edit-profile-dialog'
 
 const TOTAL_ACHIEVEMENTS = 6
 
@@ -55,7 +56,7 @@ export const UserInfo = () => {
 
         <p className="text-xl text-muted-foreground mb-4">@{user.name}</p>
 
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4 mb-4">
           <div className="flex items-center gap-2">
             <Trophy className="h-5 w-5 text-primary" />
             <span className="text-sm font-medium text-foreground">
@@ -67,6 +68,8 @@ export const UserInfo = () => {
             <span className="text-sm text-muted-foreground">Member since {new Date().getFullYear()}</span>
           </div>
         </div>
+
+        <EditProfileDialog />
       </div>
     </div>
   )

@@ -21,7 +21,7 @@ export const fetchSlamEntryComments = createServerFn({ method: 'GET' }).handler(
       })
       .from(slamEntryComments)
       .leftJoin(users, eq(slamEntryComments.authorId, users.id))
-      .leftJoin(slamEntries, eq(slamEntryComments.slameEntryId, slamEntries.id))
+      .leftJoin(slamEntries, eq(slamEntryComments.slamEntryId, slamEntries.id))
       .where(eq(slamEntryComments.isDeleted, false))
       .orderBy(slamEntryComments.createdAt)
 

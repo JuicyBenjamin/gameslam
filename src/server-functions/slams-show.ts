@@ -1,8 +1,45 @@
 import { createServerFn } from '@tanstack/react-start'
 import { object, string, pipe, nonEmpty, url, custom, safeParse } from 'valibot'
+import { parse as parseHtml } from 'node-html-parser'
 import { supabase } from '@/lib/supabase.server'
 import { slamEntries } from '@/db/schema/slamEntries'
 import { db } from '@/server-functions/database'
+
+interface IItchPageData {
+  name: string
+  description: string
+}
+
+async function fetchItchPageData(pageUrl: string): Promise<IItchPageData> {
+  const response = await fetch(pageUrl, {
+    headers: { 'User-Agent': 'GameSlam/1.0 (+https://gameslam.io)' },
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch itch.io page (${response.status})`)
+  }
+
+  const html = await response.text()
+  const root = parseHtml(html)
+
+  const ogTitle = root.querySelector('meta[property="og:title"]')?.getAttribute('content')
+  const twitterTitle = root.querySelector('meta[name="twitter:title"]')?.getAttribute('content')
+  const titleTag = root.querySelector('title')?.textContent
+
+  const ogDescription = root.querySelector('meta[property="og:description"]')?.getAttribute('content')
+  const metaDescription = root.querySelector('meta[name="description"]')?.getAttribute('content')
+
+  const name = ogTitle
+    ?? twitterTitle
+    ?? titleTag?.replace(/\s+by\s+.+$/, '')
+    ?? 'Untitled'
+
+  const description = ogDescription
+    ?? metaDescription
+    ?? 'No description provided'
+
+  return { name: name.trim(), description: description.trim() }
+}
 
 const JoinSlamSchema = object({
   itchIoLink: pipe(
@@ -39,18 +76,22 @@ export const joinSlamFn = createServerFn({ method: 'POST' })
       }
     }
 
-    // TODO: Fetch real itch.io data
-    const itchData = {
-      assetName: 'Mock Asset',
-      description: 'Mock Description',
+    let itchData: IItchPageData
+    try {
+      itchData = await fetchItchPageData(result.output.itchIoLink)
+    } catch {
+      return {
+        status: 'error' as const,
+        message: 'Could not fetch data from the itch.io page. Please check the URL and try again.',
+      }
     }
 
     await db.insert(slamEntries).values({
       slamId: data.slamId,
       userId: user.id,
       linkToEntry: result.output.itchIoLink,
-      name: itchData.assetName,
-      description: itchData.description || 'No description provided',
+      name: itchData.name,
+      description: itchData.description,
     })
 
     return {

@@ -299,7 +299,7 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentCreateNestedManyWithoutAuthorInput
@@ -319,7 +319,7 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedCreateNestedManyWithoutAuthorInput
@@ -339,7 +339,7 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUpdateManyWithoutAuthorNestedInput
@@ -359,7 +359,7 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUncheckedUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedUpdateManyWithoutAuthorNestedInput
@@ -575,7 +575,7 @@ export type UserCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentCreateNestedManyWithoutAuthorInput
@@ -594,7 +594,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedCreateNestedManyWithoutAuthorInput
@@ -629,7 +629,7 @@ export type UserUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUpdateManyWithoutAuthorNestedInput
@@ -648,7 +648,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUncheckedUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedUpdateManyWithoutAuthorNestedInput
@@ -668,7 +668,7 @@ export type UserCreateWithoutDebugEntriesInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentCreateNestedManyWithoutAuthorInput
@@ -687,7 +687,7 @@ export type UserUncheckedCreateWithoutDebugEntriesInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedCreateNestedManyWithoutAuthorInput
@@ -722,7 +722,7 @@ export type UserUpdateWithoutDebugEntriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUpdateManyWithoutAuthorNestedInput
@@ -741,7 +741,7 @@ export type UserUncheckedUpdateWithoutDebugEntriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUncheckedUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedUpdateManyWithoutAuthorNestedInput
@@ -759,7 +759,7 @@ export type UserCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentCreateNestedManyWithoutAuthorInput
@@ -778,7 +778,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedCreateNestedManyWithoutAuthorInput
@@ -813,7 +813,7 @@ export type UserUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUpdateManyWithoutAuthorNestedInput
@@ -832,7 +832,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUncheckedUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedUpdateManyWithoutAuthorNestedInput
@@ -852,7 +852,7 @@ export type UserCreateWithoutSlamCommentsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryCreateNestedManyWithoutUserInput
   slamEntryComments?: Prisma.SlamEntryCommentCreateNestedManyWithoutAuthorInput
   slamRatings?: Prisma.SlamRatingCreateNestedManyWithoutAuthorInput
@@ -871,7 +871,7 @@ export type UserUncheckedCreateWithoutSlamCommentsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutUserInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamRatings?: Prisma.SlamRatingUncheckedCreateNestedManyWithoutAuthorInput
@@ -906,7 +906,7 @@ export type UserUpdateWithoutSlamCommentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUpdateManyWithoutUserNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUpdateManyWithoutAuthorNestedInput
   slamRatings?: Prisma.SlamRatingUpdateManyWithoutAuthorNestedInput
@@ -925,7 +925,7 @@ export type UserUncheckedUpdateWithoutSlamCommentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUncheckedUpdateManyWithoutUserNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamRatings?: Prisma.SlamRatingUncheckedUpdateManyWithoutAuthorNestedInput
@@ -944,7 +944,7 @@ export type UserCreateWithoutSlamEntryCommentsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentCreateNestedManyWithoutAuthorInput
   slamRatings?: Prisma.SlamRatingCreateNestedManyWithoutAuthorInput
@@ -963,7 +963,7 @@ export type UserUncheckedCreateWithoutSlamEntryCommentsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamRatings?: Prisma.SlamRatingUncheckedCreateNestedManyWithoutAuthorInput
@@ -998,7 +998,7 @@ export type UserUpdateWithoutSlamEntryCommentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUpdateManyWithoutAuthorNestedInput
   slamRatings?: Prisma.SlamRatingUpdateManyWithoutAuthorNestedInput
@@ -1017,7 +1017,7 @@ export type UserUncheckedUpdateWithoutSlamEntryCommentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUncheckedUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamRatings?: Prisma.SlamRatingUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1036,7 +1036,7 @@ export type UserCreateWithoutSlamEntryRatingsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentCreateNestedManyWithoutAuthorInput
@@ -1055,7 +1055,7 @@ export type UserUncheckedCreateWithoutSlamEntryRatingsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedCreateNestedManyWithoutAuthorInput
@@ -1090,7 +1090,7 @@ export type UserUpdateWithoutSlamEntryRatingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUpdateManyWithoutAuthorNestedInput
@@ -1109,7 +1109,7 @@ export type UserUncheckedUpdateWithoutSlamEntryRatingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUncheckedUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1128,7 +1128,7 @@ export type UserCreateWithoutSlamEntriesInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamComments?: Prisma.SlamCommentCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentCreateNestedManyWithoutAuthorInput
   slamRatings?: Prisma.SlamRatingCreateNestedManyWithoutAuthorInput
@@ -1147,7 +1147,7 @@ export type UserUncheckedCreateWithoutSlamEntriesInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamComments?: Prisma.SlamCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamRatings?: Prisma.SlamRatingUncheckedCreateNestedManyWithoutAuthorInput
@@ -1182,7 +1182,7 @@ export type UserUpdateWithoutSlamEntriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamComments?: Prisma.SlamCommentUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUpdateManyWithoutAuthorNestedInput
   slamRatings?: Prisma.SlamRatingUpdateManyWithoutAuthorNestedInput
@@ -1201,7 +1201,7 @@ export type UserUncheckedUpdateWithoutSlamEntriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamComments?: Prisma.SlamCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamRatings?: Prisma.SlamRatingUncheckedUpdateManyWithoutAuthorNestedInput
@@ -1220,7 +1220,7 @@ export type UserCreateWithoutSlamRatingsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentCreateNestedManyWithoutAuthorInput
@@ -1239,7 +1239,7 @@ export type UserUncheckedCreateWithoutSlamRatingsInput = {
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
-  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatorInput
+  createdSlams?: Prisma.SlamUncheckedCreateNestedManyWithoutCreatedByInput
   slamEntries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutUserInput
   slamComments?: Prisma.SlamCommentUncheckedCreateNestedManyWithoutAuthorInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedCreateNestedManyWithoutAuthorInput
@@ -1274,7 +1274,7 @@ export type UserUpdateWithoutSlamRatingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUpdateManyWithoutAuthorNestedInput
@@ -1293,7 +1293,7 @@ export type UserUncheckedUpdateWithoutSlamRatingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
-  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatorNestedInput
+  createdSlams?: Prisma.SlamUncheckedUpdateManyWithoutCreatedByNestedInput
   slamEntries?: Prisma.SlamEntryUncheckedUpdateManyWithoutUserNestedInput
   slamComments?: Prisma.SlamCommentUncheckedUpdateManyWithoutAuthorNestedInput
   slamEntryComments?: Prisma.SlamEntryCommentUncheckedUpdateManyWithoutAuthorNestedInput

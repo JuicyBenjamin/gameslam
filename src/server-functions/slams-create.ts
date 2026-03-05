@@ -37,7 +37,7 @@ export const createSlamFn = createServerFn({ method: 'POST' })
         description: result.output.description,
         artistId: result.output.artistId,
         assetId: result.output.assetId,
-        createdBy: session.user.id,
+        creatorId: session.user.id,
       },
     })
 

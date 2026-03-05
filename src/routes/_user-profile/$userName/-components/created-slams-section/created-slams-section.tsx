@@ -14,7 +14,7 @@ export const CreatedSlamsSection = () => {
   const { data: userSlams = [] } = useLiveQuery(query =>
     query
       .from({ slamItem: slamsCollection })
-      .where(({ slamItem }) => eq(slamItem.slam.createdBy, userId))
+      .where(({ slamItem }) => eq(slamItem.slam.creatorId, userId))
       .orderBy(({ slamItem }) => slamItem.slam.createdAt, 'desc'),
   )
 

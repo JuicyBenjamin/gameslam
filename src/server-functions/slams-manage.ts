@@ -26,7 +26,7 @@ export const updateSlamFn = createServerFn({ method: 'POST' })
     }
 
     const updated = await prisma.slam.updateMany({
-      where: { id: result.output.slamId, createdBy: session.user.id },
+      where: { id: result.output.slamId, creatorId: session.user.id },
       data: {
         name: result.output.name,
         description: result.output.description,
@@ -61,7 +61,7 @@ export const deleteSlamFn = createServerFn({ method: 'POST' })
     }
 
     const updated = await prisma.slam.updateMany({
-      where: { id: result.output.slamId, createdBy: session.user.id },
+      where: { id: result.output.slamId, creatorId: session.user.id },
       data: { isDeleted: true },
     })
 

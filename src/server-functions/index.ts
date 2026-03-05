@@ -6,7 +6,7 @@ export const fetchFeaturedContent = createServerFn({ method: 'GET' }).handler(as
     prisma.slam.findMany({
       include: {
         artist: { select: { id: true, name: true } },
-        creator: { select: { id: true, name: true } },
+        createdBy: { select: { id: true, name: true } },
         _count: { select: { entries: true } },
       },
       orderBy: { createdAt: 'asc' },
@@ -24,10 +24,10 @@ export const fetchFeaturedContent = createServerFn({ method: 'GET' }).handler(as
   ])
 
   return {
-    slams: allSlams.slice(0, 5).map(({ _count, artist, creator, ...slam }) => ({
+    slams: allSlams.slice(0, 5).map(({ _count, artist, createdBy, ...slam }) => ({
       slam,
       artist,
-      creator,
+      createdBy,
       entryCount: _count.entries,
     })),
     artists: topArtists.map(({ _count, ...artist }) => ({

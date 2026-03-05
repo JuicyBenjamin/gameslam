@@ -30,7 +30,7 @@ export type SlamMinAggregateOutputType = {
   description: string | null
   artistId: string | null
   assetId: string | null
-  createdBy: string | null
+  creatorId: string | null
   createdAt: Date | null
   isDeleted: boolean | null
 }
@@ -41,7 +41,7 @@ export type SlamMaxAggregateOutputType = {
   description: string | null
   artistId: string | null
   assetId: string | null
-  createdBy: string | null
+  creatorId: string | null
   createdAt: Date | null
   isDeleted: boolean | null
 }
@@ -52,7 +52,7 @@ export type SlamCountAggregateOutputType = {
   description: number
   artistId: number
   assetId: number
-  createdBy: number
+  creatorId: number
   createdAt: number
   isDeleted: number
   _all: number
@@ -65,7 +65,7 @@ export type SlamMinAggregateInputType = {
   description?: true
   artistId?: true
   assetId?: true
-  createdBy?: true
+  creatorId?: true
   createdAt?: true
   isDeleted?: true
 }
@@ -76,7 +76,7 @@ export type SlamMaxAggregateInputType = {
   description?: true
   artistId?: true
   assetId?: true
-  createdBy?: true
+  creatorId?: true
   createdAt?: true
   isDeleted?: true
 }
@@ -87,7 +87,7 @@ export type SlamCountAggregateInputType = {
   description?: true
   artistId?: true
   assetId?: true
-  createdBy?: true
+  creatorId?: true
   createdAt?: true
   isDeleted?: true
   _all?: true
@@ -171,7 +171,7 @@ export type SlamGroupByOutputType = {
   description: string
   artistId: string
   assetId: string
-  createdBy: string
+  creatorId: string
   createdAt: Date
   isDeleted: boolean
   _count: SlamCountAggregateOutputType | null
@@ -203,12 +203,12 @@ export type SlamWhereInput = {
   description?: Prisma.StringFilter<"Slam"> | string
   artistId?: Prisma.StringFilter<"Slam"> | string
   assetId?: Prisma.StringFilter<"Slam"> | string
-  createdBy?: Prisma.StringFilter<"Slam"> | string
+  creatorId?: Prisma.StringFilter<"Slam"> | string
   createdAt?: Prisma.DateTimeFilter<"Slam"> | Date | string
   isDeleted?: Prisma.BoolFilter<"Slam"> | boolean
   artist?: Prisma.XOR<Prisma.ArtistScalarRelationFilter, Prisma.ArtistWhereInput>
   asset?: Prisma.XOR<Prisma.AssetScalarRelationFilter, Prisma.AssetWhereInput>
-  creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   entries?: Prisma.SlamEntryListRelationFilter
 }
 
@@ -218,12 +218,12 @@ export type SlamOrderByWithRelationInput = {
   description?: Prisma.SortOrder
   artistId?: Prisma.SortOrder
   assetId?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   artist?: Prisma.ArtistOrderByWithRelationInput
   asset?: Prisma.AssetOrderByWithRelationInput
-  creator?: Prisma.UserOrderByWithRelationInput
+  createdBy?: Prisma.UserOrderByWithRelationInput
   entries?: Prisma.SlamEntryOrderByRelationAggregateInput
 }
 
@@ -236,12 +236,12 @@ export type SlamWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringFilter<"Slam"> | string
   artistId?: Prisma.StringFilter<"Slam"> | string
   assetId?: Prisma.StringFilter<"Slam"> | string
-  createdBy?: Prisma.StringFilter<"Slam"> | string
+  creatorId?: Prisma.StringFilter<"Slam"> | string
   createdAt?: Prisma.DateTimeFilter<"Slam"> | Date | string
   isDeleted?: Prisma.BoolFilter<"Slam"> | boolean
   artist?: Prisma.XOR<Prisma.ArtistScalarRelationFilter, Prisma.ArtistWhereInput>
   asset?: Prisma.XOR<Prisma.AssetScalarRelationFilter, Prisma.AssetWhereInput>
-  creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   entries?: Prisma.SlamEntryListRelationFilter
 }, "id">
 
@@ -251,7 +251,7 @@ export type SlamOrderByWithAggregationInput = {
   description?: Prisma.SortOrder
   artistId?: Prisma.SortOrder
   assetId?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
   _count?: Prisma.SlamCountOrderByAggregateInput
@@ -268,7 +268,7 @@ export type SlamScalarWhereWithAggregatesInput = {
   description?: Prisma.StringWithAggregatesFilter<"Slam"> | string
   artistId?: Prisma.StringWithAggregatesFilter<"Slam"> | string
   assetId?: Prisma.StringWithAggregatesFilter<"Slam"> | string
-  createdBy?: Prisma.StringWithAggregatesFilter<"Slam"> | string
+  creatorId?: Prisma.StringWithAggregatesFilter<"Slam"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Slam"> | Date | string
   isDeleted?: Prisma.BoolWithAggregatesFilter<"Slam"> | boolean
 }
@@ -281,7 +281,7 @@ export type SlamCreateInput = {
   isDeleted?: boolean
   artist: Prisma.ArtistCreateNestedOneWithoutSlamsInput
   asset: Prisma.AssetCreateNestedOneWithoutSlamsInput
-  creator: Prisma.UserCreateNestedOneWithoutCreatedSlamsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedSlamsInput
   entries?: Prisma.SlamEntryCreateNestedManyWithoutSlamInput
 }
 
@@ -291,7 +291,7 @@ export type SlamUncheckedCreateInput = {
   description: string
   artistId: string
   assetId: string
-  createdBy: string
+  creatorId: string
   createdAt?: Date | string
   isDeleted?: boolean
   entries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutSlamInput
@@ -305,7 +305,7 @@ export type SlamUpdateInput = {
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   artist?: Prisma.ArtistUpdateOneRequiredWithoutSlamsNestedInput
   asset?: Prisma.AssetUpdateOneRequiredWithoutSlamsNestedInput
-  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedSlamsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedSlamsNestedInput
   entries?: Prisma.SlamEntryUpdateManyWithoutSlamNestedInput
 }
 
@@ -315,7 +315,7 @@ export type SlamUncheckedUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   artistId?: Prisma.StringFieldUpdateOperationsInput | string
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   entries?: Prisma.SlamEntryUncheckedUpdateManyWithoutSlamNestedInput
@@ -327,7 +327,7 @@ export type SlamCreateManyInput = {
   description: string
   artistId: string
   assetId: string
-  createdBy: string
+  creatorId: string
   createdAt?: Date | string
   isDeleted?: boolean
 }
@@ -346,7 +346,7 @@ export type SlamUncheckedUpdateManyInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   artistId?: Prisma.StringFieldUpdateOperationsInput | string
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
@@ -372,7 +372,7 @@ export type SlamCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   artistId?: Prisma.SortOrder
   assetId?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
 }
@@ -383,7 +383,7 @@ export type SlamMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   artistId?: Prisma.SortOrder
   assetId?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
 }
@@ -394,7 +394,7 @@ export type SlamMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   artistId?: Prisma.SortOrder
   assetId?: Prisma.SortOrder
-  createdBy?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   isDeleted?: Prisma.SortOrder
 }
@@ -497,45 +497,45 @@ export type SlamUpdateOneRequiredWithoutEntriesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SlamUpdateToOneWithWhereWithoutEntriesInput, Prisma.SlamUpdateWithoutEntriesInput>, Prisma.SlamUncheckedUpdateWithoutEntriesInput>
 }
 
-export type SlamCreateNestedManyWithoutCreatorInput = {
-  create?: Prisma.XOR<Prisma.SlamCreateWithoutCreatorInput, Prisma.SlamUncheckedCreateWithoutCreatorInput> | Prisma.SlamCreateWithoutCreatorInput[] | Prisma.SlamUncheckedCreateWithoutCreatorInput[]
-  connectOrCreate?: Prisma.SlamCreateOrConnectWithoutCreatorInput | Prisma.SlamCreateOrConnectWithoutCreatorInput[]
-  createMany?: Prisma.SlamCreateManyCreatorInputEnvelope
+export type SlamCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.SlamCreateWithoutCreatedByInput, Prisma.SlamUncheckedCreateWithoutCreatedByInput> | Prisma.SlamCreateWithoutCreatedByInput[] | Prisma.SlamUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.SlamCreateOrConnectWithoutCreatedByInput | Prisma.SlamCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.SlamCreateManyCreatedByInputEnvelope
   connect?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
 }
 
-export type SlamUncheckedCreateNestedManyWithoutCreatorInput = {
-  create?: Prisma.XOR<Prisma.SlamCreateWithoutCreatorInput, Prisma.SlamUncheckedCreateWithoutCreatorInput> | Prisma.SlamCreateWithoutCreatorInput[] | Prisma.SlamUncheckedCreateWithoutCreatorInput[]
-  connectOrCreate?: Prisma.SlamCreateOrConnectWithoutCreatorInput | Prisma.SlamCreateOrConnectWithoutCreatorInput[]
-  createMany?: Prisma.SlamCreateManyCreatorInputEnvelope
+export type SlamUncheckedCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.SlamCreateWithoutCreatedByInput, Prisma.SlamUncheckedCreateWithoutCreatedByInput> | Prisma.SlamCreateWithoutCreatedByInput[] | Prisma.SlamUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.SlamCreateOrConnectWithoutCreatedByInput | Prisma.SlamCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.SlamCreateManyCreatedByInputEnvelope
   connect?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
 }
 
-export type SlamUpdateManyWithoutCreatorNestedInput = {
-  create?: Prisma.XOR<Prisma.SlamCreateWithoutCreatorInput, Prisma.SlamUncheckedCreateWithoutCreatorInput> | Prisma.SlamCreateWithoutCreatorInput[] | Prisma.SlamUncheckedCreateWithoutCreatorInput[]
-  connectOrCreate?: Prisma.SlamCreateOrConnectWithoutCreatorInput | Prisma.SlamCreateOrConnectWithoutCreatorInput[]
-  upsert?: Prisma.SlamUpsertWithWhereUniqueWithoutCreatorInput | Prisma.SlamUpsertWithWhereUniqueWithoutCreatorInput[]
-  createMany?: Prisma.SlamCreateManyCreatorInputEnvelope
+export type SlamUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.SlamCreateWithoutCreatedByInput, Prisma.SlamUncheckedCreateWithoutCreatedByInput> | Prisma.SlamCreateWithoutCreatedByInput[] | Prisma.SlamUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.SlamCreateOrConnectWithoutCreatedByInput | Prisma.SlamCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.SlamUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.SlamUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.SlamCreateManyCreatedByInputEnvelope
   set?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
   disconnect?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
   delete?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
   connect?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
-  update?: Prisma.SlamUpdateWithWhereUniqueWithoutCreatorInput | Prisma.SlamUpdateWithWhereUniqueWithoutCreatorInput[]
-  updateMany?: Prisma.SlamUpdateManyWithWhereWithoutCreatorInput | Prisma.SlamUpdateManyWithWhereWithoutCreatorInput[]
+  update?: Prisma.SlamUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.SlamUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.SlamUpdateManyWithWhereWithoutCreatedByInput | Prisma.SlamUpdateManyWithWhereWithoutCreatedByInput[]
   deleteMany?: Prisma.SlamScalarWhereInput | Prisma.SlamScalarWhereInput[]
 }
 
-export type SlamUncheckedUpdateManyWithoutCreatorNestedInput = {
-  create?: Prisma.XOR<Prisma.SlamCreateWithoutCreatorInput, Prisma.SlamUncheckedCreateWithoutCreatorInput> | Prisma.SlamCreateWithoutCreatorInput[] | Prisma.SlamUncheckedCreateWithoutCreatorInput[]
-  connectOrCreate?: Prisma.SlamCreateOrConnectWithoutCreatorInput | Prisma.SlamCreateOrConnectWithoutCreatorInput[]
-  upsert?: Prisma.SlamUpsertWithWhereUniqueWithoutCreatorInput | Prisma.SlamUpsertWithWhereUniqueWithoutCreatorInput[]
-  createMany?: Prisma.SlamCreateManyCreatorInputEnvelope
+export type SlamUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.SlamCreateWithoutCreatedByInput, Prisma.SlamUncheckedCreateWithoutCreatedByInput> | Prisma.SlamCreateWithoutCreatedByInput[] | Prisma.SlamUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.SlamCreateOrConnectWithoutCreatedByInput | Prisma.SlamCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.SlamUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.SlamUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.SlamCreateManyCreatedByInputEnvelope
   set?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
   disconnect?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
   delete?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
   connect?: Prisma.SlamWhereUniqueInput | Prisma.SlamWhereUniqueInput[]
-  update?: Prisma.SlamUpdateWithWhereUniqueWithoutCreatorInput | Prisma.SlamUpdateWithWhereUniqueWithoutCreatorInput[]
-  updateMany?: Prisma.SlamUpdateManyWithWhereWithoutCreatorInput | Prisma.SlamUpdateManyWithWhereWithoutCreatorInput[]
+  update?: Prisma.SlamUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.SlamUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.SlamUpdateManyWithWhereWithoutCreatedByInput | Prisma.SlamUpdateManyWithWhereWithoutCreatedByInput[]
   deleteMany?: Prisma.SlamScalarWhereInput | Prisma.SlamScalarWhereInput[]
 }
 
@@ -546,7 +546,7 @@ export type SlamCreateWithoutArtistInput = {
   createdAt?: Date | string
   isDeleted?: boolean
   asset: Prisma.AssetCreateNestedOneWithoutSlamsInput
-  creator: Prisma.UserCreateNestedOneWithoutCreatedSlamsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedSlamsInput
   entries?: Prisma.SlamEntryCreateNestedManyWithoutSlamInput
 }
 
@@ -555,7 +555,7 @@ export type SlamUncheckedCreateWithoutArtistInput = {
   name: string
   description: string
   assetId: string
-  createdBy: string
+  creatorId: string
   createdAt?: Date | string
   isDeleted?: boolean
   entries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutSlamInput
@@ -596,7 +596,7 @@ export type SlamScalarWhereInput = {
   description?: Prisma.StringFilter<"Slam"> | string
   artistId?: Prisma.StringFilter<"Slam"> | string
   assetId?: Prisma.StringFilter<"Slam"> | string
-  createdBy?: Prisma.StringFilter<"Slam"> | string
+  creatorId?: Prisma.StringFilter<"Slam"> | string
   createdAt?: Prisma.DateTimeFilter<"Slam"> | Date | string
   isDeleted?: Prisma.BoolFilter<"Slam"> | boolean
 }
@@ -608,7 +608,7 @@ export type SlamCreateWithoutAssetInput = {
   createdAt?: Date | string
   isDeleted?: boolean
   artist: Prisma.ArtistCreateNestedOneWithoutSlamsInput
-  creator: Prisma.UserCreateNestedOneWithoutCreatedSlamsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedSlamsInput
   entries?: Prisma.SlamEntryCreateNestedManyWithoutSlamInput
 }
 
@@ -617,7 +617,7 @@ export type SlamUncheckedCreateWithoutAssetInput = {
   name: string
   description: string
   artistId: string
-  createdBy: string
+  creatorId: string
   createdAt?: Date | string
   isDeleted?: boolean
   entries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutSlamInput
@@ -657,7 +657,7 @@ export type SlamCreateWithoutEntriesInput = {
   isDeleted?: boolean
   artist: Prisma.ArtistCreateNestedOneWithoutSlamsInput
   asset: Prisma.AssetCreateNestedOneWithoutSlamsInput
-  creator: Prisma.UserCreateNestedOneWithoutCreatedSlamsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedSlamsInput
 }
 
 export type SlamUncheckedCreateWithoutEntriesInput = {
@@ -666,7 +666,7 @@ export type SlamUncheckedCreateWithoutEntriesInput = {
   description: string
   artistId: string
   assetId: string
-  createdBy: string
+  creatorId: string
   createdAt?: Date | string
   isDeleted?: boolean
 }
@@ -695,7 +695,7 @@ export type SlamUpdateWithoutEntriesInput = {
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   artist?: Prisma.ArtistUpdateOneRequiredWithoutSlamsNestedInput
   asset?: Prisma.AssetUpdateOneRequiredWithoutSlamsNestedInput
-  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedSlamsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedSlamsNestedInput
 }
 
 export type SlamUncheckedUpdateWithoutEntriesInput = {
@@ -704,12 +704,12 @@ export type SlamUncheckedUpdateWithoutEntriesInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
   artistId?: Prisma.StringFieldUpdateOperationsInput | string
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
-export type SlamCreateWithoutCreatorInput = {
+export type SlamCreateWithoutCreatedByInput = {
   id?: string
   name: string
   description: string
@@ -720,7 +720,7 @@ export type SlamCreateWithoutCreatorInput = {
   entries?: Prisma.SlamEntryCreateNestedManyWithoutSlamInput
 }
 
-export type SlamUncheckedCreateWithoutCreatorInput = {
+export type SlamUncheckedCreateWithoutCreatedByInput = {
   id?: string
   name: string
   description: string
@@ -731,30 +731,30 @@ export type SlamUncheckedCreateWithoutCreatorInput = {
   entries?: Prisma.SlamEntryUncheckedCreateNestedManyWithoutSlamInput
 }
 
-export type SlamCreateOrConnectWithoutCreatorInput = {
+export type SlamCreateOrConnectWithoutCreatedByInput = {
   where: Prisma.SlamWhereUniqueInput
-  create: Prisma.XOR<Prisma.SlamCreateWithoutCreatorInput, Prisma.SlamUncheckedCreateWithoutCreatorInput>
+  create: Prisma.XOR<Prisma.SlamCreateWithoutCreatedByInput, Prisma.SlamUncheckedCreateWithoutCreatedByInput>
 }
 
-export type SlamCreateManyCreatorInputEnvelope = {
-  data: Prisma.SlamCreateManyCreatorInput | Prisma.SlamCreateManyCreatorInput[]
+export type SlamCreateManyCreatedByInputEnvelope = {
+  data: Prisma.SlamCreateManyCreatedByInput | Prisma.SlamCreateManyCreatedByInput[]
   skipDuplicates?: boolean
 }
 
-export type SlamUpsertWithWhereUniqueWithoutCreatorInput = {
+export type SlamUpsertWithWhereUniqueWithoutCreatedByInput = {
   where: Prisma.SlamWhereUniqueInput
-  update: Prisma.XOR<Prisma.SlamUpdateWithoutCreatorInput, Prisma.SlamUncheckedUpdateWithoutCreatorInput>
-  create: Prisma.XOR<Prisma.SlamCreateWithoutCreatorInput, Prisma.SlamUncheckedCreateWithoutCreatorInput>
+  update: Prisma.XOR<Prisma.SlamUpdateWithoutCreatedByInput, Prisma.SlamUncheckedUpdateWithoutCreatedByInput>
+  create: Prisma.XOR<Prisma.SlamCreateWithoutCreatedByInput, Prisma.SlamUncheckedCreateWithoutCreatedByInput>
 }
 
-export type SlamUpdateWithWhereUniqueWithoutCreatorInput = {
+export type SlamUpdateWithWhereUniqueWithoutCreatedByInput = {
   where: Prisma.SlamWhereUniqueInput
-  data: Prisma.XOR<Prisma.SlamUpdateWithoutCreatorInput, Prisma.SlamUncheckedUpdateWithoutCreatorInput>
+  data: Prisma.XOR<Prisma.SlamUpdateWithoutCreatedByInput, Prisma.SlamUncheckedUpdateWithoutCreatedByInput>
 }
 
-export type SlamUpdateManyWithWhereWithoutCreatorInput = {
+export type SlamUpdateManyWithWhereWithoutCreatedByInput = {
   where: Prisma.SlamScalarWhereInput
-  data: Prisma.XOR<Prisma.SlamUpdateManyMutationInput, Prisma.SlamUncheckedUpdateManyWithoutCreatorInput>
+  data: Prisma.XOR<Prisma.SlamUpdateManyMutationInput, Prisma.SlamUncheckedUpdateManyWithoutCreatedByInput>
 }
 
 export type SlamCreateManyArtistInput = {
@@ -762,7 +762,7 @@ export type SlamCreateManyArtistInput = {
   name: string
   description: string
   assetId: string
-  createdBy: string
+  creatorId: string
   createdAt?: Date | string
   isDeleted?: boolean
 }
@@ -774,7 +774,7 @@ export type SlamUpdateWithoutArtistInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   asset?: Prisma.AssetUpdateOneRequiredWithoutSlamsNestedInput
-  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedSlamsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedSlamsNestedInput
   entries?: Prisma.SlamEntryUpdateManyWithoutSlamNestedInput
 }
 
@@ -783,7 +783,7 @@ export type SlamUncheckedUpdateWithoutArtistInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   entries?: Prisma.SlamEntryUncheckedUpdateManyWithoutSlamNestedInput
@@ -794,7 +794,7 @@ export type SlamUncheckedUpdateManyWithoutArtistInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
@@ -804,7 +804,7 @@ export type SlamCreateManyAssetInput = {
   name: string
   description: string
   artistId: string
-  createdBy: string
+  creatorId: string
   createdAt?: Date | string
   isDeleted?: boolean
 }
@@ -816,7 +816,7 @@ export type SlamUpdateWithoutAssetInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   artist?: Prisma.ArtistUpdateOneRequiredWithoutSlamsNestedInput
-  creator?: Prisma.UserUpdateOneRequiredWithoutCreatedSlamsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedSlamsNestedInput
   entries?: Prisma.SlamEntryUpdateManyWithoutSlamNestedInput
 }
 
@@ -825,7 +825,7 @@ export type SlamUncheckedUpdateWithoutAssetInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   artistId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   entries?: Prisma.SlamEntryUncheckedUpdateManyWithoutSlamNestedInput
@@ -836,12 +836,12 @@ export type SlamUncheckedUpdateManyWithoutAssetInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   artistId?: Prisma.StringFieldUpdateOperationsInput | string
-  createdBy?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
-export type SlamCreateManyCreatorInput = {
+export type SlamCreateManyCreatedByInput = {
   id?: string
   name: string
   description: string
@@ -851,7 +851,7 @@ export type SlamCreateManyCreatorInput = {
   isDeleted?: boolean
 }
 
-export type SlamUpdateWithoutCreatorInput = {
+export type SlamUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -862,7 +862,7 @@ export type SlamUpdateWithoutCreatorInput = {
   entries?: Prisma.SlamEntryUpdateManyWithoutSlamNestedInput
 }
 
-export type SlamUncheckedUpdateWithoutCreatorInput = {
+export type SlamUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -873,7 +873,7 @@ export type SlamUncheckedUpdateWithoutCreatorInput = {
   entries?: Prisma.SlamEntryUncheckedUpdateManyWithoutSlamNestedInput
 }
 
-export type SlamUncheckedUpdateManyWithoutCreatorInput = {
+export type SlamUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
@@ -920,12 +920,12 @@ export type SlamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   description?: boolean
   artistId?: boolean
   assetId?: boolean
-  createdBy?: boolean
+  creatorId?: boolean
   createdAt?: boolean
   isDeleted?: boolean
   artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
-  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   entries?: boolean | Prisma.Slam$entriesArgs<ExtArgs>
   _count?: boolean | Prisma.SlamCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["slam"]>
@@ -936,12 +936,12 @@ export type SlamSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   artistId?: boolean
   assetId?: boolean
-  createdBy?: boolean
+  creatorId?: boolean
   createdAt?: boolean
   isDeleted?: boolean
   artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
-  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["slam"]>
 
 export type SlamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -950,12 +950,12 @@ export type SlamSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   description?: boolean
   artistId?: boolean
   assetId?: boolean
-  createdBy?: boolean
+  creatorId?: boolean
   createdAt?: boolean
   isDeleted?: boolean
   artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
-  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["slam"]>
 
 export type SlamSelectScalar = {
@@ -964,28 +964,28 @@ export type SlamSelectScalar = {
   description?: boolean
   artistId?: boolean
   assetId?: boolean
-  createdBy?: boolean
+  creatorId?: boolean
   createdAt?: boolean
   isDeleted?: boolean
 }
 
-export type SlamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "artistId" | "assetId" | "createdBy" | "createdAt" | "isDeleted", ExtArgs["result"]["slam"]>
+export type SlamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "artistId" | "assetId" | "creatorId" | "createdAt" | "isDeleted", ExtArgs["result"]["slam"]>
 export type SlamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
-  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   entries?: boolean | Prisma.Slam$entriesArgs<ExtArgs>
   _count?: boolean | Prisma.SlamCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SlamIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
-  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type SlamIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
-  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $SlamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -993,7 +993,7 @@ export type $SlamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     artist: Prisma.$ArtistPayload<ExtArgs>
     asset: Prisma.$AssetPayload<ExtArgs>
-    creator: Prisma.$UserPayload<ExtArgs>
+    createdBy: Prisma.$UserPayload<ExtArgs>
     entries: Prisma.$SlamEntryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1002,7 +1002,7 @@ export type $SlamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     description: string
     artistId: string
     assetId: string
-    createdBy: string
+    creatorId: string
     createdAt: Date
     isDeleted: boolean
   }, ExtArgs["result"]["slam"]>
@@ -1401,7 +1401,7 @@ export interface Prisma__SlamClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   artist<T extends Prisma.ArtistDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ArtistDefaultArgs<ExtArgs>>): Prisma.Prisma__ArtistClient<runtime.Types.Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   asset<T extends Prisma.AssetDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssetDefaultArgs<ExtArgs>>): Prisma.Prisma__AssetClient<runtime.Types.Result.GetResult<Prisma.$AssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   entries<T extends Prisma.Slam$entriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Slam$entriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SlamEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1437,7 +1437,7 @@ export interface SlamFieldRefs {
   readonly description: Prisma.FieldRef<"Slam", 'String'>
   readonly artistId: Prisma.FieldRef<"Slam", 'String'>
   readonly assetId: Prisma.FieldRef<"Slam", 'String'>
-  readonly createdBy: Prisma.FieldRef<"Slam", 'String'>
+  readonly creatorId: Prisma.FieldRef<"Slam", 'String'>
   readonly createdAt: Prisma.FieldRef<"Slam", 'DateTime'>
   readonly isDeleted: Prisma.FieldRef<"Slam", 'Boolean'>
 }

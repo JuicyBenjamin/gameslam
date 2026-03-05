@@ -223,7 +223,7 @@ export const SlamScalarFieldEnum = {
   description: 'description',
   artistId: 'artistId',
   assetId: 'assetId',
-  createdBy: 'createdBy',
+  creatorId: 'creatorId',
   createdAt: 'createdAt',
   isDeleted: 'isDeleted'
 } as const

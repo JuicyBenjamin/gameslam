@@ -11,11 +11,11 @@ interface ISlamCardProps {
     description: string
   }
   artist: { name: string } | null
-  creator: { name: string } | null
+  createdBy: { name: string } | null
   entryCount: number
 }
 
-export const SlamCard = ({ slam, artist, creator, entryCount }: ISlamCardProps) => {
+export const SlamCard = ({ slam, artist, createdBy, entryCount }: ISlamCardProps) => {
   const submissionLabel = entryCount === 1 ? 'submission' : 'submissions'
 
   return (
@@ -41,7 +41,7 @@ export const SlamCard = ({ slam, artist, creator, entryCount }: ISlamCardProps) 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <User className="h-4 w-4 shrink-0" />
             <span className="truncate">
-              <span className="font-medium">Organized by:</span> {creator?.name ?? 'Unknown Organizer'}
+              <span className="font-medium">Organized by:</span> {createdBy?.name ?? 'Unknown Organizer'}
             </span>
           </div>
         </CardContent>

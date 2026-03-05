@@ -1,4 +1,4 @@
-import type { Session } from 'better-auth'
+import type { Session, User } from 'better-auth'
 
 export type TSession = Session
-export type TUser = TSession['user']
+export type TUser = User

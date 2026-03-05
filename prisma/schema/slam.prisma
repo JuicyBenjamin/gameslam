@@ -4,13 +4,13 @@ model Slam {
   description String
   artistId    String
   assetId     String
-  createdBy   String
+  creatorId   String
   createdAt   DateTime @default(now())
   isDeleted   Boolean  @default(false)
 
   artist  Artist @relation(fields: [artistId], references: [id])
   asset   Asset  @relation(fields: [assetId], references: [id])
-  creator User   @relation(fields: [createdBy], references: [id])
+  createdBy User @relation(fields: [creatorId], references: [id])
 
   entries SlamEntry[]
 

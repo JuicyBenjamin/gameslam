@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { getCurrentUser } from '@/loaders/auth'
 import { fetchSlamDetails } from '@/server-functions/slam-show'
 import { SlamHero } from './-components/slam-hero'
@@ -30,12 +30,10 @@ function SlamShowPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
-            <Link to="/slams">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Slams
-            </Link>
-          </Button>
+          <ButtonLink to="/slams" variant="ghost" className="text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Slams
+          </ButtonLink>
         </div>
 
         <SlamHero />

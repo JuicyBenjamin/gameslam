@@ -1,6 +1,6 @@
-import { useLoaderData, Link } from '@tanstack/react-router'
+import { useLoaderData } from '@tanstack/react-router'
 import { Package } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
@@ -32,9 +32,9 @@ export const FeaturedAsset = () => {
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <Button variant="link" asChild className="p-0 h-auto text-lg font-semibold">
-                <Link to="/artists/$artistName" params={{ artistName: artist.name }}>{asset.name}</Link>
-              </Button>
+              <ButtonLink to="/artists/$artistName" params={{ artistName: artist.name }} variant="link" className="p-0 h-auto text-lg font-semibold">
+                {asset.name}
+              </ButtonLink>
             </div>
             <p className="text-sm text-muted-foreground mb-2">by {artist.name}</p>
             <p className="text-sm text-muted-foreground">Featured asset for this slam</p>

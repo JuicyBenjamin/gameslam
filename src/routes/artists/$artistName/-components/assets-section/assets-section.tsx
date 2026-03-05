@@ -99,11 +99,9 @@ const AddAssetDialog = ({ artistId }: IAddAssetDialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <Plus className="mr-2 h-3 w-3" />
-          Add Asset
-        </Button>
+      <DialogTrigger render={<Button size="sm" />}>
+        <Plus className="mr-2 h-3 w-3" />
+        Add Asset
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -1,6 +1,6 @@
-import { useLoaderData, Link } from '@tanstack/react-router'
+import { useLoaderData } from '@tanstack/react-router'
 import { Gamepad2, Trophy, Users } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 
 export const HeroSection = () => {
   const { user } = useLoaderData({ from: '/' })
@@ -26,18 +26,14 @@ export const HeroSection = () => {
                 Join our vibrant community of creators and bring your game ideas to life!
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Button asChild size="lg" className="text-lg">
-                  <Link to="/slams">
-                    <Trophy className="mr-2 h-5 w-5" />
-                    Explore Slams
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="text-lg bg-transparent">
-                  <Link to="/sign-up">
-                    <Users className="mr-2 h-5 w-5" />
-                    Join Now
-                  </Link>
-                </Button>
+                <ButtonLink to="/slams" size="lg" className="text-lg">
+                  <Trophy className="mr-2 h-5 w-5" />
+                  Explore Slams
+                </ButtonLink>
+                <ButtonLink to="/sign-up" variant="outline" size="lg" className="text-lg bg-transparent">
+                  <Users className="mr-2 h-5 w-5" />
+                  Join Now
+                </ButtonLink>
               </div>
             </>
           ) : (
@@ -46,18 +42,14 @@ export const HeroSection = () => {
                 Welcome back! Ready to create something amazing today?
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-                <Button asChild size="lg" className="text-lg">
-                  <Link to="/slams">
-                    <Trophy className="mr-2 h-5 w-5" />
-                    View Slams
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="text-lg bg-transparent">
-                  <Link to="/slams/create">
-                    <Gamepad2 className="mr-2 h-5 w-5" />
-                    Create Slam
-                  </Link>
-                </Button>
+                <ButtonLink to="/slams" size="lg" className="text-lg">
+                  <Trophy className="mr-2 h-5 w-5" />
+                  View Slams
+                </ButtonLink>
+                <ButtonLink to="/slams/create" variant="outline" size="lg" className="text-lg bg-transparent">
+                  <Gamepad2 className="mr-2 h-5 w-5" />
+                  Create Slam
+                </ButtonLink>
               </div>
             </>
           )}

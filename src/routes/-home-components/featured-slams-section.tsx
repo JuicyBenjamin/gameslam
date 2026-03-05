@@ -1,7 +1,7 @@
-import { useLoaderData, Link } from '@tanstack/react-router'
+import { useLoaderData } from '@tanstack/react-router'
 import { Users } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const FeaturedSlamsSection = () => {
@@ -29,9 +29,9 @@ export const FeaturedSlamsSection = () => {
                   <Users className="h-3 w-3" />
                   {slamData.entryCount} entries
                 </Badge>
-                <Button asChild size="sm" variant="outline">
-                  <Link to="/slams/show/$id" params={{ id: slamData.slam.id }}>View Slam</Link>
-                </Button>
+                <ButtonLink to="/slams/show/$id" params={{ id: slamData.slam.id }} size="sm" variant="outline">
+                  View Slam
+                </ButtonLink>
               </CardFooter>
             </Card>
           ))}

@@ -1,5 +1,5 @@
 import { ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 function formatDate(date: string) {
@@ -36,12 +36,10 @@ export const EntryCard = ({ entry }: IEntryCardProps) => {
         </div>
       </CardContent>
       <CardContent className="pt-0">
-        <Button asChild size="sm" variant="outline" className="w-full">
-          <a href={entry.linkToEntry} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="mr-2 h-4 w-4" />
-            View Entry
-          </a>
-        </Button>
+        <ButtonLink href={entry.linkToEntry} target="_blank" rel="noopener noreferrer" size="sm" variant="outline" className="w-full">
+          <ExternalLink className="mr-2 h-4 w-4" />
+          View Entry
+        </ButtonLink>
       </CardContent>
     </Card>
   )

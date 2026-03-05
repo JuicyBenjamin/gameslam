@@ -1,14 +1,21 @@
 import { useState } from 'react'
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import { useLiveQuery } from '@tanstack/react-db'
 import { ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { SelectNative } from '@/components/ui/select-native'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
 import { getCurrentUser } from '@/loaders/auth'
@@ -72,12 +79,10 @@ function CreateSlamPage() {
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <main className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
-            <Link to="/slams">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Slams
-            </Link>
-          </Button>
+          <ButtonLink to="/slams" variant="ghost" className="text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Slams
+          </ButtonLink>
         </div>
 
         <Card>
@@ -169,24 +174,30 @@ function CreateSlamPage() {
                   >
                     {field => (
                       <>
-                        <SelectNative
-                          id="artistId"
-                          value={field.state.value}
-                          onChange={event => {
-                            field.handleChange(event.target.value)
-                            setSelectedArtistId(event.target.value)
+                        <Select
+                          value={field.state.value === '' ? undefined : field.state.value}
+                          onValueChange={(value) => {
+                            field.handleChange(value ?? '')
+                            setSelectedArtistId(value ?? '')
                             form.setFieldValue('assetId', '')
                           }}
-                          onBlur={field.handleBlur}
-                          aria-invalid={field.state.meta.errors.length > 0}
                         >
-                          <option value="">Select an artist...</option>
-                          {artistItems.map(item => (
-                            <option key={item.artist.id} value={item.artist.id}>
-                              {item.artist.name}
-                            </option>
-                          ))}
-                        </SelectNative>
+                          <SelectTrigger
+                            id="artistId"
+                            className="w-full"
+                            onBlur={field.handleBlur}
+                            aria-invalid={field.state.meta.errors.length > 0}
+                          >
+                            <SelectValue placeholder="Select an artist..." />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {artistItems.map(item => (
+                              <SelectItem key={item.artist.id} value={item.artist.id}>
+                                {item.artist.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FieldError>{field.state.meta.errors}</FieldError>
                       </>
                     )}
@@ -208,25 +219,33 @@ function CreateSlamPage() {
                   >
                     {field => (
                       <>
-                        <SelectNative
-                          id="assetId"
-                          value={field.state.value}
-                          onChange={event => field.handleChange(event.target.value)}
-                          onBlur={field.handleBlur}
+                        <Select
+                          value={field.state.value === '' ? undefined : field.state.value}
+                          onValueChange={(value) => field.handleChange(value ?? '')}
                           disabled={selectedArtistId === ''}
-                          aria-invalid={field.state.meta.errors.length > 0}
                         >
-                          <option value="">
-                            {selectedArtistId === ''
-                              ? 'Select an artist first...'
-                              : 'Select an asset...'}
-                          </option>
-                          {availableAssets.map(asset => (
-                            <option key={asset.id} value={asset.id}>
-                              {asset.name}
-                            </option>
-                          ))}
-                        </SelectNative>
+                          <SelectTrigger
+                            id="assetId"
+                            className="w-full"
+                            onBlur={field.handleBlur}
+                            aria-invalid={field.state.meta.errors.length > 0}
+                          >
+                            <SelectValue
+                              placeholder={
+                                selectedArtistId === ''
+                                  ? 'Select an artist first...'
+                                  : 'Select an asset...'
+                              }
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableAssets.map(asset => (
+                              <SelectItem key={asset.id} value={asset.id}>
+                                {asset.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FieldError>{field.state.meta.errors}</FieldError>
                       </>
                     )}

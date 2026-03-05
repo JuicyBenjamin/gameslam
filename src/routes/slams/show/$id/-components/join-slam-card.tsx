@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { useLoaderData, useRouter, Link } from '@tanstack/react-router'
+import { useLoaderData, useRouter } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import { Plus, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Dialog,
@@ -77,14 +78,9 @@ export const JoinSlamCard = () => {
 
         {isLoggedIn ? (
           <Dialog open={isJoinModalOpen} onOpenChange={setIsJoinModalOpen}>
-            <DialogTrigger asChild>
-              <Button
-                size="lg"
-                className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Join Slam
-              </Button>
+            <DialogTrigger render={<Button size="lg" className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90" />}>
+              <Plus className="mr-2 h-4 w-4" />
+              Join Slam
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -141,16 +137,14 @@ export const JoinSlamCard = () => {
             </DialogContent>
           </Dialog>
         ) : (
-          <Button
+          <ButtonLink
+            to="/sign-up"
             size="lg"
-            asChild
             className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
           >
-            <Link to="/sign-up">
-              <Plus className="mr-2 h-4 w-4" />
-              Sign Up to Join
-            </Link>
-          </Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Sign Up to Join
+          </ButtonLink>
         )}
       </CardContent>
     </Card>

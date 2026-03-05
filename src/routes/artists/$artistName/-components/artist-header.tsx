@@ -1,7 +1,7 @@
 import { useParams, useLoaderData } from '@tanstack/react-router'
 import { useLiveQuery, eq } from '@tanstack/react-db'
 import { ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { artistsCollection, slamsCollection } from '@/collections'
 
@@ -44,12 +44,10 @@ export const ArtistHeader = () => {
             <p className="mt-2 text-lg text-muted-foreground">Game Developer</p>
             {artist.link && (
               <div className="mt-4">
-                <Button asChild variant="outline" size="sm">
-                  <a href={artist.link} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    Visit Website
-                  </a>
-                </Button>
+                <ButtonLink href={artist.link} target="_blank" rel="noopener noreferrer" variant="outline" size="sm">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Visit Website
+                </ButtonLink>
               </div>
             )}
           </div>

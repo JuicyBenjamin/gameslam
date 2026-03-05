@@ -1,7 +1,7 @@
-import { useLoaderData, Link } from '@tanstack/react-router'
+import { useLoaderData } from '@tanstack/react-router'
 import { useLiveQuery } from '@tanstack/react-db'
 import { Gamepad2, Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { slamsCollection } from '@/collections'
 import { SlamCard } from './slam-card'
 
@@ -20,12 +20,10 @@ export const SlamsGrid = () => {
         <p className="text-muted-foreground mb-6">
           Be the first to create a game slam and challenge the community with your creative theme.
         </p>
-        <Button asChild>
-          <Link to="/slams/create">
-            <Plus className="mr-2 h-4 w-4" />
-            Create your first Slam
-          </Link>
-        </Button>
+        <ButtonLink to="/slams/create">
+          <Plus className="mr-2 h-4 w-4" />
+          Create your first Slam
+        </ButtonLink>
       </div>
     )
   }

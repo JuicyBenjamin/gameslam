@@ -1,6 +1,6 @@
 import { useLoaderData } from '@tanstack/react-router'
 import { Package, ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const ViewAssetCard = () => {
@@ -17,12 +17,10 @@ export const ViewAssetCard = () => {
         <p className="mb-6 text-muted-foreground">
           Check out the asset that inspired this game slam challenge.
         </p>
-        <Button variant="outline" size="lg" asChild className="w-full">
-          <a href={asset.link} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="mr-2 h-4 w-4" />
-            Go to Asset
-          </a>
-        </Button>
+        <ButtonLink href={asset.link} target="_blank" rel="noopener noreferrer" variant="outline" size="lg" className="w-full">
+          <ExternalLink className="mr-2 h-4 w-4" />
+          Go to Asset
+        </ButtonLink>
       </CardContent>
     </Card>
   )

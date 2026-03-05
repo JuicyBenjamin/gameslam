@@ -95,11 +95,9 @@ const EditSlamDialog = ({ slam, slamId, queryClient, router }: IEditSlamDialogPr
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="w-full">
-          <Pencil className="mr-2 h-4 w-4" />
-          Edit Slam
-        </Button>
+      <DialogTrigger render={<Button variant="outline" className="w-full" />}>
+        <Pencil className="mr-2 h-4 w-4" />
+        Edit Slam
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -208,11 +206,9 @@ const DeleteSlamDialog = ({ slamId, queryClient, router }: IDeleteSlamDialogProp
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="destructive" className="w-full">
-          <Trash2 className="mr-2 h-4 w-4" />
-          Delete Slam
-        </Button>
+      <DialogTrigger render={<Button variant="destructive" className="w-full" />}>
+        <Trash2 className="mr-2 h-4 w-4" />
+        Delete Slam
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

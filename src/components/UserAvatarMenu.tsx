@@ -27,26 +27,20 @@ export const UserAvatarMenu = ({ user }: IUserAvatarMenuProps) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className="rounded-full p-1 hover:bg-white/10 transition-colors">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={user.avatarLink || undefined} />
-            <AvatarFallback className="bg-white/20 text-white text-sm">
-              {user.name?.charAt(0).toUpperCase() || 'U'}
-            </AvatarFallback>
-          </Avatar>
-        </button>
+      <DropdownMenuTrigger render={<button className="rounded-full p-1 hover:bg-white/10 transition-colors" />}>
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={user.avatarLink || undefined} />
+          <AvatarFallback className="bg-white/20 text-white text-sm">
+            {user.name?.charAt(0).toUpperCase() || 'U'}
+          </AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuItem asChild>
-          <Link to="/$userName" params={{ userName: user.name }}>
-            Profile
-          </Link>
+        <DropdownMenuItem render={<Link to="/$userName" params={{ userName: user.name }} />}>
+          Profile
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <button onClick={() => mutate()} disabled={isPending} className="w-full text-left">
-            {isPending ? 'Logging out...' : 'Logout'}
-          </button>
+        <DropdownMenuItem render={<button onClick={() => mutate()} disabled={isPending} className="w-full text-left" />}>
+          {isPending ? 'Logging out...' : 'Logout'}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

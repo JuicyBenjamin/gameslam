@@ -1,7 +1,7 @@
-import { useParams, useLoaderData, Link } from '@tanstack/react-router'
+import { useParams, useLoaderData } from '@tanstack/react-router'
 import { useLiveQuery, eq } from '@tanstack/react-db'
 import { Trophy, User } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent } from '@/components/ui/card'
 import { slamEntriesCollection } from '@/collections'
 
@@ -44,9 +44,9 @@ export const SlamStats = () => {
             <div>
               <p className="text-sm text-muted-foreground">Created by</p>
               {createdBy?.name && (
-                <Button variant="link" asChild className="p-0 h-auto text-lg font-semibold">
-                  <Link to="/$userName" params={{ userName: createdBy.name }}>{createdBy.name}</Link>
-                </Button>
+                <ButtonLink to="/$userName" params={{ userName: createdBy.name }} variant="link" className="p-0 h-auto text-lg font-semibold">
+                  {createdBy.name}
+                </ButtonLink>
               )}
             </div>
           </div>

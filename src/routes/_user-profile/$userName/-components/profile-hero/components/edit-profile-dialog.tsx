@@ -83,11 +83,9 @@ const EditProfileDialogInner = ({ user, queryClient, router }: IEditProfileDialo
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Pencil className="mr-2 h-3 w-3" />
-          Edit Profile
-        </Button>
+      <DialogTrigger render={<Button variant="outline" size="sm" />}>
+        <Pencil className="mr-2 h-3 w-3" />
+        Edit Profile
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

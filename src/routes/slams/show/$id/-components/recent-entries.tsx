@@ -6,6 +6,7 @@ import { useLiveQuery, eq } from '@tanstack/react-db'
 import { Trophy, ExternalLink, ThumbsUp, ThumbsDown, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -91,11 +92,9 @@ export const RecentEntries = () => {
                   {isLoggedIn && !currentUserRated && (
                     <RateEntryDialog entryId={entry.id} entryName={entry.name} />
                   )}
-                  <Button variant="ghost" size="sm" asChild>
-                    <a href={entry.linkToEntry} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </Button>
+                  <ButtonLink href={entry.linkToEntry} target="_blank" rel="noopener noreferrer" variant="ghost" size="sm">
+                    <ExternalLink className="h-4 w-4" />
+                  </ButtonLink>
                 </div>
               </div>
             )
@@ -150,10 +149,8 @@ const RateEntryDialog = ({ entryId, entryName }: IRateEntryDialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" title="Rate this entry">
-          <Star className="h-4 w-4" />
-        </Button>
+      <DialogTrigger render={<Button variant="ghost" size="sm" title="Rate this entry" />}>
+        <Star className="h-4 w-4" />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

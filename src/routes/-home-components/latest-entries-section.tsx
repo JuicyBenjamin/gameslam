@@ -1,6 +1,6 @@
 import { useLoaderData } from '@tanstack/react-router'
 import { Star, ExternalLink } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const LatestEntriesSection = () => {
@@ -25,12 +25,10 @@ export const LatestEntriesSection = () => {
                   {entry.description ?? 'No description provided'}
                 </p>
                 <p className="mb-4 text-xs text-muted-foreground">By {entry.userName}</p>
-                <Button asChild size="sm" variant="outline" className="w-full">
-                  <a href={entry.linkToEntry} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="mr-1 h-3 w-3" />
-                    View Entry
-                  </a>
-                </Button>
+                <ButtonLink href={entry.linkToEntry} target="_blank" rel="noopener noreferrer" size="sm" variant="outline" className="w-full">
+                  <ExternalLink className="mr-1 h-3 w-3" />
+                  View Entry
+                </ButtonLink>
               </CardContent>
             </Card>
           ))}

@@ -1,5 +1,4 @@
-import { Link } from '@tanstack/react-router'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent } from '@/components/ui/card'
 
 export const InfoCta = () => {
@@ -13,9 +12,9 @@ export const InfoCta = () => {
           <p className="mx-auto mb-6 max-w-md text-lg text-white/90">
             Join our community and participate in your first Game Slam today!
           </p>
-          <Button asChild size="lg" className="bg-card text-primary hover:bg-muted">
-            <Link to="/slams">Check Out Current Slams</Link>
-          </Button>
+          <ButtonLink to="/slams" size="lg" className="bg-card text-primary hover:bg-muted">
+            Check Out Current Slams
+          </ButtonLink>
         </CardContent>
       </Card>
     </section>

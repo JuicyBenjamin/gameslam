@@ -1,6 +1,6 @@
-import { useLoaderData, Link } from '@tanstack/react-router'
+import { useLoaderData } from '@tanstack/react-router'
 import { Users } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 
 export const CallToAction = () => {
   const { user } = useLoaderData({ from: '/' })
@@ -18,12 +18,10 @@ export const CallToAction = () => {
           Join GameSlam today and be part of a community that celebrates creativity and innovation in game
           development.
         </p>
-        <Button asChild size="lg" variant="secondary" className="text-lg">
-          <Link to="/sign-up">
-            <Users className="mr-2 h-5 w-5" />
-            Create Your Account
-          </Link>
-        </Button>
+        <ButtonLink to="/sign-up" size="lg" variant="secondary" className="text-lg">
+          <Users className="mr-2 h-5 w-5" />
+          Create Your Account
+        </ButtonLink>
       </div>
     </section>
   )

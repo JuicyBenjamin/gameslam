@@ -1,7 +1,7 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Auth } from '@/components/Auth'
-import { supabaseBrowser as supabase } from '@/lib/supabase.client'
+import { authClient } from '@/lib/auth-client'
 import { redirectIfLoggedIn } from '@/server-functions/auth'
 
 const SignUpComponent = () => {
@@ -10,16 +10,17 @@ const SignUpComponent = () => {
 
   const { mutate, isPending, error } = useMutation({
     mutationFn: async (data: { email: string; password: string }) => {
-      const { error } = await supabase.auth.signUp({
+      const result = await authClient.signUp.email({
         email: data.email,
         password: data.password,
+        name: data.email,
       })
 
-      if (error) {
-        throw new Error(error.message)
+      if (result.error != null) {
+        throw new Error(result.error.message)
       }
 
-      return { success: true }
+      return result.data
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['currentUser'] })

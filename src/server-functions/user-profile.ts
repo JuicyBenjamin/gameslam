@@ -1,37 +1,36 @@
 import { createServerFn } from '@tanstack/react-start'
-import { db } from '@/server-functions/database'
-import { users } from '@/db/schema/users'
-import { slams } from '@/db/schema/slams'
-import { slamEntries } from '@/db/schema/slamEntries'
-import { eq, sql } from 'drizzle-orm'
+import { prisma } from '@/lib/prisma.server'
 
 export const fetchUserProfile = createServerFn({ method: 'GET' })
   .inputValidator((data: { userName: string }) => data)
   .handler(async ({ data }) => {
-    const userData = await db.select().from(users).where(eq(users.name, data.userName)).limit(1)
-    const user = userData[0]
+    const user = await prisma.user.findUnique({
+      where: { name: data.userName },
+      include: {
+        createdSlams: true,
+        slamEntries: true,
+        _count: {
+          select: {
+            createdSlams: true,
+            slamEntries: true,
+          },
+        },
+      },
+    })
 
-    if (!user) {
+    if (user == null) {
       throw new Error('User not found')
     }
 
-    const [userSlams, userEntries, userStats] = await Promise.all([
-      db.select().from(slams).where(eq(slams.createdBy, user.id)),
-      db.select().from(slamEntries).where(eq(slamEntries.userId, user.id)),
-      db
-        .select({
-          totalSlams: sql<number>`count(distinct ${slams.id})`,
-          totalEntries: sql<number>`count(distinct ${slamEntries.id})`,
-        })
-        .from(slams)
-        .leftJoin(slamEntries, eq(slamEntries.slamId, slams.id))
-        .where(eq(slams.createdBy, user.id)),
-    ])
+    const { createdSlams, slamEntries, _count, ...userData } = user
 
     return {
-      user,
-      slams: userSlams,
-      entries: userEntries,
-      stats: userStats[0] || { totalSlams: 0, totalEntries: 0 },
+      user: userData,
+      slams: createdSlams,
+      entries: slamEntries,
+      stats: {
+        totalSlams: _count.createdSlams,
+        totalEntries: _count.slamEntries,
+      },
     }
   })

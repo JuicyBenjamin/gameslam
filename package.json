@@ -5,7 +5,7 @@
   "description": "GameSlam - Where Game Developers Create and Compete",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "prisma dev --no-browser & vite dev",
     "build": "vite build && tsc --noEmit",
     "start": "node .output/server/index.mjs",
     "prisma:dev": "prisma dev",
@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
+    "@better-auth/prisma-adapter": "^1.5.3",
+    "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.14",
@@ -53,6 +55,7 @@
     "next-themes": "^0.4.6",
     "nitro": "npm:nitro-nightly",
     "node-html-parser": "^7.0.1",
+    "pg": "^8.20.0",
     "prisma": "^7.4.2",
     "react": "^19.1.1",
     "react-day-picker": "^9.14.0",
@@ -67,6 +70,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "@types/pg": "^8.18.0",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.4",
@@ -77,7 +81,10 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@prisma/engines", "prisma"]
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "prisma"
+    ]
   },
   "overrides": {
     "vite": "npm:rolldown-vite@latest"

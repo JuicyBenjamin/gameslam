@@ -15,7 +15,7 @@ import {
 import { buttonVariants } from '@/components/ui/button'
 import { UserAvatarMenu } from '@/components/UserAvatarMenu'
 import { getCurrentUser } from '@/server-functions/auth'
-import type { TUser } from '@/db/schema/users'
+import type { TUser } from '@/lib/auth'
 
 interface IHeaderProps {
   initialUser: TUser | null

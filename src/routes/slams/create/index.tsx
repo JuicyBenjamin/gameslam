@@ -18,18 +18,22 @@ import {
 } from '@/components/ui/select'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
+import { redirect } from '@tanstack/react-router'
 import { getCurrentUser } from '@/loaders/auth'
 import { createSlamFn } from '@/server-functions/slams-create'
 import { artistsCollection } from '@/collections'
 
 export const Route = createFileRoute('/slams/create/')({
   component: CreateSlamPage,
-  loader: async () => {
+  beforeLoad: async () => {
     const user = await getCurrentUser()
     if (user == null) {
-      throw new Error('You must be logged in to create a slam')
+      throw redirect({ to: '/login' })
     }
-    return { user }
+  },
+  loader: async () => {
+    const user = await getCurrentUser()
+    return { user: user! }
   },
 })
 

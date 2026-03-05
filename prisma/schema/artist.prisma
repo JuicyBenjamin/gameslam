@@ -3,7 +3,7 @@ model Artist {
   name String @unique
   link String
 
-  assets ArtistAsset[]
+  artistAssets ArtistAsset[]
   slams  Slam[]
 
   @@map("artist")

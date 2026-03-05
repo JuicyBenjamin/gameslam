@@ -1,12 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
-import { object, string, pipe, nonEmpty, uuid, safeParse } from 'valibot'
-import { supabase } from '@/lib/supabase.server'
-import { slams } from '@/db/schema/slams'
-import { db } from '@/server-functions/database'
-import { eq, and } from 'drizzle-orm'
+import { object, string, pipe, nonEmpty, safeParse } from 'valibot'
+import { getSession } from '@/server-functions/auth.server'
+import { prisma } from '@/lib/prisma.server'
 
 const UpdateSlamSchema = object({
-  slamId: pipe(string(), nonEmpty(), uuid()),
+  slamId: pipe(string(), nonEmpty()),
   name: pipe(string(), nonEmpty('Slam name is required')),
   description: pipe(string(), nonEmpty('Description is required')),
 })
@@ -22,25 +20,20 @@ export const updateSlamFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return { status: 'error' as const, message: 'You must be logged in' }
     }
 
-    const [updated] = await db
-      .update(slams)
-      .set({
+    const updated = await prisma.slam.updateMany({
+      where: { id: result.output.slamId, createdBy: session.user.id },
+      data: {
         name: result.output.name,
         description: result.output.description,
-      })
-      .where(and(eq(slams.id, result.output.slamId), eq(slams.createdBy, user.id)))
-      .returning({ id: slams.id })
+      },
+    })
 
-    if (!updated) {
+    if (updated.count === 0) {
       return { status: 'error' as const, message: 'Slam not found or you are not the owner' }
     }
 
@@ -48,7 +41,7 @@ export const updateSlamFn = createServerFn({ method: 'POST' })
   })
 
 const DeleteSlamSchema = object({
-  slamId: pipe(string(), nonEmpty(), uuid()),
+  slamId: pipe(string(), nonEmpty()),
 })
 
 export const deleteSlamFn = createServerFn({ method: 'POST' })
@@ -62,22 +55,17 @@ export const deleteSlamFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return { status: 'error' as const, message: 'You must be logged in' }
     }
 
-    const [updated] = await db
-      .update(slams)
-      .set({ isDeleted: true })
-      .where(and(eq(slams.id, result.output.slamId), eq(slams.createdBy, user.id)))
-      .returning({ id: slams.id })
+    const updated = await prisma.slam.updateMany({
+      where: { id: result.output.slamId, createdBy: session.user.id },
+      data: { isDeleted: true },
+    })
 
-    if (!updated) {
+    if (updated.count === 0) {
       return { status: 'error' as const, message: 'Slam not found or you are not the owner' }
     }
 

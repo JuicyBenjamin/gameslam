@@ -1,33 +1,20 @@
 import { createServerFn } from '@tanstack/react-start'
 import { redirect } from '@tanstack/react-router'
-import { supabase } from '@/lib/supabase.server'
-import { db } from '@/server-functions/database'
-import { users } from '@/db/schema/users'
-import { eq } from 'drizzle-orm'
+import { getSession } from '@/server-functions/auth.server'
 
 export const getCurrentUser = createServerFn().handler(async () => {
-  const supabaseClient = supabase()
-  const { data } = await supabaseClient.auth.getUser()
+  const session = await getSession()
 
-  if (!data.user) {
+  if (session == null) {
     return null
   }
 
-  const userData = await db.select().from(users).where(eq(users.id, data.user.id)).limit(1)
-
-  if (!userData[0]) {
-    // Auth user exists but no matching DB row — orphaned session.
-    // Sign them out so they're not stuck in a broken limbo state.
-    await supabaseClient.auth.signOut()
-    return null
-  }
-
-  return userData[0]
+  return session.user
 })
 
 export const redirectIfLoggedIn = createServerFn().handler(async () => {
-  const user = await getCurrentUser()
-  if (user) {
+  const session = await getSession()
+  if (session != null) {
     throw redirect({ to: '/' })
   }
 })

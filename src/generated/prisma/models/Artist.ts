@@ -166,7 +166,7 @@ export type ArtistWhereInput = {
   id?: Prisma.StringFilter<"Artist"> | string
   name?: Prisma.StringFilter<"Artist"> | string
   link?: Prisma.StringFilter<"Artist"> | string
-  assets?: Prisma.ArtistAssetListRelationFilter
+  artistAssets?: Prisma.ArtistAssetListRelationFilter
   slams?: Prisma.SlamListRelationFilter
 }
 
@@ -174,7 +174,7 @@ export type ArtistOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   link?: Prisma.SortOrder
-  assets?: Prisma.ArtistAssetOrderByRelationAggregateInput
+  artistAssets?: Prisma.ArtistAssetOrderByRelationAggregateInput
   slams?: Prisma.SlamOrderByRelationAggregateInput
 }
 
@@ -185,7 +185,7 @@ export type ArtistWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ArtistWhereInput[]
   NOT?: Prisma.ArtistWhereInput | Prisma.ArtistWhereInput[]
   link?: Prisma.StringFilter<"Artist"> | string
-  assets?: Prisma.ArtistAssetListRelationFilter
+  artistAssets?: Prisma.ArtistAssetListRelationFilter
   slams?: Prisma.SlamListRelationFilter
 }, "id" | "name">
 
@@ -211,7 +211,7 @@ export type ArtistCreateInput = {
   id?: string
   name: string
   link: string
-  assets?: Prisma.ArtistAssetCreateNestedManyWithoutArtistInput
+  artistAssets?: Prisma.ArtistAssetCreateNestedManyWithoutArtistInput
   slams?: Prisma.SlamCreateNestedManyWithoutArtistInput
 }
 
@@ -219,7 +219,7 @@ export type ArtistUncheckedCreateInput = {
   id?: string
   name: string
   link: string
-  assets?: Prisma.ArtistAssetUncheckedCreateNestedManyWithoutArtistInput
+  artistAssets?: Prisma.ArtistAssetUncheckedCreateNestedManyWithoutArtistInput
   slams?: Prisma.SlamUncheckedCreateNestedManyWithoutArtistInput
 }
 
@@ -227,7 +227,7 @@ export type ArtistUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.StringFieldUpdateOperationsInput | string
-  assets?: Prisma.ArtistAssetUpdateManyWithoutArtistNestedInput
+  artistAssets?: Prisma.ArtistAssetUpdateManyWithoutArtistNestedInput
   slams?: Prisma.SlamUpdateManyWithoutArtistNestedInput
 }
 
@@ -235,7 +235,7 @@ export type ArtistUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.StringFieldUpdateOperationsInput | string
-  assets?: Prisma.ArtistAssetUncheckedUpdateManyWithoutArtistNestedInput
+  artistAssets?: Prisma.ArtistAssetUncheckedUpdateManyWithoutArtistNestedInput
   slams?: Prisma.SlamUncheckedUpdateManyWithoutArtistNestedInput
 }
 
@@ -280,18 +280,18 @@ export type ArtistMinOrderByAggregateInput = {
   link?: Prisma.SortOrder
 }
 
-export type ArtistCreateNestedOneWithoutAssetsInput = {
-  create?: Prisma.XOR<Prisma.ArtistCreateWithoutAssetsInput, Prisma.ArtistUncheckedCreateWithoutAssetsInput>
-  connectOrCreate?: Prisma.ArtistCreateOrConnectWithoutAssetsInput
+export type ArtistCreateNestedOneWithoutArtistAssetsInput = {
+  create?: Prisma.XOR<Prisma.ArtistCreateWithoutArtistAssetsInput, Prisma.ArtistUncheckedCreateWithoutArtistAssetsInput>
+  connectOrCreate?: Prisma.ArtistCreateOrConnectWithoutArtistAssetsInput
   connect?: Prisma.ArtistWhereUniqueInput
 }
 
-export type ArtistUpdateOneRequiredWithoutAssetsNestedInput = {
-  create?: Prisma.XOR<Prisma.ArtistCreateWithoutAssetsInput, Prisma.ArtistUncheckedCreateWithoutAssetsInput>
-  connectOrCreate?: Prisma.ArtistCreateOrConnectWithoutAssetsInput
-  upsert?: Prisma.ArtistUpsertWithoutAssetsInput
+export type ArtistUpdateOneRequiredWithoutArtistAssetsNestedInput = {
+  create?: Prisma.XOR<Prisma.ArtistCreateWithoutArtistAssetsInput, Prisma.ArtistUncheckedCreateWithoutArtistAssetsInput>
+  connectOrCreate?: Prisma.ArtistCreateOrConnectWithoutArtistAssetsInput
+  upsert?: Prisma.ArtistUpsertWithoutArtistAssetsInput
   connect?: Prisma.ArtistWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ArtistUpdateToOneWithWhereWithoutAssetsInput, Prisma.ArtistUpdateWithoutAssetsInput>, Prisma.ArtistUncheckedUpdateWithoutAssetsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ArtistUpdateToOneWithWhereWithoutArtistAssetsInput, Prisma.ArtistUpdateWithoutArtistAssetsInput>, Prisma.ArtistUncheckedUpdateWithoutArtistAssetsInput>
 }
 
 export type ArtistCreateNestedOneWithoutSlamsInput = {
@@ -308,44 +308,44 @@ export type ArtistUpdateOneRequiredWithoutSlamsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ArtistUpdateToOneWithWhereWithoutSlamsInput, Prisma.ArtistUpdateWithoutSlamsInput>, Prisma.ArtistUncheckedUpdateWithoutSlamsInput>
 }
 
-export type ArtistCreateWithoutAssetsInput = {
+export type ArtistCreateWithoutArtistAssetsInput = {
   id?: string
   name: string
   link: string
   slams?: Prisma.SlamCreateNestedManyWithoutArtistInput
 }
 
-export type ArtistUncheckedCreateWithoutAssetsInput = {
+export type ArtistUncheckedCreateWithoutArtistAssetsInput = {
   id?: string
   name: string
   link: string
   slams?: Prisma.SlamUncheckedCreateNestedManyWithoutArtistInput
 }
 
-export type ArtistCreateOrConnectWithoutAssetsInput = {
+export type ArtistCreateOrConnectWithoutArtistAssetsInput = {
   where: Prisma.ArtistWhereUniqueInput
-  create: Prisma.XOR<Prisma.ArtistCreateWithoutAssetsInput, Prisma.ArtistUncheckedCreateWithoutAssetsInput>
+  create: Prisma.XOR<Prisma.ArtistCreateWithoutArtistAssetsInput, Prisma.ArtistUncheckedCreateWithoutArtistAssetsInput>
 }
 
-export type ArtistUpsertWithoutAssetsInput = {
-  update: Prisma.XOR<Prisma.ArtistUpdateWithoutAssetsInput, Prisma.ArtistUncheckedUpdateWithoutAssetsInput>
-  create: Prisma.XOR<Prisma.ArtistCreateWithoutAssetsInput, Prisma.ArtistUncheckedCreateWithoutAssetsInput>
+export type ArtistUpsertWithoutArtistAssetsInput = {
+  update: Prisma.XOR<Prisma.ArtistUpdateWithoutArtistAssetsInput, Prisma.ArtistUncheckedUpdateWithoutArtistAssetsInput>
+  create: Prisma.XOR<Prisma.ArtistCreateWithoutArtistAssetsInput, Prisma.ArtistUncheckedCreateWithoutArtistAssetsInput>
   where?: Prisma.ArtistWhereInput
 }
 
-export type ArtistUpdateToOneWithWhereWithoutAssetsInput = {
+export type ArtistUpdateToOneWithWhereWithoutArtistAssetsInput = {
   where?: Prisma.ArtistWhereInput
-  data: Prisma.XOR<Prisma.ArtistUpdateWithoutAssetsInput, Prisma.ArtistUncheckedUpdateWithoutAssetsInput>
+  data: Prisma.XOR<Prisma.ArtistUpdateWithoutArtistAssetsInput, Prisma.ArtistUncheckedUpdateWithoutArtistAssetsInput>
 }
 
-export type ArtistUpdateWithoutAssetsInput = {
+export type ArtistUpdateWithoutArtistAssetsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.StringFieldUpdateOperationsInput | string
   slams?: Prisma.SlamUpdateManyWithoutArtistNestedInput
 }
 
-export type ArtistUncheckedUpdateWithoutAssetsInput = {
+export type ArtistUncheckedUpdateWithoutArtistAssetsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.StringFieldUpdateOperationsInput | string
@@ -356,14 +356,14 @@ export type ArtistCreateWithoutSlamsInput = {
   id?: string
   name: string
   link: string
-  assets?: Prisma.ArtistAssetCreateNestedManyWithoutArtistInput
+  artistAssets?: Prisma.ArtistAssetCreateNestedManyWithoutArtistInput
 }
 
 export type ArtistUncheckedCreateWithoutSlamsInput = {
   id?: string
   name: string
   link: string
-  assets?: Prisma.ArtistAssetUncheckedCreateNestedManyWithoutArtistInput
+  artistAssets?: Prisma.ArtistAssetUncheckedCreateNestedManyWithoutArtistInput
 }
 
 export type ArtistCreateOrConnectWithoutSlamsInput = {
@@ -386,14 +386,14 @@ export type ArtistUpdateWithoutSlamsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.StringFieldUpdateOperationsInput | string
-  assets?: Prisma.ArtistAssetUpdateManyWithoutArtistNestedInput
+  artistAssets?: Prisma.ArtistAssetUpdateManyWithoutArtistNestedInput
 }
 
 export type ArtistUncheckedUpdateWithoutSlamsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.StringFieldUpdateOperationsInput | string
-  assets?: Prisma.ArtistAssetUncheckedUpdateManyWithoutArtistNestedInput
+  artistAssets?: Prisma.ArtistAssetUncheckedUpdateManyWithoutArtistNestedInput
 }
 
 
@@ -402,12 +402,12 @@ export type ArtistUncheckedUpdateWithoutSlamsInput = {
  */
 
 export type ArtistCountOutputType = {
-  assets: number
+  artistAssets: number
   slams: number
 }
 
 export type ArtistCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  assets?: boolean | ArtistCountOutputTypeCountAssetsArgs
+  artistAssets?: boolean | ArtistCountOutputTypeCountArtistAssetsArgs
   slams?: boolean | ArtistCountOutputTypeCountSlamsArgs
 }
 
@@ -424,7 +424,7 @@ export type ArtistCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * ArtistCountOutputType without action
  */
-export type ArtistCountOutputTypeCountAssetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type ArtistCountOutputTypeCountArtistAssetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ArtistAssetWhereInput
 }
 
@@ -440,7 +440,7 @@ export type ArtistSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   name?: boolean
   link?: boolean
-  assets?: boolean | Prisma.Artist$assetsArgs<ExtArgs>
+  artistAssets?: boolean | Prisma.Artist$artistAssetsArgs<ExtArgs>
   slams?: boolean | Prisma.Artist$slamsArgs<ExtArgs>
   _count?: boolean | Prisma.ArtistCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artist"]>
@@ -465,7 +465,7 @@ export type ArtistSelectScalar = {
 
 export type ArtistOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "link", ExtArgs["result"]["artist"]>
 export type ArtistInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  assets?: boolean | Prisma.Artist$assetsArgs<ExtArgs>
+  artistAssets?: boolean | Prisma.Artist$artistAssetsArgs<ExtArgs>
   slams?: boolean | Prisma.Artist$slamsArgs<ExtArgs>
   _count?: boolean | Prisma.ArtistCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -475,7 +475,7 @@ export type ArtistIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $ArtistPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Artist"
   objects: {
-    assets: Prisma.$ArtistAssetPayload<ExtArgs>[]
+    artistAssets: Prisma.$ArtistAssetPayload<ExtArgs>[]
     slams: Prisma.$SlamPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -876,7 +876,7 @@ readonly fields: ArtistFieldRefs;
  */
 export interface Prisma__ArtistClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  assets<T extends Prisma.Artist$assetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artist$assetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArtistAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  artistAssets<T extends Prisma.Artist$artistAssetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artist$artistAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArtistAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   slams<T extends Prisma.Artist$slamsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artist$slamsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SlamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1298,9 +1298,9 @@ export type ArtistDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Artist.assets
+ * Artist.artistAssets
  */
-export type Artist$assetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Artist$artistAssetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the ArtistAsset
    */

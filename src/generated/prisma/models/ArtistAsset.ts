@@ -197,7 +197,7 @@ export type ArtistAssetScalarWhereWithAggregatesInput = {
 }
 
 export type ArtistAssetCreateInput = {
-  artist: Prisma.ArtistCreateNestedOneWithoutAssetsInput
+  artist: Prisma.ArtistCreateNestedOneWithoutArtistAssetsInput
   asset: Prisma.AssetCreateNestedOneWithoutArtistsInput
 }
 
@@ -207,7 +207,7 @@ export type ArtistAssetUncheckedCreateInput = {
 }
 
 export type ArtistAssetUpdateInput = {
-  artist?: Prisma.ArtistUpdateOneRequiredWithoutAssetsNestedInput
+  artist?: Prisma.ArtistUpdateOneRequiredWithoutArtistAssetsNestedInput
   asset?: Prisma.AssetUpdateOneRequiredWithoutArtistsNestedInput
 }
 
@@ -387,7 +387,7 @@ export type ArtistAssetScalarWhereInput = {
 }
 
 export type ArtistAssetCreateWithoutAssetInput = {
-  artist: Prisma.ArtistCreateNestedOneWithoutAssetsInput
+  artist: Prisma.ArtistCreateNestedOneWithoutArtistAssetsInput
 }
 
 export type ArtistAssetUncheckedCreateWithoutAssetInput = {
@@ -441,7 +441,7 @@ export type ArtistAssetCreateManyAssetInput = {
 }
 
 export type ArtistAssetUpdateWithoutAssetInput = {
-  artist?: Prisma.ArtistUpdateOneRequiredWithoutAssetsNestedInput
+  artist?: Prisma.ArtistUpdateOneRequiredWithoutArtistAssetsNestedInput
 }
 
 export type ArtistAssetUncheckedUpdateWithoutAssetInput = {

@@ -1,34 +1,19 @@
 import { createServerFn } from '@tanstack/react-start'
-import { db } from '~/server-functions/database'
-import { slamEntryComments } from '~/db/schema/slamEntryComments'
-import { users } from '~/db/schema/users'
-import { slamEntries } from '~/db/schema/slamEntries'
-import { eq, getTableColumns } from 'drizzle-orm'
+import { prisma } from '@/lib/prisma.server'
 
 export const fetchSlamEntryComments = createServerFn({ method: 'GET' }).handler(async () => {
-  try {
-    const commentsData = await db
-      .select({
-        comment: getTableColumns(slamEntryComments),
-        author: {
-          id: users.id,
-          name: users.name,
-        },
-        slamEntry: {
-          id: slamEntries.id,
-          name: slamEntries.name,
-        },
-      })
-      .from(slamEntryComments)
-      .leftJoin(users, eq(slamEntryComments.authorId, users.id))
-      .leftJoin(slamEntries, eq(slamEntryComments.slamEntryId, slamEntries.id))
-      .where(eq(slamEntryComments.isDeleted, false))
-      .orderBy(slamEntryComments.createdAt)
+  const comments = await prisma.slamEntryComment.findMany({
+    where: { isDeleted: false },
+    include: {
+      author: { select: { id: true, name: true } },
+      slamEntry: { select: { id: true, name: true } },
+    },
+    orderBy: { createdAt: 'asc' },
+  })
 
-    return commentsData
-  } catch (error) {
-    console.error('Error fetching slam entry comments:', error)
-    throw error
-  }
+  return comments.map(({ author, slamEntry, ...comment }) => ({
+    comment,
+    author,
+    slamEntry,
+  }))
 })
-

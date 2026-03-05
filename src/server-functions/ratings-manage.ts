@@ -1,12 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
-import { object, string, pipe, nonEmpty, uuid, boolean, optional, safeParse } from 'valibot'
-import { supabase } from '@/lib/supabase.server'
-import { slamEntryRatings } from '@/db/schema/slamEntryRatings'
-import { db } from '@/server-functions/database'
-import { eq, and } from 'drizzle-orm'
+import { object, string, pipe, nonEmpty, boolean, optional, safeParse } from 'valibot'
+import { getSession } from '@/server-functions/auth.server'
+import { prisma } from '@/lib/prisma.server'
 
 const CreateRatingSchema = object({
-  slamEntryId: pipe(string(), nonEmpty(), uuid()),
+  slamEntryId: pipe(string(), nonEmpty()),
   isRecommended: boolean(),
   content: pipe(string(), nonEmpty('Review content is required')),
 })
@@ -24,42 +22,38 @@ export const createEntryRatingFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return { status: 'error' as const, message: 'You must be logged in' }
     }
 
-    const existing = await db
-      .select()
-      .from(slamEntryRatings)
-      .where(
-        and(
-          eq(slamEntryRatings.authorId, user.id),
-          eq(slamEntryRatings.slamEntryId, result.output.slamEntryId),
-        ),
-      )
-      .limit(1)
+    const existing = await prisma.slamEntryRating.findUnique({
+      where: {
+        authorId_slamEntryId: {
+          authorId: session.user.id,
+          slamEntryId: result.output.slamEntryId,
+        },
+      },
+    })
 
-    if (existing.length > 0) {
+    if (existing != null) {
       return { status: 'error' as const, message: 'You have already rated this entry' }
     }
 
-    await db.insert(slamEntryRatings).values({
-      authorId: user.id,
-      slamEntryId: result.output.slamEntryId,
-      isRecommended: result.output.isRecommended,
-      content: result.output.content,
+    await prisma.slamEntryRating.create({
+      data: {
+        authorId: session.user.id,
+        slamEntryId: result.output.slamEntryId,
+        isRecommended: result.output.isRecommended,
+        content: result.output.content,
+      },
     })
 
     return { status: 'success' as const }
   })
 
 const UpdateRatingSchema = object({
-  ratingId: pipe(string(), nonEmpty(), uuid()),
+  ratingId: pipe(string(), nonEmpty()),
   isRecommended: optional(boolean()),
   content: optional(pipe(string(), nonEmpty('Review content is required'))),
 })
@@ -77,31 +71,21 @@ export const updateEntryRatingFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return { status: 'error' as const, message: 'You must be logged in' }
     }
 
-    const updateData: Partial<{ isRecommended: boolean; content: string }> = {}
+    const updateData: { isRecommended?: boolean; content?: string } = {}
     if (result.output.isRecommended != null) updateData.isRecommended = result.output.isRecommended
     if (result.output.content != null) updateData.content = result.output.content
 
-    const [updated] = await db
-      .update(slamEntryRatings)
-      .set(updateData)
-      .where(
-        and(
-          eq(slamEntryRatings.id, result.output.ratingId),
-          eq(slamEntryRatings.authorId, user.id),
-        ),
-      )
-      .returning({ id: slamEntryRatings.id })
+    const updated = await prisma.slamEntryRating.updateMany({
+      where: { id: result.output.ratingId, authorId: session.user.id },
+      data: updateData,
+    })
 
-    if (!updated) {
+    if (updated.count === 0) {
       return { status: 'error' as const, message: 'Rating not found or you are not the author' }
     }
 
@@ -109,7 +93,7 @@ export const updateEntryRatingFn = createServerFn({ method: 'POST' })
   })
 
 const DeleteRatingSchema = object({
-  ratingId: pipe(string(), nonEmpty(), uuid()),
+  ratingId: pipe(string(), nonEmpty()),
 })
 
 export const deleteEntryRatingFn = createServerFn({ method: 'POST' })
@@ -123,27 +107,17 @@ export const deleteEntryRatingFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return { status: 'error' as const, message: 'You must be logged in' }
     }
 
-    const [updated] = await db
-      .update(slamEntryRatings)
-      .set({ isDeleted: true })
-      .where(
-        and(
-          eq(slamEntryRatings.id, result.output.ratingId),
-          eq(slamEntryRatings.authorId, user.id),
-        ),
-      )
-      .returning({ id: slamEntryRatings.id })
+    const updated = await prisma.slamEntryRating.updateMany({
+      where: { id: result.output.ratingId, authorId: session.user.id },
+      data: { isDeleted: true },
+    })
 
-    if (!updated) {
+    if (updated.count === 0) {
       return { status: 'error' as const, message: 'Rating not found or you are not the author' }
     }
 

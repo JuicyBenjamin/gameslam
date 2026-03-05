@@ -8,6 +8,6 @@ const pool = new pg.Pool(
     : undefined,
 )
 
-const adapter = new PrismaPg({ pool })
+const adapter = new PrismaPg(pool)
 
 export const prisma = new PrismaClient({ adapter })

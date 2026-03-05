@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import { useLiveQuery, eq } from '@tanstack/react-db'
 import { Trophy, ExternalLink, ThumbsUp, ThumbsDown, Star } from 'lucide-react'
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { ButtonLink } from '@/components/ui/button-link'
@@ -18,6 +19,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
+import { Label } from '@/components/ui/label'
 import { slamEntriesCollection, slamEntryRatingsCollection } from '@/collections'
 import { createEntryRatingFn } from '@/server-functions/ratings-manage'
 
@@ -56,9 +58,12 @@ export const RecentEntries = () => {
       <CardContent>
         <div className="space-y-3">
           {validEntries.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-4">
-              No entries yet. Be the first to join!
-            </p>
+            <Empty className="p-4">
+              <EmptyHeader>
+                <EmptyTitle>No entries yet</EmptyTitle>
+                <EmptyDescription>Be the first to join!</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           )}
           {validEntries.slice(0, 5).map((entry: any) => {
             const entryRatings = allRatings.filter(
@@ -149,7 +154,7 @@ const RateEntryDialog = ({ entryId, entryName }: IRateEntryDialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger render={<Button variant="ghost" size="sm" title="Rate this entry" />}>
+      <DialogTrigger render={<Button variant="ghost" size="sm" />}>
         <Star className="h-4 w-4" />
       </DialogTrigger>
       <DialogContent>
@@ -166,7 +171,7 @@ const RateEntryDialog = ({ entryId, entryName }: IRateEntryDialogProps) => {
           className="space-y-4"
         >
           <div>
-            <p className="text-sm font-medium mb-3">Do you recommend this entry?</p>
+            <Label className="mb-3">Do you recommend this entry?</Label>
             <div className="flex gap-3">
               <Button
                 type="button"

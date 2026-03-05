@@ -17,6 +17,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  AlertDialogCancel,
+} from '@/components/ui/alert-dialog'
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
 import { slamsCollection } from '@/collections'
 import { updateSlamFn, deleteSlamFn } from '@/server-functions/slams-manage'
@@ -205,27 +215,25 @@ const DeleteSlamDialog = ({ slamId, queryClient, router }: IDeleteSlamDialogProp
   })
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger render={<Button variant="destructive" className="w-full" />}>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+      <AlertDialogTrigger render={<Button variant="destructive" className="w-full" />}>
         <Trash2 className="mr-2 h-4 w-4" />
         Delete Slam
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Delete Slam</DialogTitle>
-          <DialogDescription>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete Slam</AlertDialogTitle>
+          <AlertDialogDescription>
             Are you sure you want to delete this slam? This action cannot be undone.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex gap-3 justify-end">
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
-            Cancel
-          </Button>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button variant="destructive" onClick={() => mutate()} disabled={isPending}>
             {isPending ? 'Deleting...' : 'Delete'}
           </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }

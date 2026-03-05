@@ -2,6 +2,7 @@ import { useLoaderData } from '@tanstack/react-router'
 import { useLiveQuery } from '@tanstack/react-db'
 import { Gamepad2, Plus } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/button-link'
+import { Empty, EmptyMedia, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent } from '@/components/ui/empty'
 import { slamsCollection } from '@/collections'
 import { SlamCard } from './slam-card'
 
@@ -14,17 +15,23 @@ export const SlamsGrid = () => {
 
   if (slams.length === 0) {
     return (
-      <div className="text-center py-12">
-        <Gamepad2 className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-        <h3 className="text-lg font-medium text-foreground mb-2">No game slams yet</h3>
-        <p className="text-muted-foreground mb-6">
-          Be the first to create a game slam and challenge the community with your creative theme.
-        </p>
-        <ButtonLink to="/slams/create">
-          <Plus className="mr-2 h-4 w-4" />
-          Create your first Slam
-        </ButtonLink>
-      </div>
+      <Empty>
+        <EmptyMedia variant="icon">
+          <Gamepad2 />
+        </EmptyMedia>
+        <EmptyHeader>
+          <EmptyTitle>No game slams yet</EmptyTitle>
+          <EmptyDescription>
+            Be the first to create a game slam and challenge the community with your creative theme.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <ButtonLink to="/slams/create">
+            <Plus className="mr-2 h-4 w-4" />
+            Create your first Slam
+          </ButtonLink>
+        </EmptyContent>
+      </Empty>
     )
   }
 

@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLiveQuery, eq } from '@tanstack/react-db'
 import { useForm } from '@tanstack/react-form'
 import { Package, Plus } from 'lucide-react'
+import { Empty, EmptyMedia, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -49,11 +50,15 @@ export const AssetsSection = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <Package className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium text-foreground mb-2">No assets yet</h3>
-          <p className="text-muted-foreground">This artist hasn't uploaded any assets yet.</p>
-        </div>
+        <Empty>
+          <EmptyMedia variant="icon">
+            <Package />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>No assets yet</EmptyTitle>
+            <EmptyDescription>This artist hasn't uploaded any assets yet.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       )}
     </section>
   )

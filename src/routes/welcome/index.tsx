@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
+import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { setupProfileFn, checkAuthForWelcomeFn } from '@/server-functions/users-manage'
 
@@ -78,7 +79,7 @@ function WelcomePage() {
             </div>
 
             <div>
-              <p className="text-sm font-medium text-foreground mb-3">Choose your avatar</p>
+              <Label className="mb-3">Choose your avatar</Label>
               <div className="grid grid-cols-4 gap-3">
                 {AVATAR_OPTIONS.map(avatarUrl => (
                   <button

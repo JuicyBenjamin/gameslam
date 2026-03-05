@@ -3,27 +3,12 @@ import { useLiveQuery, eq } from '@tanstack/react-db'
 import { Clock, Gamepad2, Target } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { slamsCollection, slamEntriesCollection } from '@/collections'
+import { formatTimeAgo } from '@/lib/format-date'
 
 interface IActivityItem {
   type: 'slam_created' | 'entry_submitted'
   title: string
   time: Date
-}
-
-function formatRelativeTime(date: Date): string {
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMinutes = Math.floor(diffMs / (1000 * 60))
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-  const diffWeeks = Math.floor(diffDays / 7)
-
-  if (diffMinutes < 1) return 'just now'
-  if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`
-  if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`
-  if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`
-  if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks !== 1 ? 's' : ''} ago`
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
 export const RecentActivity = () => {
@@ -86,7 +71,7 @@ export const RecentActivity = () => {
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-foreground">{activity.title}</p>
-                    <p className="text-sm text-muted-foreground">{formatRelativeTime(activity.time)}</p>
+                    <p className="text-sm text-muted-foreground">{formatTimeAgo(activity.time)}</p>
                   </div>
                 </div>
               )

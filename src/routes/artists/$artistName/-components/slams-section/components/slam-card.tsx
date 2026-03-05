@@ -2,14 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
+import { formatDate } from '@/lib/format-date'
 
 interface ISlamCardProps {
   slam: any

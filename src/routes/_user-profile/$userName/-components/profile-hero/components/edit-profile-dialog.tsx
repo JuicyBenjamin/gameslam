@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
+import { Label } from '@/components/ui/label'
 import { updateProfileFn } from '@/server-functions/users-manage'
 
 const AVATAR_OPTIONS = [
@@ -101,7 +102,7 @@ const EditProfileDialogInner = ({ user, queryClient, router }: IEditProfileDialo
         </div>
 
         <div>
-          <p className="text-sm font-medium text-foreground mb-3">Choose your avatar</p>
+          <Label className="mb-3">Choose your avatar</Label>
           <div className="grid grid-cols-4 gap-3">
             {AVATAR_OPTIONS.map(avatarUrl => (
               <button

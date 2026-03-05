@@ -1,5 +1,18 @@
+import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
+import { Menu } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
+import { Separator } from '@/components/ui/separator'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { buttonVariants } from '@/components/ui/button'
 import { UserAvatarMenu } from '@/components/UserAvatarMenu'
 import { getCurrentUser } from '@/server-functions/auth'
 import type { TUser } from '@/db/schema/users'
@@ -8,7 +21,15 @@ interface IHeaderProps {
   initialUser: TUser | null
 }
 
+const navLinks = [
+  { to: '/what-is-a-game-slam', label: 'What is a Game Slam?' },
+  { to: '/slams', label: 'Slams' },
+  { to: '/artists', label: 'Artists' },
+] as const
+
 export const Header = ({ initialUser }: IHeaderProps) => {
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
+
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
     queryFn: getCurrentUser,
@@ -18,150 +39,97 @@ export const Header = ({ initialUser }: IHeaderProps) => {
   const isLoggedIn = user != null
 
   return (
-    <header className="navbar bg-primary sticky top-0 z-50 text-white shadow-md">
-      <div className="container mx-auto flex items-center">
-        {/* <!-- Left Side: Logo --> */}
-        <div className="flex items-center">
-          <Link className="btn btn-ghost text-xl" to="/">
-            Logo
-          </Link>
-        </div>
+    <header className="sticky top-0 z-50 bg-primary text-primary-foreground shadow-md">
+      <div className="container mx-auto flex h-14 items-center justify-between px-4">
+        <Link to="/" className="text-xl font-bold transition-opacity hover:opacity-80">
+          Logo
+        </Link>
 
-        {/* <!-- Right Side: Navigation and User Menu --> */}
-        <div className="flex-1 flex justify-end">
-          <div className="flex items-center space-x-4">
-            {/* <!-- Navigation Links --> */}
-            <div className="hidden items-center space-x-4 md:flex">
-              <Link
-                className="btn btn-ghost"
-                to="/what-is-a-game-slam"
-                activeProps={{
-                  className: 'btn btn-ghost underline',
-                }}
-              >
-                What is a Game Slam?
-              </Link>
-              <Link
-                className="btn btn-ghost"
-                to="/slams"
-                activeProps={{
-                  className: 'btn btn-ghost underline',
-                }}
-              >
-                Slams
-              </Link>
-              <Link
-                className="btn btn-ghost"
-                to="/artists"
-                activeProps={{
-                  className: 'btn btn-ghost underline',
-                }}
-              >
-                Artists
-              </Link>
-            </div>
-
-            {/* <!-- User Menu --> */}
-            {isLoggedIn ? (
-              <UserAvatarMenu user={user} />
-            ) : (
-              <div className="hidden md:flex items-center space-x-2">
-                <Link className="btn btn-neutral" to="/login">
-                  Login
-                </Link>
-                <Link className="btn btn-neutral" to="/sign-up">
-                  Sign Up
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* <!-- Mobile Menu Toggle --> */}
-        <div className="dropdown dropdown-end md:hidden">
-          <label className="btn btn-ghost">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+        <nav className="hidden items-center gap-1 md:flex">
+          {navLinks.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              className="rounded-lg px-3 py-2 text-sm font-medium text-primary-foreground/80 transition-colors hover:bg-white/10 hover:text-primary-foreground"
+              activeProps={{ className: 'rounded-lg px-3 py-2 text-sm font-medium text-primary-foreground bg-white/10' }}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-          </label>
-          <ul className="menu-compact menu dropdown-content rounded-box bg-primary mt-3 w-52 p-2 text-white shadow">
-            <li>
-              <Link
-                to="/what-is-a-game-slam"
-                className=""
-                activeProps={{
-                  className: 'rounded bg-white/20',
-                }}
-              >
-                What is a Game Slam?
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/slams"
-                className=""
-                activeProps={{
-                  className: 'rounded bg-white/20',
-                }}
-              >
-                Slams
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/artists"
-                className=""
-                activeProps={{
-                  className: 'rounded bg-white/20',
-                }}
-              >
-                Artists
-              </Link>
-            </li>
-            {isLoggedIn ? (
-              <>
-                <li>
-                  <Link to="/$userName" params={{ userName: user.name }}>
+              {label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          {isLoggedIn ? (
+            <UserAvatarMenu user={user} />
+          ) : (
+            <div className="hidden items-center gap-2 md:flex">
+              <ButtonLink to="/login" variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10 hover:text-primary-foreground">
+                Login
+              </ButtonLink>
+              <ButtonLink to="/sign-up" size="sm" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+                Sign Up
+              </ButtonLink>
+            </div>
+          )}
+
+          <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
+            <SheetTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-primary-foreground hover:bg-white/10 md:hidden"
+                />
+              }
+            >
+              <Menu className="h-5 w-5" />
+            </SheetTrigger>
+            <SheetContent side="right" className="w-72">
+              <SheetHeader>
+                <SheetTitle>Navigation</SheetTitle>
+              </SheetHeader>
+              <nav className="mt-6 flex flex-col gap-1">
+                {navLinks.map(({ to, label }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    className={buttonVariants({ variant: 'ghost', className: 'justify-start' })}
+                    onClick={() => setIsMobileOpen(false)}
+                  >
+                    {label}
+                  </Link>
+                ))}
+                <Separator className="my-2" />
+                {isLoggedIn ? (
+                  <Link
+                    to="/$userName"
+                    params={{ userName: user.name }}
+                    className={buttonVariants({ variant: 'ghost', className: 'justify-start' })}
+                    onClick={() => setIsMobileOpen(false)}
+                  >
                     Profile
                   </Link>
-                </li>
-                <li>
-                  <UserAvatarMenu user={user} />
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link
-                    to="/login"
-                    className=""
-                    activeProps={{
-                      className: 'rounded bg-white/20',
-                    }}
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/sign-up"
-                    className=""
-                    activeProps={{
-                      className: 'rounded bg-white/20',
-                    }}
-                  >
-                    Sign Up
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className={buttonVariants({ variant: 'ghost', className: 'justify-start' })}
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      to="/sign-up"
+                      className={buttonVariants({ variant: 'ghost', className: 'justify-start' })}
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      Sign Up
+                    </Link>
+                  </>
+                )}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>

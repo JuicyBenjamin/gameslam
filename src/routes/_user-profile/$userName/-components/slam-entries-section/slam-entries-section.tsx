@@ -1,6 +1,7 @@
 import { useLoaderData } from '@tanstack/react-router'
 import { useLiveQuery, eq } from '@tanstack/react-db'
 import { Target, CheckCircle, Users } from 'lucide-react'
+import { Empty, EmptyMedia, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent } from '@/components/ui/empty'
 import { ButtonLink } from '@/components/ui/button-link'
 import { Badge } from '@/components/ui/badge'
 import { slamEntriesCollection } from '@/collections'
@@ -42,15 +43,21 @@ export const SlamEntriesSection = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <CheckCircle className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium text-foreground mb-2">No entries yet</h3>
-          <p className="text-muted-foreground mb-6">This user hasn't submitted any slam entries yet.</p>
-          <ButtonLink to="/slams">
-            <Users className="mr-2 h-4 w-4" />
-            Explore Slams
-          </ButtonLink>
-        </div>
+        <Empty>
+          <EmptyMedia variant="icon">
+            <CheckCircle />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>No entries yet</EmptyTitle>
+            <EmptyDescription>This user hasn't submitted any slam entries yet.</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <ButtonLink to="/slams">
+              <Users className="mr-2 h-4 w-4" />
+              Explore Slams
+            </ButtonLink>
+          </EmptyContent>
+        </Empty>
       )}
     </section>
   )

@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import { useLiveQuery, eq } from '@tanstack/react-db'
 import { MessageSquare, Reply, Pencil, Trash2 } from 'lucide-react'
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -16,6 +17,7 @@ import {
   updateEntryCommentFn,
   deleteEntryCommentFn,
 } from '@/server-functions/comments-manage'
+import { formatTimeAgo } from '@/lib/format-date'
 
 export const CommentsSection = () => {
   const { id: slamId } = useParams({ from: '/slams/show/$id/' })
@@ -62,9 +64,12 @@ export const CommentsSection = () => {
         )}
 
         {topLevelComments.length === 0 && (
-          <p className="text-sm text-muted-foreground text-center py-4">
-            No comments yet. Be the first to share your thoughts!
-          </p>
+          <Empty className="p-4">
+            <EmptyHeader>
+              <EmptyTitle>No comments yet</EmptyTitle>
+              <EmptyDescription>Be the first to share your thoughts!</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         )}
 
         <div className="space-y-4">
@@ -383,16 +388,3 @@ const EditCommentForm = ({ initialContent, isPending, onSave, onCancel }: IEditC
   )
 }
 
-function formatTimeAgo(date: Date): string {
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMinutes = Math.floor(diffMs / (1000 * 60))
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-
-  if (diffMinutes < 1) return 'just now'
-  if (diffMinutes < 60) return `${diffMinutes}m ago`
-  if (diffHours < 24) return `${diffHours}h ago`
-  if (diffDays < 7) return `${diffDays}d ago`
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-}

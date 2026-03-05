@@ -1,6 +1,7 @@
 import { useParams, useLoaderData } from '@tanstack/react-router'
 import { useLiveQuery, eq } from '@tanstack/react-db'
 import { Trophy } from 'lucide-react'
+import { Empty, EmptyMedia, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import { Badge } from '@/components/ui/badge'
 import { artistsCollection, slamsCollection } from '@/collections'
 import { SlamCard } from './components/slam-card'
@@ -46,11 +47,15 @@ export const SlamsSection = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12">
-          <Trophy className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium text-foreground mb-2">No slams created yet</h3>
-          <p className="text-muted-foreground">This artist hasn't created any slams yet.</p>
-        </div>
+        <Empty>
+          <EmptyMedia variant="icon">
+            <Trophy />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>No slams created yet</EmptyTitle>
+            <EmptyDescription>This artist hasn't created any slams yet.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       )}
     </section>
   )

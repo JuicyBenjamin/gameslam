@@ -1,8 +1,13 @@
 import { PrismaClient } from '@/generated/prisma/client'
-import { PrismaPg } from '@prisma/adapter-pg'
 
-const connectionString = process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL
+let prisma: PrismaClient
 
-const adapter = new PrismaPg({ connectionString })
+if (process.env.DIRECT_DATABASE_URL != null) {
+  const { PrismaPg } = await import('@prisma/adapter-pg')
+  const adapter = new PrismaPg({ connectionString: process.env.DIRECT_DATABASE_URL })
+  prisma = new PrismaClient({ adapter })
+} else {
+  prisma = new PrismaClient()
+}
 
-export const prisma = new PrismaClient({ adapter })
+export { prisma }

@@ -1,16 +1,8 @@
-import { Link } from '@tanstack/react-router'
 import { ArrowUpRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
+import { formatDate } from '@/lib/format-date'
 
 interface ISlamCardProps {
   slam: any
@@ -36,12 +28,10 @@ export const SlamCard = ({ slam }: ISlamCardProps) => {
         </div>
       </CardContent>
       <CardContent className="pt-0">
-        <Button asChild size="sm" variant="outline" className="w-full">
-          <Link to="/slams/show/$id" params={{ id: slam.id }}>
-            <ArrowUpRight className="mr-2 h-4 w-4" />
-            View Slam
-          </Link>
-        </Button>
+        <ButtonLink to="/slams/show/$id" params={{ id: slam.id }} size="sm" variant="outline" className="w-full">
+          <ArrowUpRight className="mr-2 h-4 w-4" />
+          View Slam
+        </ButtonLink>
       </CardContent>
     </Card>
   )

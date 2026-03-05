@@ -1,7 +1,10 @@
 import { useState } from 'react'
-import { useLoaderData, Link } from '@tanstack/react-router'
+import { useLoaderData, useRouter } from '@tanstack/react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useForm } from '@tanstack/react-form'
 import { Plus, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Dialog,
@@ -12,44 +15,54 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
 import { toast } from 'sonner'
+import { joinSlamFn } from '@/server-functions/slams-show'
 
 export const JoinSlamCard = () => {
   const loaderData = useLoaderData({ from: '/slams/show/$id/' })
   const isLoggedIn = loaderData.user != null
+  const slamId = loaderData.slam.slam.id
+
+  const router = useRouter()
+  const queryClient = useQueryClient()
 
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false)
-  const [itchIoLink, setItchIoLink] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleJoinSlam = async (event: React.FormEvent) => {
-    event.preventDefault()
-    setIsSubmitting(true)
-
-    try {
-      // TODO: Fix server function mutation
-      const result = { status: 'success' as const, message: 'Success' }
-
+  const { mutate: joinSlam, isPending } = useMutation({
+    mutationFn: (itchIoLink: string) =>
+      joinSlamFn({ data: { itchIoLink, slamId } }),
+    onSuccess: async (result) => {
       if (result.status === 'success') {
         toast.success('Success!', {
           description: 'Your entry has been submitted successfully.',
         })
         setIsJoinModalOpen(false)
-        setItchIoLink('')
+        form.reset()
+        await queryClient.invalidateQueries({ queryKey: ['slamEntries'] })
+        await queryClient.invalidateQueries({ queryKey: ['slams'] })
+        router.invalidate()
       } else {
         toast.error('Error', {
           description: result.message || 'Failed to submit entry. Please try again.',
         })
       }
-    } catch {
+    },
+    onError: () => {
       toast.error('Error', {
         description: 'Failed to submit entry. Please try again.',
       })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+    },
+  })
+
+  const form = useForm({
+    defaultValues: {
+      itchIoLink: '',
+    },
+    onSubmit: async ({ value }) => {
+      joinSlam(value.itchIoLink)
+    },
+  })
 
   return (
     <Card className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
@@ -65,14 +78,9 @@ export const JoinSlamCard = () => {
 
         {isLoggedIn ? (
           <Dialog open={isJoinModalOpen} onOpenChange={setIsJoinModalOpen}>
-            <DialogTrigger asChild>
-              <Button
-                size="lg"
-                className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-              >
-                <Plus className="mr-2 h-4 w-4" />
-                Join Slam
-              </Button>
+            <DialogTrigger render={<Button size="lg" className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90" />}>
+              <Plus className="mr-2 h-4 w-4" />
+              Join Slam
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -81,38 +89,62 @@ export const JoinSlamCard = () => {
                   Submit your itch.io game entry to participate in this slam.
                 </DialogDescription>
               </DialogHeader>
-              <form onSubmit={handleJoinSlam} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="itchIoLink">Itch.io Entry Link</Label>
-                  <Input
-                    id="itchIoLink"
-                    type="url"
-                    placeholder="https://example.itch.io/game"
-                    value={itchIoLink}
-                    onChange={event => setItchIoLink(event.target.value)}
-                    required
-                  />
-                  <p className="text-sm text-muted-foreground">
-                    Paste the URL of your itch.io game entry
-                  </p>
-                </div>
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? 'Submitting...' : 'Submit Entry'}
+              <form
+                onSubmit={event => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  form.handleSubmit()
+                }}
+                className="space-y-4"
+              >
+                <Field>
+                  <FieldLabel htmlFor="itchIoLink">Itch.io Entry Link</FieldLabel>
+                  <FieldContent>
+                    <form.Field
+                      name="itchIoLink"
+                      validators={{
+                        onChange: ({ value }) => {
+                          if (value === '') return 'Itch.io link is required'
+                          if (!value.includes('itch.io')) return 'Must be an itch.io URL'
+                          return undefined
+                        },
+                      }}
+                    >
+                      {field => (
+                        <>
+                          <Input
+                            id="itchIoLink"
+                            type="url"
+                            placeholder="https://example.itch.io/game"
+                            value={field.state.value}
+                            onChange={event => field.handleChange(event.target.value)}
+                            onBlur={field.handleBlur}
+                            aria-invalid={field.state.meta.errors.length > 0}
+                          />
+                          <FieldError>{field.state.meta.errors}</FieldError>
+                          <p className="text-sm text-muted-foreground">
+                            Paste the URL of your itch.io game entry
+                          </p>
+                        </>
+                      )}
+                    </form.Field>
+                  </FieldContent>
+                </Field>
+                <Button type="submit" className="w-full" disabled={isPending}>
+                  {isPending ? 'Submitting...' : 'Submit Entry'}
                 </Button>
               </form>
             </DialogContent>
           </Dialog>
         ) : (
-          <Button
+          <ButtonLink
+            to="/sign-up"
             size="lg"
-            asChild
             className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
           >
-            <Link to="/sign-up">
-              <Plus className="mr-2 h-4 w-4" />
-              Sign Up to Join
-            </Link>
-          </Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Sign Up to Join
+          </ButtonLink>
         )}
       </CardContent>
     </Card>

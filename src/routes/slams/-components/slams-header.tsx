@@ -1,6 +1,5 @@
-import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 
 export const SlamsHeader = () => {
   return (
@@ -11,12 +10,10 @@ export const SlamsHeader = () => {
           Discover ongoing creative challenges and showcase your game development skills
         </p>
       </div>
-      <Button asChild size="lg" className="w-fit">
-        <Link to="/slams/create">
-          <Plus className="mr-2 h-4 w-4" />
-          Create your own Slam
-        </Link>
-      </Button>
+      <ButtonLink to="/slams/create" size="lg" className="w-fit">
+        <Plus className="mr-2 h-4 w-4" />
+        Create your own Slam
+      </ButtonLink>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { ExternalLink, Package } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface IAssetCardProps {
@@ -38,12 +38,10 @@ export const AssetCard = ({ asset }: IAssetCardProps) => {
         </div>
       </CardContent>
       <CardContent className="pt-0">
-        <Button asChild size="sm" variant="outline" className="w-full">
-          <a href={asset.link} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="mr-2 h-4 w-4" />
-            View Asset
-          </a>
-        </Button>
+        <ButtonLink href={asset.link} target="_blank" rel="noopener noreferrer" size="sm" variant="outline" className="w-full">
+          <ExternalLink className="mr-2 h-4 w-4" />
+          View Asset
+        </ButtonLink>
       </CardContent>
     </Card>
   )

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
+import { Alert, AlertTitle } from '@/components/ui/alert'
 import { AlertTriangle } from 'lucide-react'
 
 interface IAuthProps {
@@ -55,10 +56,10 @@ export const Auth = ({ mode, onSubmit, isSubmitting, error }: IAuthProps) => {
           <CardContent className="space-y-4">
             {/* Server Error Display */}
             {error != null && error !== '' && (
-              <div className="flex items-center gap-2 rounded-md border border-destructive bg-destructive/10 p-3 text-sm text-destructive">
-                <AlertTriangle className="h-4 w-4" />
-                <span>{error}</span>
-              </div>
+              <Alert variant="destructive">
+                <AlertTriangle />
+                <AlertTitle>{error}</AlertTitle>
+              </Alert>
             )}
 
             {/* Auth Form */}

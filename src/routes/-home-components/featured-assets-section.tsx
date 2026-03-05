@@ -1,7 +1,7 @@
 import { useLoaderData } from '@tanstack/react-router'
 import { Palette, ExternalLink } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const FeaturedAssetsSection = () => {
@@ -26,12 +26,10 @@ export const FeaturedAssetsSection = () => {
               </CardHeader>
               <CardFooter className="flex items-center justify-between">
                 <Badge variant="secondary">Asset</Badge>
-                <Button asChild size="sm" variant="outline">
-                  <a href={asset.link} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="mr-1 h-3 w-3" />
-                    View Asset
-                  </a>
-                </Button>
+                <ButtonLink href={asset.link} target="_blank" rel="noopener noreferrer" size="sm" variant="outline">
+                  <ExternalLink className="mr-1 h-3 w-3" />
+                  View Asset
+                </ButtonLink>
               </CardFooter>
             </Card>
           ))}

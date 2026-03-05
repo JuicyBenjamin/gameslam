@@ -1,7 +1,7 @@
-import { useLoaderData, Link } from '@tanstack/react-router'
+import { useLoaderData } from '@tanstack/react-router'
 import { User, Folder } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { ButtonLink } from '@/components/ui/button-link'
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 export const TopArtistsSection = () => {
@@ -32,9 +32,9 @@ export const TopArtistsSection = () => {
                   <Folder className="h-3 w-3" />
                   {artist.assetCount} assets
                 </Badge>
-                <Button asChild size="sm" variant="outline">
-                  <Link to="/artists/$artistName" params={{ artistName: artist.name }}>View Profile</Link>
-                </Button>
+                <ButtonLink to="/artists/$artistName" params={{ artistName: artist.name }} size="sm" variant="outline">
+                  View Profile
+                </ButtonLink>
               </CardFooter>
             </Card>
           ))}

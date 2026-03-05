@@ -7,7 +7,7 @@ export const slamRatings = pgTable("slam_ratings", {
   authorId: uuid("author_id")
     .references(() => users.id)
     .notNull(),
-  slameEntryId: uuid("slam_entry_id")
+  slamEntryId: uuid("slam_entry_id")
     .notNull()
     .references(() => slamEntries.id),
   createdAt: timestamp("created_at", { withTimezone: true })

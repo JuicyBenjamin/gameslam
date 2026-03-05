@@ -3,14 +3,7 @@ import { useLiveQuery, eq } from '@tanstack/react-db'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { slamsCollection, slamEntriesCollection } from '@/collections'
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
+import { formatDate } from '@/lib/format-date'
 
 export const SlamDetailsCard = () => {
   const { id: slamId } = useParams({ from: '/slams/show/$id/' })

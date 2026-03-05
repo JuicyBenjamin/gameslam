@@ -1,4 +1,6 @@
+import { sql } from "drizzle-orm";
 import {
+  pgPolicy,
   pgTable,
   varchar,
   uuid,
@@ -6,6 +8,7 @@ import {
   timestamp,
   boolean,
 } from "drizzle-orm/pg-core";
+import { anonRole, authenticatedRole } from "drizzle-orm/supabase";
 import { assets } from "./assets";
 import { artists } from "./artists";
 import { users } from "./users";
@@ -27,6 +30,17 @@ export const slams = pgTable("slams", {
     .notNull()
     .references(() => users.id),
   isDeleted: boolean("is_deleted").default(false).notNull(),
-});
+}, () => [
+  pgPolicy("anon can read slams", {
+    for: "select",
+    to: anonRole,
+    using: sql`true`,
+  }),
+  pgPolicy("authenticated can read slams", {
+    for: "select",
+    to: authenticatedRole,
+    using: sql`true`,
+  }),
+]);
 
 export type TSelectSlam = typeof slams.$inferSelect;

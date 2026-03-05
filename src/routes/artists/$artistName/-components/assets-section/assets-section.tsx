@@ -30,7 +30,7 @@ export const AssetsSection = () => {
     query.from({ artistItem: artistsCollection }).where(({ artistItem }) => eq(artistItem.artist.name, artistName)),
   )
 
-  const artistId = artists[0]?.artist.id || loaderData.artist.id
+  const artist = artists[0]?.artist || loaderData.artist
   const assetsList = artists[0]?.assets || loaderData.assets
 
   return (
@@ -39,7 +39,7 @@ export const AssetsSection = () => {
         <h2 className="text-2xl font-bold text-foreground">Assets</h2>
         <div className="flex items-center gap-3">
           <Badge variant="secondary">{assetsList.length} assets</Badge>
-          <AddAssetDialog artistId={artistId} />
+          <AddAssetDialog artistName={artist.name} artistLink={artist.link} />
         </div>
       </div>
 
@@ -65,17 +65,18 @@ export const AssetsSection = () => {
 }
 
 interface IAddAssetDialogProps {
-  artistId: string
+  artistName: string
+  artistLink: string
 }
 
-const AddAssetDialog = ({ artistId }: IAddAssetDialogProps) => {
+const AddAssetDialog = ({ artistName, artistLink }: IAddAssetDialogProps) => {
   const router = useRouter()
   const queryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: { name: string; link: string }) =>
-      createAssetFn({ data: { ...data, artistId } }),
+      createAssetFn({ data: { ...data, artistName, artistLink } }),
     onSuccess: async (result) => {
       if (result.status === 'success') {
         toast.success('Asset added!')

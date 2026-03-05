@@ -1,4 +1,6 @@
+import { sql } from "drizzle-orm";
 import {
+  pgPolicy,
   pgTable,
   uuid,
   text,
@@ -6,6 +8,7 @@ import {
   boolean,
   unique,
 } from "drizzle-orm/pg-core";
+import { anonRole, authenticatedRole } from "drizzle-orm/supabase";
 import { slamEntries } from "./slamEntries";
 import { users } from "./users";
 
@@ -26,5 +29,32 @@ export const slamEntryRatings = pgTable(
     isDeleted: boolean("is_deleted").default(false).notNull(),
     content: text().notNull(),
   },
-  (table) => [unique().on(table.authorId, table.slamEntryId)],
+  (table) => [
+    unique().on(table.authorId, table.slamEntryId),
+    pgPolicy("anon can read entry ratings", {
+      for: "select",
+      to: anonRole,
+      using: sql`true`,
+    }),
+    pgPolicy("authenticated can read entry ratings", {
+      for: "select",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+    pgPolicy("authenticated can insert own entry ratings", {
+      for: "insert",
+      to: authenticatedRole,
+      withCheck: sql`(select auth.uid()) = author_id`,
+    }),
+    pgPolicy("authenticated can update own entry ratings", {
+      for: "update",
+      to: authenticatedRole,
+      using: sql`(select auth.uid()) = author_id`,
+    }),
+    pgPolicy("authenticated can delete own entry ratings", {
+      for: "delete",
+      to: authenticatedRole,
+      using: sql`(select auth.uid()) = author_id`,
+    }),
+  ],
 );

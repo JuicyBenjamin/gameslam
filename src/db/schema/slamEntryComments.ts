@@ -1,5 +1,7 @@
+import { sql } from "drizzle-orm";
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
-import { pgTable, uuid, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgPolicy, pgTable, uuid, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { anonRole, authenticatedRole } from "drizzle-orm/supabase";
 import { slamEntries } from "./slamEntries";
 import { users } from "./users";
 
@@ -19,4 +21,30 @@ export const slamEntryComments = pgTable("slam_entry_comments", {
     .notNull(),
   isDeleted: boolean("is_deleted").default(false).notNull(),
   comment: text().notNull(),
-});
+}, () => [
+  pgPolicy("anon can read entry comments", {
+    for: "select",
+    to: anonRole,
+    using: sql`true`,
+  }),
+  pgPolicy("authenticated can read entry comments", {
+    for: "select",
+    to: authenticatedRole,
+    using: sql`true`,
+  }),
+  pgPolicy("authenticated can insert own entry comments", {
+    for: "insert",
+    to: authenticatedRole,
+    withCheck: sql`(select auth.uid()) = author_id`,
+  }),
+  pgPolicy("authenticated can update own entry comments", {
+    for: "update",
+    to: authenticatedRole,
+    using: sql`(select auth.uid()) = author_id`,
+  }),
+  pgPolicy("authenticated can delete own entry comments", {
+    for: "delete",
+    to: authenticatedRole,
+    using: sql`(select auth.uid()) = author_id`,
+  }),
+]);

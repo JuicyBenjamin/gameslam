@@ -1,0 +1,19 @@
+model SlamEntry {
+  id          String   @id @default(uuid())
+  slamId      String
+  userId      String
+  linkToEntry String
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+
+  slam Slam @relation(fields: [slamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  slamComments      SlamComment[]
+  slamEntryComments SlamEntryComment[]
+  slamRatings       SlamRating[]
+  slamEntryRatings  SlamEntryRating[]
+
+  @@map("slam_entry")
+}

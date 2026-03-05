@@ -1,0 +1,16 @@
+model SlamEntryComment {
+  id              String   @id @default(uuid())
+  parentCommentId String?
+  authorId        String
+  slamEntryId     String
+  createdAt       DateTime @default(now())
+  isDeleted       Boolean  @default(false)
+  comment         String
+
+  parentComment SlamEntryComment?  @relation("EntryCommentThread", fields: [parentCommentId], references: [id])
+  replies       SlamEntryComment[] @relation("EntryCommentThread")
+  author        User               @relation(fields: [authorId], references: [id])
+  slamEntry     SlamEntry          @relation(fields: [slamEntryId], references: [id])
+
+  @@map("slam_entry_comment")
+}

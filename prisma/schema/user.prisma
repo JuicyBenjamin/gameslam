@@ -1,0 +1,23 @@
+model User {
+  id            String    @id @default(uuid())
+  name          String    @unique
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions Session[]
+  accounts Account[]
+
+  createdSlams      Slam[]
+  slamEntries       SlamEntry[]
+  slamComments      SlamComment[]
+  slamEntryComments SlamEntryComment[]
+  slamRatings       SlamRating[]
+  slamEntryRatings  SlamEntryRating[]
+  debugEntries      Debug[]
+
+  @@map("user")
+}

@@ -1,14 +1,12 @@
 import { createServerFn } from '@tanstack/react-start'
-import { object, string, pipe, nonEmpty, uuid, optional, nullable, safeParse } from 'valibot'
-import { supabase } from '@/lib/supabase.server'
-import { slamEntryComments } from '@/db/schema/slamEntryComments'
-import { db } from '@/server-functions/database'
-import { eq, and } from 'drizzle-orm'
+import { object, string, pipe, nonEmpty, optional, nullable, safeParse } from 'valibot'
+import { getSession } from '@/server-functions/auth.server'
+import { prisma } from '@/lib/prisma.server'
 
 const CreateCommentSchema = object({
-  slamEntryId: pipe(string(), nonEmpty(), uuid()),
+  slamEntryId: pipe(string(), nonEmpty()),
   comment: pipe(string(), nonEmpty('Comment cannot be empty')),
-  parentCommentId: optional(nullable(pipe(string(), uuid()))),
+  parentCommentId: optional(nullable(string())),
 })
 
 export const createEntryCommentFn = createServerFn({ method: 'POST' })
@@ -24,27 +22,25 @@ export const createEntryCommentFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return { status: 'error' as const, message: 'You must be logged in' }
     }
 
-    await db.insert(slamEntryComments).values({
-      authorId: user.id,
-      slamEntryId: result.output.slamEntryId,
-      comment: result.output.comment,
-      parentCommentId: result.output.parentCommentId ?? null,
+    await prisma.slamEntryComment.create({
+      data: {
+        authorId: session.user.id,
+        slamEntryId: result.output.slamEntryId,
+        comment: result.output.comment,
+        parentCommentId: result.output.parentCommentId ?? null,
+      },
     })
 
     return { status: 'success' as const }
   })
 
 const UpdateCommentSchema = object({
-  commentId: pipe(string(), nonEmpty(), uuid()),
+  commentId: pipe(string(), nonEmpty()),
   comment: pipe(string(), nonEmpty('Comment cannot be empty')),
 })
 
@@ -59,27 +55,17 @@ export const updateEntryCommentFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return { status: 'error' as const, message: 'You must be logged in' }
     }
 
-    const [updated] = await db
-      .update(slamEntryComments)
-      .set({ comment: result.output.comment })
-      .where(
-        and(
-          eq(slamEntryComments.id, result.output.commentId),
-          eq(slamEntryComments.authorId, user.id),
-        ),
-      )
-      .returning({ id: slamEntryComments.id })
+    const updated = await prisma.slamEntryComment.updateMany({
+      where: { id: result.output.commentId, authorId: session.user.id },
+      data: { comment: result.output.comment },
+    })
 
-    if (!updated) {
+    if (updated.count === 0) {
       return { status: 'error' as const, message: 'Comment not found or you are not the author' }
     }
 
@@ -87,7 +73,7 @@ export const updateEntryCommentFn = createServerFn({ method: 'POST' })
   })
 
 const DeleteCommentSchema = object({
-  commentId: pipe(string(), nonEmpty(), uuid()),
+  commentId: pipe(string(), nonEmpty()),
 })
 
 export const deleteEntryCommentFn = createServerFn({ method: 'POST' })
@@ -101,27 +87,17 @@ export const deleteEntryCommentFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return { status: 'error' as const, message: 'You must be logged in' }
     }
 
-    const [updated] = await db
-      .update(slamEntryComments)
-      .set({ isDeleted: true })
-      .where(
-        and(
-          eq(slamEntryComments.id, result.output.commentId),
-          eq(slamEntryComments.authorId, user.id),
-        ),
-      )
-      .returning({ id: slamEntryComments.id })
+    const updated = await prisma.slamEntryComment.updateMany({
+      where: { id: result.output.commentId, authorId: session.user.id },
+      data: { isDeleted: true },
+    })
 
-    if (!updated) {
+    if (updated.count === 0) {
       return { status: 'error' as const, message: 'Comment not found or you are not the author' }
     }
 

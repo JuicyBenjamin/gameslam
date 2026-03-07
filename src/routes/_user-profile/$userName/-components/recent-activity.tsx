@@ -16,7 +16,7 @@ export const RecentActivity = () => {
   const userId = loaderData.user?.id
 
   const { data: userSlams = [] } = useLiveQuery(query =>
-    query.from({ slamItem: slamsCollection }).where(({ slamItem }) => eq(slamItem.slam.createdBy, userId)),
+    query.from({ slamItem: slamsCollection }).where(({ slamItem }) => eq(slamItem.slam.creatorId, userId)),
   )
 
   const { data: userEntries = [] } = useLiveQuery(query =>

@@ -45,14 +45,14 @@ export const EditProfileDialog = () => {
 }
 
 interface IEditProfileDialogInnerProps {
-  user: { name: string; avatarLink: string }
+  user: { name: string; image: string | null }
   queryClient: ReturnType<typeof useQueryClient>
   router: ReturnType<typeof useRouter>
 }
 
 const EditProfileDialogInner = ({ user, queryClient, router }: IEditProfileDialogInnerProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedAvatar, setSelectedAvatar] = useState(user.avatarLink)
+  const [selectedAvatar, setSelectedAvatar] = useState(user.image ?? AVATAR_OPTIONS[0])
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: { name: string; avatarLink: string }) =>

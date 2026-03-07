@@ -2,8 +2,8 @@ import { Link, useRouter } from '@tanstack/react-router'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { TUser } from '@/db/schema/users'
-import { supabaseBrowser as supabase } from '@/lib/supabase.client'
+import { authClient } from '@/lib/auth-client'
+import type { TUser } from '@/lib/auth'
 
 interface IUserAvatarMenuProps {
   user: TUser
@@ -15,8 +15,7 @@ export const UserAvatarMenu = ({ user }: IUserAvatarMenuProps) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.auth.signOut()
-      if (error) throw error
+      await authClient.signOut()
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['currentUser'] })
@@ -29,7 +28,7 @@ export const UserAvatarMenu = ({ user }: IUserAvatarMenuProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger render={<button className="rounded-full p-1 hover:bg-white/10 transition-colors" />}>
         <Avatar className="h-8 w-8">
-          <AvatarImage src={user.avatarLink || undefined} />
+          <AvatarImage src={user.image ?? undefined} />
           <AvatarFallback className="bg-white/20 text-white text-sm">
             {user.name?.charAt(0).toUpperCase() || 'U'}
           </AvatarFallback>

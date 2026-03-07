@@ -1,25 +1,22 @@
 import { createServerFn } from '@tanstack/react-start'
 import { redirect } from '@tanstack/react-router'
 import { object, string, pipe, nonEmpty, minLength, maxLength, safeParse } from 'valibot'
-import { supabase } from '@/lib/supabase.server'
-import { users } from '@/db/schema/users'
-import { db } from '@/server-functions/database'
-import { eq } from 'drizzle-orm'
+import { getSession } from '@/server-functions/auth.server'
+import { prisma } from '@/lib/prisma.server'
 
 export const checkAuthForWelcomeFn = createServerFn().handler(async () => {
-  const supabaseClient = supabase()
-  const { data } = await supabaseClient.auth.getUser()
+  const session = await getSession()
 
-  if (!data.user) {
+  if (session == null) {
     throw redirect({ to: '/login' })
   }
 
-  const existing = await db.select().from(users).where(eq(users.id, data.user.id)).limit(1)
-  if (existing.length > 0) {
+  const hasName = session.user.name !== '' && session.user.name !== session.user.email
+  if (hasName) {
     throw redirect({ to: '/' })
   }
 
-  return { authUserId: data.user.id }
+  return { authUserId: session.user.id }
 })
 
 const SetupProfileSchema = object({
@@ -43,44 +40,32 @@ export const setupProfileFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
+    const session = await getSession()
 
-    if (!user?.id) {
+    if (session == null) {
       return {
         status: 'error' as const,
         message: 'You must be logged in',
       }
     }
 
-    const existing = await db.select().from(users).where(eq(users.id, user.id)).limit(1)
+    const nameTaken = await prisma.user.findUnique({
+      where: { name: result.output.name },
+    })
 
-    if (existing.length > 0) {
-      return {
-        status: 'error' as const,
-        message: 'Profile already exists',
-      }
-    }
-
-    const nameTaken = await db
-      .select()
-      .from(users)
-      .where(eq(users.name, result.output.name))
-      .limit(1)
-
-    if (nameTaken.length > 0) {
+    if (nameTaken != null && nameTaken.id !== session.user.id) {
       return {
         status: 'error' as const,
         message: 'That display name is already taken',
       }
     }
 
-    await db.insert(users).values({
-      id: user.id,
-      name: result.output.name,
-      avatarLink: result.output.avatarLink,
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: {
+        name: result.output.name,
+        image: result.output.avatarLink,
+      },
     })
 
     return { status: 'success' as const }
@@ -107,38 +92,33 @@ export const updateProfileFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
+    const session = await getSession()
 
-    if (!user?.id) {
+    if (session == null) {
       return {
         status: 'error' as const,
         message: 'You must be logged in',
       }
     }
 
-    const nameTaken = await db
-      .select()
-      .from(users)
-      .where(eq(users.name, result.output.name))
-      .limit(1)
+    const nameTaken = await prisma.user.findUnique({
+      where: { name: result.output.name },
+    })
 
-    if (nameTaken.length > 0 && nameTaken[0].id !== user.id) {
+    if (nameTaken != null && nameTaken.id !== session.user.id) {
       return {
         status: 'error' as const,
         message: 'That display name is already taken',
       }
     }
 
-    await db
-      .update(users)
-      .set({
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: {
         name: result.output.name,
-        avatarLink: result.output.avatarLink,
-      })
-      .where(eq(users.id, user.id))
+        image: result.output.avatarLink,
+      },
+    })
 
     return { status: 'success' as const }
   })

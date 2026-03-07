@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, notFound } from '@tanstack/react-router'
 import { ArrowLeft } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/button-link'
 import { getCurrentUser } from '@/loaders/auth'
@@ -21,6 +21,7 @@ export const Route = createFileRoute('/slams/show/$id/')({
       fetchSlamDetails({ data: { slamId: params.id } }),
       getCurrentUser(),
     ])
+    if (slam == null) throw notFound()
     return { slam, user }
   },
 })

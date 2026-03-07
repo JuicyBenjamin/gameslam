@@ -1,9 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 import { object, string, pipe, nonEmpty, url, custom, safeParse } from 'valibot'
 import { parse as parseHtml } from 'node-html-parser'
-import { supabase } from '@/lib/supabase.server'
-import { slamEntries } from '@/db/schema/slamEntries'
-import { db } from '@/server-functions/database'
+import { getSession } from '@/server-functions/auth.server'
+import { prisma } from '@/lib/prisma.server'
 
 interface IItchPageData {
   name: string
@@ -64,12 +63,8 @@ export const joinSlamFn = createServerFn({ method: 'POST' })
       }
     }
 
-    const supabaseClient = supabase()
-    const {
-      data: { user },
-    } = await supabaseClient.auth.getUser()
-
-    if (!user?.id) {
+    const session = await getSession()
+    if (session == null) {
       return {
         status: 'error' as const,
         message: 'You must be logged in to join a slam',
@@ -86,12 +81,14 @@ export const joinSlamFn = createServerFn({ method: 'POST' })
       }
     }
 
-    await db.insert(slamEntries).values({
-      slamId: data.slamId,
-      userId: user.id,
-      linkToEntry: result.output.itchIoLink,
-      name: itchData.name,
-      description: itchData.description,
+    await prisma.slamEntry.create({
+      data: {
+        slamId: data.slamId,
+        userId: session.user.id,
+        linkToEntry: result.output.itchIoLink,
+        name: itchData.name,
+        description: itchData.description,
+      },
     })
 
     return {

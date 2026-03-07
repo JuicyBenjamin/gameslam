@@ -1,0 +1,10 @@
+model Debug {
+  id     String @id @default(uuid())
+  userId String
+  type   String
+  data   String
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("debug")
+}

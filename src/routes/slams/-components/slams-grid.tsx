@@ -42,7 +42,7 @@ export const SlamsGrid = () => {
           key={slamData.slam.id}
           slam={slamData.slam}
           artist={slamData.artist}
-          creator={slamData.creator}
+          createdBy={slamData.createdBy}
           entryCount={slamData.entryCount}
         />
       ))}

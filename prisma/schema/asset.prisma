@@ -1,0 +1,10 @@
+model Asset {
+  id   String @id @default(uuid())
+  name String
+  link String
+
+  artists ArtistAsset[]
+  slams   Slam[]
+
+  @@map("asset")
+}

@@ -1,0 +1,11 @@
+model ArtistAsset {
+  artistId String
+  assetId  String
+
+  artist Artist @relation(fields: [artistId], references: [id])
+  asset  Asset  @relation(fields: [assetId], references: [id])
+
+  @@id([artistId, assetId])
+  @@unique([artistId, assetId])
+  @@map("artist_asset")
+}

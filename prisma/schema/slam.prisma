@@ -1,0 +1,18 @@
+model Slam {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  artistId    String
+  assetId     String
+  creatorId   String
+  createdAt   DateTime @default(now())
+  isDeleted   Boolean  @default(false)
+
+  artist  Artist @relation(fields: [artistId], references: [id])
+  asset   Asset  @relation(fields: [assetId], references: [id])
+  createdBy User @relation(fields: [creatorId], references: [id])
+
+  entries SlamEntry[]
+
+  @@map("slam")
+}

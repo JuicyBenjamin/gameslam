@@ -21,7 +21,7 @@ export const UserAvatar = () => {
   return (
     <div className="relative mb-6 lg:mb-0 lg:mr-8">
       <Avatar className="h-32 w-32 ring-4 ring-card shadow-xl">
-        <AvatarImage src={user.avatarLink || '/placeholder.svg'} alt={user.name} />
+        <AvatarImage src={user.image || '/placeholder.svg'} alt={user.name} />
         <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
           {initials}
         </AvatarFallback>

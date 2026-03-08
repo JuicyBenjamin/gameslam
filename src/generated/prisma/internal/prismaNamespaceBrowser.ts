@@ -238,6 +238,8 @@ export const UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   isVerified: 'isVerified',
+  itchId: 'itchId',
+  itchUsername: 'itchUsername',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

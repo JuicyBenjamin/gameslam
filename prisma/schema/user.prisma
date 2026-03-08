@@ -5,6 +5,8 @@ model User {
   emailVerified Boolean   @default(false)
   image         String?
   isVerified    Boolean   @default(false)
+  itchId        Int?      @unique
+  itchUsername   String?   @unique
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

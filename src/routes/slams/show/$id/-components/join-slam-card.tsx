@@ -44,7 +44,7 @@ export const JoinSlamCard = () => {
         router.invalidate()
       } else {
         toast.error('Error', {
-          description: result.message || 'Failed to submit entry. Please try again.',
+          description: result.message ?? 'Failed to submit entry. Please try again.',
         })
       }
     },
@@ -138,12 +138,12 @@ export const JoinSlamCard = () => {
           </Dialog>
         ) : (
           <ButtonLink
-            to="/sign-up"
+            to="/login"
             size="lg"
             className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
           >
             <Plus className="mr-2 h-4 w-4" />
-            Sign Up to Join
+            Sign in to Join
           </ButtonLink>
         )}
       </CardContent>

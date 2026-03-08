@@ -30,7 +30,7 @@ export const HeroSection = () => {
                   <Trophy className="mr-2 h-5 w-5" />
                   Explore Slams
                 </ButtonLink>
-                <ButtonLink to="/sign-up" variant="outline" size="lg" className="text-lg bg-transparent">
+                <ButtonLink to="/login" variant="outline" size="lg" className="text-lg bg-transparent">
                   <Users className="mr-2 h-5 w-5" />
                   Join Now
                 </ButtonLink>

@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  itchId: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  itchId: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -31,6 +41,8 @@ export type UserMinAggregateOutputType = {
   emailVerified: boolean | null
   image: string | null
   isVerified: boolean | null
+  itchId: number | null
+  itchUsername: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +54,8 @@ export type UserMaxAggregateOutputType = {
   emailVerified: boolean | null
   image: string | null
   isVerified: boolean | null
+  itchId: number | null
+  itchUsername: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,11 +67,21 @@ export type UserCountAggregateOutputType = {
   emailVerified: number
   image: number
   isVerified: number
+  itchId: number
+  itchUsername: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  itchId?: true
+}
+
+export type UserSumAggregateInputType = {
+  itchId?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -66,6 +90,8 @@ export type UserMinAggregateInputType = {
   emailVerified?: true
   image?: true
   isVerified?: true
+  itchId?: true
+  itchUsername?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +103,8 @@ export type UserMaxAggregateInputType = {
   emailVerified?: true
   image?: true
   isVerified?: true
+  itchId?: true
+  itchUsername?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +116,8 @@ export type UserCountAggregateInputType = {
   emailVerified?: true
   image?: true
   isVerified?: true
+  itchId?: true
+  itchUsername?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -131,6 +161,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -161,6 +203,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -172,9 +216,13 @@ export type UserGroupByOutputType = {
   emailVerified: boolean
   image: string | null
   isVerified: boolean
+  itchId: number | null
+  itchUsername: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -204,6 +252,8 @@ export type UserWhereInput = {
   emailVerified?: Prisma.BoolFilter<"User"> | boolean
   image?: Prisma.StringNullableFilter<"User"> | string | null
   isVerified?: Prisma.BoolFilter<"User"> | boolean
+  itchId?: Prisma.IntNullableFilter<"User"> | number | null
+  itchUsername?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
@@ -224,6 +274,8 @@ export type UserOrderByWithRelationInput = {
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  itchId?: Prisma.SortOrderInput | Prisma.SortOrder
+  itchUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
@@ -241,6 +293,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   name?: string
   email?: string
+  itchId?: number
+  itchUsername?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -258,7 +312,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   slamRatings?: Prisma.SlamRatingListRelationFilter
   slamEntryRatings?: Prisma.SlamEntryRatingListRelationFilter
   debugEntries?: Prisma.DebugListRelationFilter
-}, "id" | "name" | "email">
+}, "id" | "name" | "email" | "itchId" | "itchUsername">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -267,11 +321,15 @@ export type UserOrderByWithAggregationInput = {
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  itchId?: Prisma.SortOrderInput | Prisma.SortOrder
+  itchUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -284,6 +342,8 @@ export type UserScalarWhereWithAggregatesInput = {
   emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  itchId?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
+  itchUsername?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -295,6 +355,8 @@ export type UserCreateInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -315,6 +377,8 @@ export type UserUncheckedCreateInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -335,6 +399,8 @@ export type UserUpdateInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -355,6 +421,8 @@ export type UserUncheckedUpdateInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -375,6 +443,8 @@ export type UserCreateManyInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -386,6 +456,8 @@ export type UserUpdateManyMutationInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -397,6 +469,8 @@ export type UserUncheckedUpdateManyInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -413,8 +487,14 @@ export type UserCountOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  itchId?: Prisma.SortOrder
+  itchUsername?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  itchId?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -424,6 +504,8 @@ export type UserMaxOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  itchId?: Prisma.SortOrder
+  itchUsername?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -435,8 +517,14 @@ export type UserMinOrderByAggregateInput = {
   emailVerified?: Prisma.SortOrder
   image?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  itchId?: Prisma.SortOrder
+  itchUsername?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  itchId?: Prisma.SortOrder
 }
 
 export type UserCreateNestedOneWithoutAccountsInput = {
@@ -565,6 +653,14 @@ export type UserUpdateOneRequiredWithoutCreatedSlamsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedSlamsInput, Prisma.UserUpdateWithoutCreatedSlamsInput>, Prisma.UserUncheckedUpdateWithoutCreatedSlamsInput>
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   name: string
@@ -572,6 +668,8 @@ export type UserCreateWithoutAccountsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -591,6 +689,8 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -626,6 +726,8 @@ export type UserUpdateWithoutAccountsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -645,6 +747,8 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -664,6 +768,8 @@ export type UserCreateWithoutDebugEntriesInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -683,6 +789,8 @@ export type UserUncheckedCreateWithoutDebugEntriesInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -718,6 +826,8 @@ export type UserUpdateWithoutDebugEntriesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -737,6 +847,8 @@ export type UserUncheckedUpdateWithoutDebugEntriesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -756,6 +868,8 @@ export type UserCreateWithoutSessionsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
@@ -775,6 +889,8 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
@@ -810,6 +926,8 @@ export type UserUpdateWithoutSessionsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
@@ -829,6 +947,8 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
@@ -848,6 +968,8 @@ export type UserCreateWithoutSlamCommentsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -867,6 +989,8 @@ export type UserUncheckedCreateWithoutSlamCommentsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -902,6 +1026,8 @@ export type UserUpdateWithoutSlamCommentsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -921,6 +1047,8 @@ export type UserUncheckedUpdateWithoutSlamCommentsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -940,6 +1068,8 @@ export type UserCreateWithoutSlamEntryCommentsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -959,6 +1089,8 @@ export type UserUncheckedCreateWithoutSlamEntryCommentsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -994,6 +1126,8 @@ export type UserUpdateWithoutSlamEntryCommentsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1013,6 +1147,8 @@ export type UserUncheckedUpdateWithoutSlamEntryCommentsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1032,6 +1168,8 @@ export type UserCreateWithoutSlamEntryRatingsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1051,6 +1189,8 @@ export type UserUncheckedCreateWithoutSlamEntryRatingsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1086,6 +1226,8 @@ export type UserUpdateWithoutSlamEntryRatingsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1105,6 +1247,8 @@ export type UserUncheckedUpdateWithoutSlamEntryRatingsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1124,6 +1268,8 @@ export type UserCreateWithoutSlamEntriesInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1143,6 +1289,8 @@ export type UserUncheckedCreateWithoutSlamEntriesInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1178,6 +1326,8 @@ export type UserUpdateWithoutSlamEntriesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1197,6 +1347,8 @@ export type UserUncheckedUpdateWithoutSlamEntriesInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1216,6 +1368,8 @@ export type UserCreateWithoutSlamRatingsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1235,6 +1389,8 @@ export type UserUncheckedCreateWithoutSlamRatingsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1270,6 +1426,8 @@ export type UserUpdateWithoutSlamRatingsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1289,6 +1447,8 @@ export type UserUncheckedUpdateWithoutSlamRatingsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1308,6 +1468,8 @@ export type UserCreateWithoutCreatedSlamsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1327,6 +1489,8 @@ export type UserUncheckedCreateWithoutCreatedSlamsInput = {
   emailVerified?: boolean
   image?: string | null
   isVerified?: boolean
+  itchId?: number | null
+  itchUsername?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1362,6 +1526,8 @@ export type UserUpdateWithoutCreatedSlamsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1381,6 +1547,8 @@ export type UserUncheckedUpdateWithoutCreatedSlamsInput = {
   emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  itchId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  itchUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1503,6 +1671,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailVerified?: boolean
   image?: boolean
   isVerified?: boolean
+  itchId?: boolean
+  itchUsername?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -1524,6 +1694,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailVerified?: boolean
   image?: boolean
   isVerified?: boolean
+  itchId?: boolean
+  itchUsername?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1535,6 +1707,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   emailVerified?: boolean
   image?: boolean
   isVerified?: boolean
+  itchId?: boolean
+  itchUsername?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1546,11 +1720,13 @@ export type UserSelectScalar = {
   emailVerified?: boolean
   image?: boolean
   isVerified?: boolean
+  itchId?: boolean
+  itchUsername?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "isVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "isVerified" | "itchId" | "itchUsername" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -1586,6 +1762,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     emailVerified: boolean
     image: string | null
     isVerified: boolean
+    itchId: number | null
+    itchUsername: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -2026,6 +2204,8 @@ export interface UserFieldRefs {
   readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly isVerified: Prisma.FieldRef<"User", 'Boolean'>
+  readonly itchId: Prisma.FieldRef<"User", 'Int'>
+  readonly itchUsername: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

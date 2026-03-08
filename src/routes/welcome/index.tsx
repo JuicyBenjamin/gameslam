@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
 import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { setupProfileFn, checkAuthForWelcomeFn } from '@/server-functions/users-manage'
+import { setupProfileFn, guardWelcomeFn, fetchWelcomeDataFn } from '@/server-functions/users-manage'
 
 const AVATAR_OPTIONS = [
   'https://api.dicebear.com/9.x/pixel-art/svg?seed=gamer1',
@@ -24,13 +24,20 @@ const AVATAR_OPTIONS = [
 
 export const Route = createFileRoute('/welcome/')({
   component: WelcomePage,
-  beforeLoad: () => checkAuthForWelcomeFn(),
+  beforeLoad: () => guardWelcomeFn(),
+  loader: () => fetchWelcomeDataFn(),
 })
 
 function WelcomePage() {
   const router = useRouter()
   const queryClient = useQueryClient()
-  const [selectedAvatar, setSelectedAvatar] = useState(AVATAR_OPTIONS[0])
+  const { itchUsername, itchAvatar } = Route.useLoaderData()
+
+  const avatarOptions = itchAvatar != null && itchAvatar !== ''
+    ? [itchAvatar, ...AVATAR_OPTIONS]
+    : AVATAR_OPTIONS
+
+  const [selectedAvatar, setSelectedAvatar] = useState(avatarOptions[0])
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: { name: string; avatarLink: string }) =>
@@ -53,7 +60,7 @@ function WelcomePage() {
 
   const form = useForm({
     defaultValues: {
-      name: '',
+      name: itchUsername ?? '',
     },
     onSubmit: async ({ value }) => {
       mutate({ name: value.name, avatarLink: selectedAvatar })
@@ -81,7 +88,7 @@ function WelcomePage() {
             <div>
               <Label className="mb-3">Choose your avatar</Label>
               <div className="grid grid-cols-4 gap-3">
-                {AVATAR_OPTIONS.map(avatarUrl => (
+                {avatarOptions.map(avatarUrl => (
                   <button
                     key={avatarUrl}
                     type="button"

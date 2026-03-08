@@ -63,11 +63,8 @@ export const Header = ({ initialUser }: IHeaderProps) => {
             <UserAvatarMenu user={user} />
           ) : (
             <div className="hidden items-center gap-2 md:flex">
-              <ButtonLink to="/login" variant="ghost" size="sm" className="text-primary-foreground hover:bg-white/10 hover:text-primary-foreground">
-                Login
-              </ButtonLink>
-              <ButtonLink to="/sign-up" size="sm" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-                Sign Up
+              <ButtonLink to="/login" size="sm" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+                Sign in
               </ButtonLink>
             </div>
           )}
@@ -110,22 +107,13 @@ export const Header = ({ initialUser }: IHeaderProps) => {
                     Profile
                   </Link>
                 ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      className={buttonVariants({ variant: 'ghost', className: 'justify-start' })}
-                      onClick={() => setIsMobileOpen(false)}
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      to="/sign-up"
-                      className={buttonVariants({ variant: 'ghost', className: 'justify-start' })}
-                      onClick={() => setIsMobileOpen(false)}
-                    >
-                      Sign Up
-                    </Link>
-                  </>
+                  <Link
+                    to="/login"
+                    className={buttonVariants({ variant: 'ghost', className: 'justify-start' })}
+                    onClick={() => setIsMobileOpen(false)}
+                  >
+                    Sign in
+                  </Link>
                 )}
               </nav>
             </SheetContent>

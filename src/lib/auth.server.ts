@@ -9,15 +9,21 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
-  emailAndPassword: {
-    enabled: true,
-    minPasswordLength: 8,
-  },
   user: {
     additionalFields: {
       isVerified: {
         type: 'boolean',
         defaultValue: false,
+        input: false,
+      },
+      itchId: {
+        type: 'number',
+        required: false,
+        input: false,
+      },
+      itchUsername: {
+        type: 'string',
+        required: false,
         input: false,
       },
     },

@@ -13,14 +13,15 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as WhatIsAGameSlamIndexRouteImport } from './routes/what-is-a-game-slam/index'
 import { Route as WelcomeIndexRouteImport } from './routes/welcome/index'
 import { Route as SlamsIndexRouteImport } from './routes/slams/index'
-import { Route as SignUpIndexRouteImport } from './routes/sign-up/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as HealthIndexRouteImport } from './routes/health/index'
 import { Route as ArtistsIndexRouteImport } from './routes/artists/index'
 import { Route as SlamsCreateIndexRouteImport } from './routes/slams/create/index'
 import { Route as ArtistsArtistNameIndexRouteImport } from './routes/artists/$artistName/index'
 import { Route as UserProfileUserNameIndexRouteImport } from './routes/_user-profile/$userName/index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as SlamsShowIdIndexRouteImport } from './routes/slams/show/$id/index'
+import { Route as AuthItchCallbackIndexRouteImport } from './routes/auth/itch/callback/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,11 +41,6 @@ const WelcomeIndexRoute = WelcomeIndexRouteImport.update({
 const SlamsIndexRoute = SlamsIndexRouteImport.update({
   id: '/slams/',
   path: '/slams/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SignUpIndexRoute = SignUpIndexRouteImport.update({
-  id: '/sign-up/',
-  path: '/sign-up/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
@@ -78,9 +74,19 @@ const UserProfileUserNameIndexRoute =
     path: '/$userName/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SlamsShowIdIndexRoute = SlamsShowIdIndexRouteImport.update({
   id: '/slams/show/$id/',
   path: '/slams/show/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthItchCallbackIndexRoute = AuthItchCallbackIndexRouteImport.update({
+  id: '/auth/itch/callback/',
+  path: '/auth/itch/callback/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -89,13 +95,14 @@ export interface FileRoutesByFullPath {
   '/artists': typeof ArtistsIndexRoute
   '/health': typeof HealthIndexRoute
   '/login': typeof LoginIndexRoute
-  '/sign-up': typeof SignUpIndexRoute
   '/slams': typeof SlamsIndexRoute
   '/welcome': typeof WelcomeIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/$userName': typeof UserProfileUserNameIndexRoute
   '/artists/$artistName': typeof ArtistsArtistNameIndexRoute
   '/slams/create': typeof SlamsCreateIndexRoute
+  '/auth/itch/callback': typeof AuthItchCallbackIndexRoute
   '/slams/show/$id': typeof SlamsShowIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -103,13 +110,14 @@ export interface FileRoutesByTo {
   '/artists': typeof ArtistsIndexRoute
   '/health': typeof HealthIndexRoute
   '/login': typeof LoginIndexRoute
-  '/sign-up': typeof SignUpIndexRoute
   '/slams': typeof SlamsIndexRoute
   '/welcome': typeof WelcomeIndexRoute
   '/what-is-a-game-slam': typeof WhatIsAGameSlamIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/$userName': typeof UserProfileUserNameIndexRoute
   '/artists/$artistName': typeof ArtistsArtistNameIndexRoute
   '/slams/create': typeof SlamsCreateIndexRoute
+  '/auth/itch/callback': typeof AuthItchCallbackIndexRoute
   '/slams/show/$id': typeof SlamsShowIdIndexRoute
 }
 export interface FileRoutesById {
@@ -118,13 +126,14 @@ export interface FileRoutesById {
   '/artists/': typeof ArtistsIndexRoute
   '/health/': typeof HealthIndexRoute
   '/login/': typeof LoginIndexRoute
-  '/sign-up/': typeof SignUpIndexRoute
   '/slams/': typeof SlamsIndexRoute
   '/welcome/': typeof WelcomeIndexRoute
   '/what-is-a-game-slam/': typeof WhatIsAGameSlamIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/_user-profile/$userName/': typeof UserProfileUserNameIndexRoute
   '/artists/$artistName/': typeof ArtistsArtistNameIndexRoute
   '/slams/create/': typeof SlamsCreateIndexRoute
+  '/auth/itch/callback/': typeof AuthItchCallbackIndexRoute
   '/slams/show/$id/': typeof SlamsShowIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -134,13 +143,14 @@ export interface FileRouteTypes {
     | '/artists'
     | '/health'
     | '/login'
-    | '/sign-up'
     | '/slams'
     | '/welcome'
     | '/what-is-a-game-slam'
+    | '/api/auth/$'
     | '/$userName'
     | '/artists/$artistName'
     | '/slams/create'
+    | '/auth/itch/callback'
     | '/slams/show/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -148,13 +158,14 @@ export interface FileRouteTypes {
     | '/artists'
     | '/health'
     | '/login'
-    | '/sign-up'
     | '/slams'
     | '/welcome'
     | '/what-is-a-game-slam'
+    | '/api/auth/$'
     | '/$userName'
     | '/artists/$artistName'
     | '/slams/create'
+    | '/auth/itch/callback'
     | '/slams/show/$id'
   id:
     | '__root__'
@@ -162,13 +173,14 @@ export interface FileRouteTypes {
     | '/artists/'
     | '/health/'
     | '/login/'
-    | '/sign-up/'
     | '/slams/'
     | '/welcome/'
     | '/what-is-a-game-slam/'
+    | '/api/auth/$'
     | '/_user-profile/$userName/'
     | '/artists/$artistName/'
     | '/slams/create/'
+    | '/auth/itch/callback/'
     | '/slams/show/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -177,13 +189,14 @@ export interface RootRouteChildren {
   ArtistsIndexRoute: typeof ArtistsIndexRoute
   HealthIndexRoute: typeof HealthIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
-  SignUpIndexRoute: typeof SignUpIndexRoute
   SlamsIndexRoute: typeof SlamsIndexRoute
   WelcomeIndexRoute: typeof WelcomeIndexRoute
   WhatIsAGameSlamIndexRoute: typeof WhatIsAGameSlamIndexRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   UserProfileUserNameIndexRoute: typeof UserProfileUserNameIndexRoute
   ArtistsArtistNameIndexRoute: typeof ArtistsArtistNameIndexRoute
   SlamsCreateIndexRoute: typeof SlamsCreateIndexRoute
+  AuthItchCallbackIndexRoute: typeof AuthItchCallbackIndexRoute
   SlamsShowIdIndexRoute: typeof SlamsShowIdIndexRoute
 }
 
@@ -215,13 +228,6 @@ declare module '@tanstack/react-router' {
       path: '/slams'
       fullPath: '/slams'
       preLoaderRoute: typeof SlamsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sign-up/': {
-      id: '/sign-up/'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof SignUpIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/': {
@@ -266,11 +272,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserProfileUserNameIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/slams/show/$id/': {
       id: '/slams/show/$id/'
       path: '/slams/show/$id'
       fullPath: '/slams/show/$id'
       preLoaderRoute: typeof SlamsShowIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/itch/callback/': {
+      id: '/auth/itch/callback/'
+      path: '/auth/itch/callback'
+      fullPath: '/auth/itch/callback'
+      preLoaderRoute: typeof AuthItchCallbackIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -281,13 +301,14 @@ const rootRouteChildren: RootRouteChildren = {
   ArtistsIndexRoute: ArtistsIndexRoute,
   HealthIndexRoute: HealthIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
-  SignUpIndexRoute: SignUpIndexRoute,
   SlamsIndexRoute: SlamsIndexRoute,
   WelcomeIndexRoute: WelcomeIndexRoute,
   WhatIsAGameSlamIndexRoute: WhatIsAGameSlamIndexRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   UserProfileUserNameIndexRoute: UserProfileUserNameIndexRoute,
   ArtistsArtistNameIndexRoute: ArtistsArtistNameIndexRoute,
   SlamsCreateIndexRoute: SlamsCreateIndexRoute,
+  AuthItchCallbackIndexRoute: AuthItchCallbackIndexRoute,
   SlamsShowIdIndexRoute: SlamsShowIdIndexRoute,
 }
 export const routeTree = rootRouteImport

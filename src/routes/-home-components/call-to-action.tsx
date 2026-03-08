@@ -18,9 +18,9 @@ export const CallToAction = () => {
           Join GameSlam today and be part of a community that celebrates creativity and innovation in game
           development.
         </p>
-        <ButtonLink to="/sign-up" size="lg" variant="secondary" className="text-lg">
+        <ButtonLink to="/login" size="lg" variant="secondary" className="text-lg">
           <Users className="mr-2 h-5 w-5" />
-          Create Your Account
+          Sign in with itch.io
         </ButtonLink>
       </div>
     </section>

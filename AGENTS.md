@@ -274,6 +274,37 @@ const ArtistProfile = () => {
 - Parallel data fetching in loaders with `Promise.all`.
 - `<Link>` from `@tanstack/react-router` for all internal navigation. Never `<a href>` for internal routes.
 - Never `window.location.href` — use `router.navigate()` / `router.invalidate()`.
+- **API route files (`src/routes/api/**/$.ts`) must use dynamic `await import()` for any `.server` module.** Static top-level imports pull the entire server dependency chain (Prisma, pg, node:crypto…) into `routeTree.gen.ts` evaluation, causing Vite SSR circular dependency crashes (`__vite_ssr_import_*__ before initialization`). Keep route files lightweight — only `createAPIFileRoute` and handler stubs at the top level.
+
+```tsx
+// Good — dynamic import inside handler
+GET: async ({ request }) => {
+  const { auth } = await import('@/lib/auth.server')
+  return auth.handler(request)
+},
+
+// Bad — static import at module scope in an API route file
+import { auth } from '@/lib/auth.server'
+```
+
+## Prisma
+
+- **Pass a config object to `PrismaPg`, never a `pg.Pool` instance.** Vite SSR loads CJS packages as separate module instances, which breaks `instanceof` checks inside `@prisma/adapter-pg`. Passing a Pool silently fails — PrismaPg misinterprets it as a config, creates its own pool with garbled options, and connects to the wrong place. Always let PrismaPg create the pool internally.
+
+```tsx
+// Good — config object, PrismaPg creates its own pool
+const adapter = new PrismaPg({
+  connectionString: process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL!,
+  max: 1,
+  idleTimeoutMillis: 1,
+})
+
+// Bad — Pool instance breaks instanceof across Vite SSR module boundaries
+const pool = new pg.Pool({ connectionString: '...' })
+const adapter = new PrismaPg(pool)
+```
+
+- **Set `idleTimeoutMillis: 1` in PrismaPg config.** The Prisma dev server kills idle connections immediately. A higher timeout keeps dead connections in the pool, causing "Connection terminated unexpectedly" on the next query.
 
 ## Styling
 
